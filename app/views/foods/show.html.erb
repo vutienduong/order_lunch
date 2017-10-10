@@ -1,0 +1,24 @@
+<h1>Order Details</h1>
+<p>
+  <strong>Title:</strong>
+  <%= @food.title %>
+</p> <br>
+
+<p>
+  <strong>Description:</strong>
+  <%= @food.description %>
+</p><br>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @food.creator %>
+</p><br>
+
+<p>
+  <strong>Date:</strong>
+  <%= @food.date %>
+</p><br>
+
+
+<%= link_to 'Edit', edit_food_path(@food) %><br>
+<%= link_to 'Back', foods_path%>
