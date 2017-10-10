@@ -1,0 +1,28 @@
+<h1>List lunch orders</h1>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Creator</th>
+    <th>DateTime</th>
+  </tr>
+
+
+  <% @foods.each do |food| %>
+      <tr>
+        <td><%= food.title %></td>
+        <td><%= food.description %></td>
+        <td><%= food.creator %></td>
+        <td><%= food.date %></td>
+        <td><%= link_to 'Edit', edit_food_path(food) %></td>
+        <td><%= link_to 'Delete', food_path(food),
+                        method: :delete,
+                        data: {confirm: 'Are you sure?'} %> </td>
+      </tr>
+  <% end %>
+
+</table>
+
+<%= link_to 'New Order', new_food_path %><br>
+
+<%= link_to 'Export PDF', export_pdf_foods_path(format: :pdf) %>
