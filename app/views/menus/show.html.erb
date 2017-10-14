@@ -1,0 +1,13 @@
+<h1>Menu Details</h1>
+<%= form_for @menu do |f| %>
+    <p><%= f.label :date %></p>
+    <p><%= f.text_field :date %></p>
+
+    <%= @menu.restaurants.each do |r| %>
+        <h2>Restaurant</h2>
+    <p><%= label r, r[:name]  %></p>
+    <p><%= label r, r[:address] %></p>
+
+<% end %>
+    <%= link_to 'Back to menu manager page', menus_path %>
+<% end %>

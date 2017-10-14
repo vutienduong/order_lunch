@@ -1,0 +1,46 @@
+<% require 'pathname' %>
+
+<div class="container-fluid">
+  <div class="col-md-8">
+    <div class="row">
+      <h1>Restaurant details</h1>
+      <h2><%= @restaurant.name.upcase %></h2>
+      <p><%= @restaurant.address %></p>
+    </div>
+
+
+    <div class="row">
+      <% @restaurant.dishes.each do |d| %>
+          <div class="col-xs-3 col-md-4 row-eq-height">
+            <div class="thumbnail">
+              <%= image_tag(d.image_url, size: "100x100", alt: "Image") %>
+              <div class="caption">
+                <h3><%= d.name %></h3>
+                <p><%= d.description %></p>
+                <h4 class="label label-info"><%= d.price.to_i %></h4>
+                <% if params[:select_dish] %>
+                    <p><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order', dish_id: d.id}, class: "btn btn-primary" %>
+                      <a href="#" class="btn btn-default" role="button">Button</a></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+      <% end %>
+    </div>
+
+    <div class="row">
+      <%= link_to "New dish", controller: "dishes", action: "new", id: @restaurant.id %>
+    </div>
+    <%= link_to "All Restaurants", restaurants_path %>
+  </div>
+
+  <% if params[:select_dish] %>
+      <div class="col-md-4">
+        <% if !@today_order.nil? %>
+            <% @today_order.dishes.each do |d| %>
+                <p><%= d.name %></p>
+            <% end %>
+        <% end %>
+      </div>
+  <% end %>
+</div>

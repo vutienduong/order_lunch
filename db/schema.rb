@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010050523) do
+ActiveRecord::Schema.define(version: 20171012083607) do
+
+  create_table "dish_orders", force: :cascade do |t|
+    t.integer  "dish_id"
+    t.integer  "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dishes", force: :cascade do |t|
+    t.integer  "restaurant_id"
+    t.string   "name"
+    t.decimal  "price"
+    t.text     "description"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "image_url"
+  end
+
+  add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
 
   create_table "foods", force: :cascade do |t|
     t.text     "title"
@@ -20,6 +39,54 @@ ActiveRecord::Schema.define(version: 20171010050523) do
     t.datetime "date"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "menu_restaurants", force: :cascade do |t|
+    t.integer  "menu_id"
+    t.integer  "restaurant_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "menus", force: :cascade do |t|
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id"
+
+  create_table "orders_dishes", force: :cascade do |t|
+    t.integer  "order_id"
+    t.integer  "dish_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "orders_dishes", ["dish_id"], name: "index_orders_dishes_on_dish_id"
+  add_index "orders_dishes", ["order_id"], name: "index_orders_dishes_on_order_id"
+
+  create_table "restaurants", force: :cascade do |t|
+    t.string   "name"
+    t.text     "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "image_logo"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "username"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "email"
+    t.string   "password_digest"
   end
 
 end
