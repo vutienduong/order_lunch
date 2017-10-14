@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
 
+  get 'sessions/new'
+
   root 'foods#index'
   resources :foods do
     collection do
@@ -8,8 +10,41 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users do
+    member do
+      get 'select_menu'
+      get 'select_dish'
+      get 'order'
+      get 'add_dish_to_order'
+      get 'delete_today_order_session'
+      post 'save_order'
+      post 'add_dish'
+    end
 
+    collection do
+      get 'test'
+    end
+  end
 
+  get '/login', to: 'sessions#new'
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy'
+
+  get '/signup', to: 'foods#index'
+  get 'restaurant/:id/new_dish', to: 'dishes#new'
+
+  resources :menus
+  resources :managers do
+    member do
+      get 'add_menu_today'
+      get 'manage_order'
+      get 'manage_resource'
+
+    end
+  end
+
+  resources :restaurants
+  resources :dishes
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
