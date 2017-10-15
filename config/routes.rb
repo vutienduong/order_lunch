@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get 'order'
       get 'add_dish_to_order'
       get 'delete_today_order_session'
+      get 'copy_order'
       post 'edit_note'
       post 'save_order'
       post 'add_dish'
