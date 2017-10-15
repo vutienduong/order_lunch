@@ -46,22 +46,42 @@ function showPrice(dish) {
 
 function removeDishToday(dish) {
     row = $(dish).closest('div[class^="row"]')
-
-    total_price_span = $("#total_price_today")
-    remain_total = parseInt(total_price_span.text()) - parseInt(row.data("price"))
-    total_price_span.text(remain_total)
-    //console.log(remain_total)
-    row.remove()
-    $("#total_price_today").change()
-    dish_id = row.find(".each-dish-id").text()
-    postAjax(null, dish_id, null, "remove")
+    user_id = $("#today-my-order-user-id").text()
+    dish_params = {
+        dish: {
+            order_id: null,
+            dish_id: row.find(".each-dish-id").text(),
+            user_id: user_id,
+            action: "remove"
+        }
+    }
+    $.ajax({
+        method: 'POST',
+        url: '/users/' + user_id + '/save_order',
+        data: dish_params,
+        dataType: 'json'
+    }).done(function (response) {
+        console.log(response)
+        console.log("Success !!!")
+        // Note that if return false at the end, return false is always active before commands in "done" and "always"
+        if (response.hasOwnProperty("status") && response["status"] == "ok") {
+            total_price_span = $("#total_price_today")
+            remain_total = parseInt(total_price_span.text()) - parseInt(row.data("price"))
+            total_price_span.text(remain_total)
+            //console.log(remain_total)
+            row.remove()
+            $("#total_price_today").change()
+        }
+    }).fail(function (jqXHR, textStatus) {
+        console.log("Request failed: " + textStatus)
+    }).always(function (obj) {
+        console.log("Always !!!")
+    });
 }
 
 function addDishToday(dish) {
 
     // Way 1: use template
-    //var tmpl = $("#today-order-template").clone() //clone follow jQuery
-
     // check if total larger than 80k, generate alert
     total_price_span = $("#total_price_today")
     current_total_price = parseInt(total_price_span.text())
@@ -74,33 +94,53 @@ function addDishToday(dish) {
             return false;
     }
 
-    var tmpl = $(document.getElementById('template-dish-today').content.cloneNode(true));
-    var list = $("#today-my-order-content")
-
-
     dish_obj = {}
-
-    dish_obj["name"] = dish_parent.find(".each-dish-name").text()
     dish_obj["id"] = dish_parent.find(".each-dish-id").text()
-    dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
 
-    tmpl.find(".each-dish-name").text(dish_obj["name"])
-    tmpl.find(".each-dish-price").text(dish_price)
-    tmpl.find(".each-dish-id").text(dish_obj["id"])
-    tmpl.find(".btn btn-warning glyphicon glyphicon-remove").attr("id", "remove_btn_today_order_" + dish_obj["id"])
-
-
-    tmpl.find("#today-order-template").attr({"id": "today_order_" + dish_obj["id"], "data-price": dish_price})
-    tmpl.find(".each-dish-img").attr({"src": dish_obj["image_url"], "alt": dish_obj["name"], "data-price": dish_price})
-
-    list.append(tmpl)
-
-    // add price to total
-    total_price_span.text(new_total)
-    $("#total_price_today").change()
     user_id = $("#today-my-order-user-id").text()
+    dish_params = {dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"}}
+    $.ajax({
+        method: 'POST',
+        url: '/users/' + user_id + '/save_order',
+        data: dish_params,
+        dataType: 'json'
+    }).done(function (response) {
+        console.log(response)
+        console.log("Success !!!")
+
+        // Note that if return false at the end, return false is always active before commands in "done" and "always"
+        if (response.hasOwnProperty("status") && response["status"] == "ok") {
+            var tmpl = $(document.getElementById('template-dish-today').content.cloneNode(true));
+            var list = $("#today-my-order-content")
+
+            dish_obj["name"] = dish_parent.find(".each-dish-name").text()
+            dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
+
+            tmpl.find(".each-dish-name").text(dish_obj["name"])
+            tmpl.find(".each-dish-price").text(dish_price)
+            tmpl.find(".each-dish-id").text(dish_obj["id"])
+            tmpl.find(".btn btn-warning glyphicon glyphicon-remove").attr("id", "remove_btn_today_order_" + dish_obj["id"])
+
+
+            tmpl.find("#today-order-template").attr({"id": "today_order_" + dish_obj["id"], "data-price": dish_price})
+            tmpl.find(".each-dish-img").attr({
+                "src": dish_obj["image_url"],
+                "alt": dish_obj["name"],
+                "data-price": dish_price
+            })
+
+            list.append(tmpl)
+
+            // add price to total
+            total_price_span.text(new_total)
+            $("#total_price_today").change()
+        }
+    }).fail(function (jqXHR, textStatus) {
+        console.log("Request failed: " + textStatus)
+    }).always(function (obj) {
+        console.log("Always !!!")
+    });
     // Way 2: use clone from dish_parent
-    postAjax(null, dish_obj["id"], user_id, "add")
 }
 
 function postAjax(order_id, dish_id, user_id, action) {
@@ -113,10 +153,15 @@ function postAjax(order_id, dish_id, user_id, action) {
     }).done(function (response) {
         console.log(response)
         console.log("Success !!!")
+        // Note that if return false at the end, return false is always active before commands in "done" and "always"
+        if (response.hasOwnProperty("status") && response["status"] == "ok") {
+            return true
+        }
     }).fail(function (jqXHR, textStatus) {
         console.log("Request failed: " + textStatus)
     }).always(function (obj) {
         console.log("Always !!!")
+        return false
     })
     ;
 }
