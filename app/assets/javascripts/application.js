@@ -143,6 +143,29 @@ function addDishToday(dish) {
     // Way 2: use clone from dish_parent
 }
 
+function editOrderNote(note){
+    note = $("#today-order-note-edit").val()
+    order_params = {order: {note: note}}
+    $.ajax({
+        method: 'POST',
+        url: '/users/1/edit_note',
+        data: order_params,
+        dataType: 'json'
+    }).done(function (response) {
+        console.log("Success")
+        if (response.hasOwnProperty("status") && response["status"] == "ok") {
+            $("#today-order-note").text(note)
+            showEditNoteResult(true)
+            $('#today-order-note-modal').modal('hide')
+        }
+    }).fail(function () {
+        showEditNoteResult(false)
+        console.log("Update Note Fail!!!")
+    }).always(function(){
+        console.log("Update Note Always!!!")
+    });
+}
+
 function postAjax(order_id, dish_id, user_id, action) {
     dish_params = {dish: {order_id: order_id, dish_id: dish_id, user_id: user_id, action: action}}
     $.ajax({
@@ -166,6 +189,17 @@ function postAjax(order_id, dish_id, user_id, action) {
     ;
 }
 
+function showEditNoteResult(success) {
+    if (success){
+        shown_component = $("#edit-note-success-alert")
+    }else{
+        shown_component = $("#edit-note-fail-alert")
+    }
+    shown_component.fadeTo(2000, 500).slideUp(500, function(){
+        shown_component.slideUp(500);
+    });
+};
+
 jQuery(function () {
     $("#total_price_today").change(function () {
         console.log("total-price-today change")
@@ -180,4 +214,15 @@ jQuery(function () {
     $("#total_price_today").click(function () {
         $(".target").change();
     });
+
+
+    $('#today-order-note-modal').on('show.bs.modal', function (e) {
+        console.log("today-order-note")
+        $("#today-order-note-edit").text($("#today-order-note").text())
+    })
+
+    $("#edit-note-success-alert").hide();
+    $("#edit-note-fail-alert").hide();
 });
+
+

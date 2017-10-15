@@ -2,64 +2,72 @@
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'all_restaurants')">All Restaurants</button>
   <button class="tablinks" onclick="openCity(event, 'all_dishes')">All dishes</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+  <button class="tablinks" onclick="openCity(event, 'all_orders')">Tokyo</button>
 </div>
-
-<div id="Tokyo" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-</div>
-
-
 
 <div class="container-fluid">
   <div class="row">
-    <div id="all_restaurants" class="col-md-8 panel panel-default tabcontent">
-      <div id="today-date" class="panel-heading">
-        <%= Date.today() %>
-      </div>
-      <div id="today-menu" class="panel-body">
-        <% @menu.restaurants.each do |r| %>
-            <div class="col-xs-6 col-md-8">
-              <%= link_to image_tag(r.image_logo, alt: r.name), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1}, class: "thumbnail" %>
-              <span class="label label-primary"><%= r.name %></span>
-            </div>
-        <% end %>
-      </div>
-      <div id="today-menu-footer">
-      </div>
-    </div>
-
-    <div id="all_dishes" class="col-md-8 panel panel-default tabcontent">
-      <div class="container-fluid">
-        <div class="row">
-          <% @dishes.each do |r| %>
-              <div class="col-xs-6 col-md-3">
-                <div class="thumbnail">
-                  <%= image_tag r.image_url, alt: r.name, size: "120x120", class: "each-dish-img" %>
-                  <div class="caption">
-                    <strong class="each-dish-name"><%= r.name %></strong>
-                    <p class="each-dish-price"><%= r.price %></p>
-                    <p class="each-dish-id"><%= r.id %></p>
-                    <p>
-                      <span><a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= r.price %>" onclick="addDishToday(this)"></a></span>
-                    </p>
-                  </div>
-                </div>
+    <div class="col-md-8 panel panel-default">
+      <div id="all_restaurants" class="tabcontent">
+        <div id="today-date" class="panel-heading">
+          <%= Date.today() %>
+        </div>
+        <div id="today-menu" class="panel-body">
+          <% @menu.restaurants.each do |r| %>
+              <div class="col-xs-6 col-md-8">
+                <%= link_to image_tag(r.image_logo, alt: r.name), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1}, class: "thumbnail" %>
+                <span class="label label-primary"><%= r.name %></span>
               </div>
           <% end %>
         </div>
+        <div id="today-menu-footer">
+        </div>
       </div>
+
+      <div id="all_dishes" class="tabcontent">
+        <div class="container-fluid">
+          <div class="row">
+            <% @dishes.each do |r| %>
+                <div class="col-xs-6 col-md-3">
+                  <div class="thumbnail">
+                    <%= image_tag r.image_url, alt: r.name, size: "120x120", class: "each-dish-img" %>
+                    <div class="caption">
+                      <strong class="each-dish-name"><%= r.name %></strong>
+                      <p class="each-dish-price"><%= r.price %></p>
+                      <p class="each-dish-id"><%= r.id %></p>
+                      <p>
+                        <span><a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= r.price %>" onclick="addDishToday(this)"></a></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div id="all_orders" class="tabcontent">
+        <% if defined? @all_orders %>
+            <h3>London</h3>
+            <%= render partial: 'users/components/today_all_order_details' %>
+        <% else %>
+            <h3> No permission</h3>
+        <% end %>
+
+      </div>
+
     </div>
 
     <div id="today-personal" class="col-md-2 col-md-offset-2">
       <div id="today-my-order">
         <div id="today-my-order-title">
           <p>Your Order Today</p>
-          <hidden id="today-my-order-user-id"><%= session[:user_id]%></hidden>
+          <hidden id="today-my-order-user-id"><%= session[:user_id] %></hidden>
         </div>
-        <div id="today-my-order-content">
-          <% if !@today_order.nil? %>
+
+
+        <% if !@today_order.nil? %>
+            <div id="today-my-order-content">
               <% @today_order.dishes.each do |r| %>
                   <div class="row" id=<%= "today_order_#{r.id}" %> data-price="<%= r.price %>">
                     <div class="col-md-12">
@@ -73,28 +81,59 @@
                             <span>
                               <a class="btn btn-warning glyphicon glyphicon-remove" id=<%= "remove_btn_today_order_#{r.id}" %> onclick="removeDishToday(this)"></a>
                             </span>
+
                           </p>
                         </div>
                       </div>
                     </div>
                   </div>
               <% end %>
-          <% end %>
-        </div>
-        <div>
-          <p>Total: <span id="total_price_today"><%= @total_price %></span></p>
-          <h3 id="total-price-warning"></h3>
-        </div>
+            </div>
 
-        <div class="row">
-          <%= link_to 'Save Order', {controller:"users",action: "save_order"},class:"btn btn-default"%>
-        </div>
+
+            <!-- for Note -->
+            <div class="row">
+              <div class="panel panel-default">
+                <div class="panel-heading">Note:</div>
+                <div class="panel-body">
+                  <p id="today-order-note"><%= @today_order.note %></p>
+
+                  <div class="alert alert-fail" id="edit-note-fail-alert">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>Fail! </strong>
+                    Edit order note fail !!!
+                  </div>
+
+                  <div class="alert alert-success" id="edit-note-success-alert">
+                    <button type="button" class="close" data-dismiss="alert">x</button>
+                    <strong>Success! </strong>
+                    Edit order note success !!!
+                  </div>
+
+                </div>
+                <div class="panel-footer">
+                  <a type="button" class="btn btn-primary btn-lg glyphicon glyphicon-edit" title="Edit Note" data-toggle="modal" data-target="#today-order-note-modal"></a>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <p>Total: <span id="total_price_today"><%= @total_price %></span></p>
+              <h3 id="total-price-warning"></h3>
+            </div>
+
+            <div class="row">
+              <%= link_to 'Save Order', {controller: "users", action: "save_order"}, class: "btn btn-default" %>
+            </div>
+        <% end %>
+
+
       </div>
 
       <div id="support-personal">
 
       </div>
     </div>
+
   </div>
 
   <!-- -----------------------Dish Template --------------------- -->
@@ -121,3 +160,5 @@
 
   <%= link_to 'Delete today_order of session', {controller: 'users', action: 'delete_today_order_session'} %>
 </div>
+</div>
+<%= render partial: 'users/components/today_order_edit_note_modal' %>
