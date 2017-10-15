@@ -1,0 +1,28 @@
+<div class="row">
+  <%= Date.today %>
+</div>
+<div class="row">
+  <table class="table table-hover">
+    <tr>
+      <th>User</th>
+      <th>Dishes</th>
+      <th>Totals</th>
+      <th>Note</th>
+    </tr>
+    <% @all_orders.each do |r| %>
+        <tr>
+        <td><%= r.user.username %></td>
+        <td><% r.dishes.each do |d| %>
+              <span><%= d.name %> </span>
+              <span> + </span>
+          <% end %>
+          <%= r.dishes.map(&:name).join(" + ")  %>
+        </td>
+          <td>
+          <%= r.dishes.inject(0) {|sum, e| sum + e.price}%>
+          </td>
+        <td><%= r.note %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>
