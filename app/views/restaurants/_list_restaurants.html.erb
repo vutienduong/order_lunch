@@ -1,0 +1,12 @@
+
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-info">
+    <h1>All Restaurants</h1>
+    <% if session[:is_admin] %>
+    <%= link_to "New restaurant", new_admin_restaurant_path,class: "btn btn-primary"  %>
+        <% end %>
+    <%= render partial: 'restaurants/restaurant', collection: @restaurants, as: :f %>
+  </div>
+</div>

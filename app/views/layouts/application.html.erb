@@ -2,13 +2,26 @@
 <html>
 <head>
   <title>OrderLunch</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 <%= render 'layouts/header' %>
-<%= yield %>
+<div class="container-fluid">
+  <div class="row">
+    <% if logged_in? %>
+        <div class="col-md-2">
+          <%= render 'layouts/left_menu' %>
+        </div>
+    <% end %>
+    <div class="col-md-10">
+      <%= yield %>
+    </div>
+
+  </div>
+</div>
+
 
 </body>
 </html>

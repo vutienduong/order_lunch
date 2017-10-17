@@ -1,13 +1,17 @@
 <h1>Edit User</h1>
-<%= form_for @user do |f| %>
+<%= form_for @user, url: admin_user_path do |f| %>
     <p><%= f.label :username %></p>
-    <p><%= f.text_field :username %></p> <br>
+    <p>
+      <%= @user.username %>
+    </p>
 
     <p><%= f.label :email %></p>
-    <p><%= f.text_field :email %></p><br>
+    <p>
+      <%= @user.email %>
+    </p>
 
     <p><%= f.label :password %></p>
-    <p><%= f.password_field :password %></p><br>
+    <p><%= f.text_field :password %></p><br>
 
     <p><%= f.submit %></p>
 <% end %>

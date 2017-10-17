@@ -1,11 +1,14 @@
 <h1>New Restaurant</h1>
-<%= form_for @restaurant do |f| %>
+<%= form_for @restaurant, url: admin_restaurants_path do |f| %>
 
     <p><%= f.label :name %></p>
     <p><%= f.text_field :name%></p>
 
     <p><%= f.label :address %></p>
-    <p><%= f.text_field :address%></p> <br>
+    <p><%= f.text_field :address%></p>
+
+    <p><%= f.label :image_logo %></p>
+    <p><%= f.file_field :image_logo%></p>
 
     <p><%= f.submit %></p>
 <% end %>

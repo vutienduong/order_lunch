@@ -1,16 +1,14 @@
 Rails.application.routes.draw do
-
-
   get 'sessions/new'
 
-  root 'foods#index'
+  root 'users#index'
   resources :foods do
     collection do
       get 'export_pdf'
     end
   end
 
-  resources :users do
+  resources :users, only: [:show, :index, :edit, :update] do
     member do
       get 'select_menu'
       get 'select_dish'
@@ -34,19 +32,35 @@ Rails.application.routes.draw do
 
   get '/signup', to: 'foods#index'
   get 'restaurant/:id/new_dish', to: 'dishes#new'
+  get 'order/show_personal_orders', to: 'orders#show_personal_orders'
 
-  resources :menus
+      resources :menus, only: [:show, :index] do
+    collection do
+      get 'request_menu'
+    end
+  end
+  resources :restaurants, only: [:show, :index]
+  resources :dishes, only: [:show, :index]
+
   resources :managers do
     member do
       get 'add_menu_today'
       get 'manage_order'
       get 'manage_resource'
-
     end
   end
 
-  resources :restaurants
-  resources :dishes
+  namespace :admin do
+    resources :menus
+    resources :users do
+      collection do
+        get 'manage'
+      end
+    end
+    resources :dishes
+    resources :restaurants
+
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

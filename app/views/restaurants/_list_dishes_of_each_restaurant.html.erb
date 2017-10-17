@@ -1,0 +1,21 @@
+<% unless d.blank? %>
+    <div class="dish-index col-xs-3 col-xs-offset-1 col-md-3 col-md-offset-1 media">
+      <div class="media-left">
+        <%= image_tag(d.image_url, size: "60x60", alt: "Image") %>
+      </div>
+
+      <div class="media-body">
+        <div class="media-heading"><strong><%= d.name %></strong> (<%= d.price %>)</div>
+        <%= d.description %>
+      </div>
+      <% if is_admin? %>
+          <div class="media-right">
+            <%= link_to 'Delete', admin_dish_path(d.id),
+                        method: :delete,
+                        data: {confirm: 'Are you sure?'} %>
+          </div>
+      <% end %>
+    </div>
+<% end %>
+
+

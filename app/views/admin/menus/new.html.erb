@@ -1,0 +1,12 @@
+
+<h1>New Menu</h1>
+<%= form_for @menu, url: admin_menus_path do |f| %>
+
+    <p><%= f.label :date %></p>
+    <p><%= f.datetime_select :date, selected: Time.now %></p> <br>
+
+
+    <p><%= f.collection_select(:restaurant_ids, Restaurant.all, :id, :name, {:prompt => "Select Restaurant"}, {:multiple => true}) %></p>
+
+    <p><%= f.submit %></p>
+<% end %>

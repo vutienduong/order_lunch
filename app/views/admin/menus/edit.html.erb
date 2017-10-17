@@ -1,6 +1,5 @@
-
-<h1>New Menu</h1>
-<%= form_for @menu do |f| %>
+<h1>[Admin] Edit Menu</h1>
+<%= form_for @menu, url: admin_menu_path do |f| %>
 
     <p><%= f.label :date %></p>
     <p><%= f.datetime_select :date, selected: Time.now %></p> <br>

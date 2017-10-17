@@ -1,0 +1,23 @@
+<%= Date.today() %>
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'all_users')">All Users</button>
+  <button class="tablinks" onclick="openCity(event, 'all_menus')">All Menus</button>
+  <button class="tablinks" onclick="openCity(event, 'all_restaurants')">All Restaurants</button>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div id="all_users" class="tabcontent">
+      <%= render partial: '/users/index_form', locals: {is_admin_local: session[:is_admin]} %>
+    </div>
+
+    <div id="all_menus" class="tabcontent">
+      <%= render partial: 'menus/list_menus' %>
+    </div>
+
+    <div id="all_restaurants" class="tabcontent">
+      <%= render partial: 'restaurants/list_restaurants' %>
+    </div>
+  </div>
+</div>

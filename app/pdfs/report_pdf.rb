@@ -14,7 +14,7 @@ class ReportPdf < Prawn::Document
   end
 
   def text_content
-    # The cursor for inserting content starts on the top left of the page. Here we move it down a little to create more space between the text and the image inserted above
+    # The cursor for inserting content starts on the top left of the page. Here we move it down a little to edit more space between the text and the image inserted above
     y_position = cursor - 50
 
     # The bounding_box takes the x and y coordinates for positioning its content and some options to style it
