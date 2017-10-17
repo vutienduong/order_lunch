@@ -1,10 +1,2 @@
 <h1>User Details</h1>
-<%= form_for @user do |f| %>
-    <p><%= f.label :username %></p>
-    <p><%= f.text_field :username %></p>
-
-    <p><%= f.label :email %></p>
-    <p><%= f.text_field :email %></p>
-
-    <%= link_to 'Add more users', new_user_path %>
-<% end %>
+<%=render partial: 'users/show_form', locals: {edit_path_local: edit_user_path}%>

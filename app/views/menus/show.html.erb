@@ -1,13 +1,18 @@
 <h1>Menu Details</h1>
-<%= form_for @menu do |f| %>
-    <p><%= f.label :date %></p>
-    <p><%= f.text_field :date %></p>
+<h2><%= @menu.date %></h2>
+<h2>Restaurants</h2>
 
-    <%= @menu.restaurants.each do |r| %>
-        <h2>Restaurant</h2>
-    <p><%= label r, r[:name]  %></p>
-    <p><%= label r, r[:address] %></p>
-
+<% @menu.restaurants.each do |r| %>
+    <div class="media">
+      <div class="media-left">
+      </div>
+      <div class="media-body">
+        <h4 class="media-title">
+          <%= link_to r.name, restaurant_path(r) %>
+        </h4>
+        <%= r.address %>
+      </div>
+    </div>
 <% end %>
-    <%= link_to 'Back to menu manager page', menus_path %>
-<% end %>
+<br>
+<%= link_to 'Back to menu manager page', menus_path, class: 'btn btn-primary' %>

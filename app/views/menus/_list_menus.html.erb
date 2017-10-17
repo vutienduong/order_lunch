@@ -1,0 +1,33 @@
+<h1>Manage Menus</h1>
+<div>
+  <% if is_admin? %>
+      <div><%= link_to 'New Menu', new_admin_menu_path, class: "btn btn-primary" %></div>
+  <% end %>
+  <table class="table table-hover table-striped">
+    <tr>
+      <th>Date</th>
+      <th>Restaurants</th>
+      <% if is_admin? %>
+          <th>Actions</th>
+      <% end %>
+    </tr>
+    <% @menus.each do |menu| %>
+        <tr>
+          <td><%= menu.date %></td>
+          <td>
+            <%= menu.restaurants.map(&:name).join(" , ") %>
+          </td>
+
+          <% if is_admin? %>
+              <td><%= link_to 'Edit', edit_admin_menu_path(menu) %></td>
+              <td><%= link_to 'Delete', admin_menu_path(menu),
+                              method: :delete,
+                              data: {confirm: 'Are you sure?'} %> </td>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+</div>
+
+
+

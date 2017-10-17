@@ -2,7 +2,7 @@
 <div class="tab">
   <button class="tablinks" onclick="openCity(event, 'all_restaurants')">All Restaurants</button>
   <button class="tablinks" onclick="openCity(event, 'all_dishes')">All dishes</button>
-  <button class="tablinks" onclick="openCity(event, 'all_orders')">Tokyo</button>
+  <button class="tablinks" onclick="openCity(event, 'all_orders')">All orders</button>
 </div>
 
 <div class="container-fluid">
@@ -48,7 +48,6 @@
 
       <div id="all_orders" class="tabcontent">
         <% if defined? @all_orders %>
-            <h3>London</h3>
             <%= render partial: 'users/components/today_all_order_details' %>
         <% else %>
             <h3> No permission</h3>

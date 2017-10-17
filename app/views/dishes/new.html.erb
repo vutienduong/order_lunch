@@ -1,5 +1,5 @@
 <h1>Create new dish</h1>
-<%= form_for(@dish) do |f| %>
+<%= form_for(@dish, url: admin_dishes_path) do |f| %>
     <p><%= f.label :name %></p>
     <p><%= f.text_field :name %></p>
     <p><%= f.label :description %></p>
@@ -13,4 +13,4 @@
 
 <% end %>
 
-<%= link_to 'Back', foods_path %>
+<%= link_to 'Back', restaurants_path %>

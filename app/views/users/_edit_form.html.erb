@@ -1,0 +1,30 @@
+<%= form_for @user, url: admin_user_path do |f| %>
+    <p><%= f.label :username %></p>
+    <p>
+      <% if session[:is_admin] %>
+          <%= f.text_field :username %>
+      <% else %>
+          <%= @user.username %>
+      <% end %>
+    </p>
+
+    <p><%= f.label :email %></p>
+    <p>
+      <% if session[:is_admin] %>
+          <%= f.text_field :email %>
+      <% else %>
+          <%= @user.email %>
+      <% end %>
+    </p>
+
+    <p><%= f.label :password %></p>
+    <p><%= f.text_field :password %></p><br>
+
+
+    <% if session[:is_admin] %>
+        <p><%= f.label "Is admin?" %>
+          <%= f.check_box(:admin, {}, 1, 0) %></p>
+    <% end %>
+
+    <p><%= f.submit %></p>
+<% end %>

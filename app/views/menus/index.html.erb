@@ -1,16 +1,1 @@
-<h1 xmlns="http://www.w3.org/1999/html">Manage Menus</h1>
-<div>
-  <% @menus.each do |menu| %>
-      <p><%= menu.date %></p>
-      <h2>-- Restaurants --</h2>
-      <%= render @menu.restaurants %>
-
-      <p><%= link_to 'Edit', edit_menu_path(menu) %></p>
-      <p><%= link_to 'Delete', menu_path(menu),
-                     method: :delete,
-                     data: {confirm: 'Are you sure?'} %> </p>
-  <% end %>
-</div>
-
-<%= link_to 'New Menu', new_menu_path %><br>
-
+<%= render partial: 'list_menus' %>

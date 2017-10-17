@@ -1,0 +1,31 @@
+<% if is_admin_local %>
+    <%= link_to 'New User', new_admin_user_path, class: "btn btn-primary" %>
+<% end %>
+<table class="table table-hover table-striped">
+  <tr>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Is Admin?</th>
+    <% if session[:is_admin] %>
+        <th>Actions</th>
+    <% end %>
+  </tr>
+
+
+  <% @users.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= user.admin %></td>
+        <% if is_admin_local %>
+            <td><%= link_to 'Details', admin_user_path(user), class: "btn btn-default" %>
+              <%= link_to 'Edit', edit_admin_user_path(user), class: "btn btn-primary" %>
+              <%= link_to 'Delete', admin_user_path(user),
+                          method: :delete,
+                          data: {confirm: 'Are you sure?'}, class: "btn btn-warning" %> </td>
+        <% else %>
+            <td><%= link_to 'Details', user_path(user), class: "btn btn-default" %></td>
+        <% end %>
+      </tr>
+  <% end %>
+</table>

@@ -1,0 +1,29 @@
+<!--restaurant heading-->
+<div class="panel-heading" role="tab" id=<%= "heading_{f.id}" %>>
+  <div class="panel-title media">
+    <div class="media-left">
+      <a role="button" data-toggle="collapse" data-parent="#accordion" href=<%= "##{f.id}_collapse" %> aria-expanded="true" aria-controls="collapseOne" class="media-object">
+        <%= image_tag(f.image_logo, size: "40x40", alt: f.name) %>
+      </a>
+    </div>
+    <div class="media-body">
+      <h4 class="media-heading"><%= link_to f.name, restaurant_path(f) %></h4>
+      <%= f.address %>
+    </div>
+    <% if session[:is_admin] %>
+        <div class="media-right">
+          <%= link_to "New dish", {controller: "admin/dishes", action: "new", id: f.id}, {class: "btn btn-primary"} %>
+        </div>
+    <% end %>
+
+  </div>
+</div>
+
+<!--list dishes-->
+<div id=<%= "#{f.id}_collapse" %> class="panel-collapse collapse" role="tabpanel" aria-labelledby=<%= "heading_{f.id}" %>>
+<div class="panel-body">
+  <% unless f.dishes.nil? %>
+      <%= render partial: 'restaurants/list_dishes_of_each_restaurant', collection: f.dishes, as: :d %>
+  <% end %>
+</div>
+</div>

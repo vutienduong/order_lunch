@@ -16,10 +16,6 @@
           <td><%= r.id %></td>
           <td><%= r.user.username %></td>
           <td>
-            <% r.dishes.each do |d| %>
-                <span><%= d.name %> </span>
-                <span> + </span>
-            <% end %>
             <%= r.dishes.map(&:name).join(" + ") %>
           </td>
           <td>

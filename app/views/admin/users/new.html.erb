@@ -1,5 +1,5 @@
 <h1>New User</h1>
-<%= form_for @user do |f| %>
+<%= form_for @user, url: admin_users_path do |f| %>
     <p><%= f.label :username %></p>
     <p><%= f.text_field :username %></p> <br>
 
@@ -8,6 +8,9 @@
 
     <p><%= f.label :password %></p>
     <p><%= f.password_field :password %></p><br>
+
+    <p><%= f.check_box(:admin, {}, 1, 0) %>
+      <%= f.label "Is admin?" %></p>
 
     <p><%= f.submit %></p>
 <% end %>
