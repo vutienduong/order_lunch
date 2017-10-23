@@ -2,39 +2,29 @@
 
 <div class="container-fluid">
   <div class="col-md-8">
-    <div class="row">
-      <h1>Restaurant details</h1>
-      <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
-      <p>Address: <%= @restaurant.address %></p>
+    <h1>Restaurant details</h1>
+    <div class="panel panel-default">
+      <div class="row media panel-heading">
+        <div class="media-body">
+          <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
+          <p>Address: <%= @restaurant.address %></p>
+          <p>Phone: <%= @restaurant.phone %> </p>
+        </div>
+        <% if is_admin? %>
+            <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_restaurant_path(@restaurant), _delete_link: admin_restaurant_path(@restaurant), _new_link: {name: 'New dish', url: {controller: "admin/dishes", action: "new", id: @restaurant.id}}} %>
+        <% end %>
+      </div>
+      <div class="panel panel-body">
+        <div class="row">
+          <% @restaurant.dishes.each do |d| %>
+             <%= render partial: 'dish_in_restaurant_show', locals: {d: d} %>
+          <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <%= link_to "All Restaurants", restaurants_path, class: "btn btn-default" %>
+      </div>
     </div>
-
-    <div class="row">
-      <% if session[:is_admin] %>
-          <%= link_to "New dish", {controller: "admin/dishes", action: "new", id: @restaurant.id}, class: "btn btn-primary" %>
-      <% end %>
-      <%= link_to "All Restaurants", restaurants_path, class: "btn btn-default" %>
-    </div>
-    <br><br>
-
-    <div class="row">
-      <% @restaurant.dishes.each do |d| %>
-          <div class="col-xs-3 col-md-4 row-eq-height">
-            <div class="thumbnail">
-              <%= image_tag(d.image_url, size: "100x100", alt: "Image") %>
-              <div class="caption">
-                <p><strong><%= d.name %></strong>(<%= d.price.to_i %>)</p>
-                <p><%= d.description %></p>
-                <% if params[:select_dish] %>
-                    <p><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order', dish_id: d.id}, class: "btn btn-primary" %>
-                      <a href="#" class="btn btn-default" role="button">Button</a></p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-      <% end %>
-    </div>
-
-
   </div>
 
   <% if params[:select_dish] %>

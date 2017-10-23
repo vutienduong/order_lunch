@@ -10,11 +10,6 @@
       <h4 class="media-heading"><%= link_to f.name, restaurant_path(f) %></h4>
       <%= f.address %>
     </div>
-    <% if session[:is_admin] %>
-        <div class="media-right">
-          <%= link_to "New dish", {controller: "admin/dishes", action: "new", id: f.id}, {class: "btn btn-primary"} %>
-        </div>
-    <% end %>
 
   </div>
 </div>

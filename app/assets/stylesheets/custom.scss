@@ -1,5 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
 body {
   padding-top: 60px;
   padding-left: 60px;
@@ -62,11 +63,11 @@ p {
   text-decoration: none;
 }
 
-.dish-index{
+.dish-index {
   background-color: peachpuff;
 }
 
-.restaurant-index{
+.restaurant-index {
   border: double;
   padding: 5%;
 }
@@ -117,6 +118,20 @@ div.tab button.active {
   border-top: none;
 }
 
-#total-price-warning{
+#total-price-warning {
   color: mediumvioletred;
+}
+
+tr#highlight-current-user-order {
+  background-color: cornflowerblue;
+}
+
+._warp_amend_button_group {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.over-budget-highlight{
+  color: red;
 }

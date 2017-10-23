@@ -2,7 +2,7 @@
 
 <p><strong>Email : </strong> <%= @user.email %></p>
 
-<p><strong>Is admin? </strong><%= @user.admin ? "Yes" : "No" %></p>
+<p><strong>Is admin? </strong><%= @user.admin==1 ? "Yes" : "No" %></p>
 
 <p><% if (session[:is_admin] or session[:user_id] == @user.id) %>
       <%= link_to 'Edit', edit_path_local, class: "btn btn-primary" %>

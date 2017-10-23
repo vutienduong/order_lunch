@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
 //= require bootstrap-sprockets
 
@@ -46,7 +45,7 @@ function showPrice(dish) {
 
 function removeDishToday(dish) {
     row = $(dish).closest('div[class^="row"]')
-    user_id = $("#today-my-order-user-id").text()
+    user_id = $("#today-my-order-user-id").text() || null
     dish_params = {
         dish: {
             order_id: null,
@@ -79,13 +78,10 @@ function removeDishToday(dish) {
     });
 }
 
-function addDishToday(dish) {
-
-    // Way 1: use template
-    // check if total larger than 80k, generate alert
+function addDishToday2(dish) {
     total_price_span = $("#total_price_today")
     current_total_price = parseInt(total_price_span.text())
-    dish_parent = $(dish).closest('div[class^=col-xs-6]')
+    dish_parent = $(dish).closest('div[class=media]')
     dish_price = dish_parent.find(".each-dish-price").text()
     new_total = current_total_price + parseInt(dish_price)
     $("#total-price-warning").text("")
@@ -108,13 +104,13 @@ function addDishToday(dish) {
         console.log(response)
         console.log("Success !!!")
 
-        // Note that if return false at the end, return false is always active before commands in "done" and "always"
         if (response.hasOwnProperty("status") && response["status"] == "ok") {
             var tmpl = $(document.getElementById('template-dish-today').content.cloneNode(true));
             var list = $("#today-my-order-content")
 
             dish_obj["name"] = dish_parent.find(".each-dish-name").text()
             dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
+            debugger
 
             tmpl.find(".each-dish-name").text(dish_obj["name"])
             tmpl.find(".each-dish-price").text(dish_price)
@@ -131,7 +127,6 @@ function addDishToday(dish) {
 
             list.append(tmpl)
 
-            // add price to total
             total_price_span.text(new_total)
             $("#total_price_today").change()
         }
@@ -140,7 +135,6 @@ function addDishToday(dish) {
     }).always(function (obj) {
         console.log("Always !!!")
     });
-    // Way 2: use clone from dish_parent
 }
 
 function editOrderNote(note){
@@ -200,20 +194,35 @@ function showEditNoteResult(success) {
     });
 };
 
-jQuery(function () {
-    $("#total_price_today").change(function () {
-        console.log("total-price-today change")
-        if (parseInt($(this).text()) > 80000) {
-            $("#total-price-warning").text("Note: TOTAL PRICES IS OVER QUOTA 80.000 VND !!!")
-        }
-        else {
-            $("#total-price-warning").text("")
-        }
-    });
+checkTotalPrice = function(){
+    console.log(parseInt($("#total_price_today").text()))
+    if (parseInt($("#total_price_today").text()) > 80000) {
+        $("#total_price_today").addClass("over-budget-highlight")
+        $("#total-price-warning").text("Note: TOTAL PRICES IS OVER QUOTA 80.000 VND !!!")
+    }
+    else {
+        $("#total_price_today").removeClass("over-budget-highlight")
+        $("#total-price-warning").text("")
+    }
+}
 
+checkOrderOverBudget = function(){
+    a = $(".total-price-order")
+    for(var i = 0; i< a.length; i++){
+        b = $(a[i])
+        if (parseInt(b.text()) > 80000){
+            b.attr("style", "color: red");
+        }}
+}
+
+trackAllChange = $(function(){
+    $("#total_price_today").change(checkTotalPrice)
+    checkTotalPrice()
+
+/*
     $("#total_price_today").click(function () {
         $(".target").change();
-    });
+    });*/
 
 
     $('#today-order-note-modal').on('show.bs.modal', function (e) {
@@ -223,6 +232,16 @@ jQuery(function () {
 
     $("#edit-note-success-alert").hide();
     $("#edit-note-fail-alert").hide();
+
+    checkOrderOverBudget()
 });
+
+$(function () {
+    trackAllChange;
+});
+
+//$(document).ready(trackAllChange);
+
+
 
 

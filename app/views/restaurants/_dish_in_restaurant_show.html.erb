@@ -1,0 +1,12 @@
+<div class="col-xs-3 col-md-4 row-eq-height">
+  <div class="thumbnail">
+    <%= image_tag(d.image_url, size: "100x100", alt: "Image") %>
+    <div class="caption">
+      <p><strong><%= link_to d.name, dish_path(d) %></strong>(<%= d.price.to_i %>)</p>
+      <p><%= d.description %></p>
+      <% if params[:select_dish] %>
+          <p><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id}, class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
