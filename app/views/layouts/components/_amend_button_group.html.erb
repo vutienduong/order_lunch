@@ -1,0 +1,18 @@
+<div class="dropdown _warp_amend_button_group">
+  <button class="btn btn-default dropdown-toggle glyphicon glyphicon-edit" type="button" id="_amend_button_group" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="_amend_button_group">
+    <li><%= link_to 'Edit', _edit_link %></li>
+    <li>
+      <%= link_to 'Delete', _delete_link,
+                  method: :delete,
+                  data: {confirm: 'Are you sure?'} %>
+    </li>
+
+    <% if defined? _new_link %>
+        <li role="separator" class="divider"></li>
+        <li><%= link_to _new_link[:name], _new_link[:url] %></li>
+    <% end %>
+  </ul>
+</div>

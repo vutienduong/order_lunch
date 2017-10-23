@@ -1,0 +1,83 @@
+<h1>List of orders</h1>
+<table class="table table-hover">
+  <tr>
+    <th>Order ID</th>
+    <th>Username</th>
+    <th>Dishes</th>
+    <th>Total price</th>
+  </tr>
+  <% if @presenter.has_key? :today_order %>
+      <% @presenter[:today_order].each do |order| %>
+          <tr
+          <%= "class=success" if order.user.id == session[:user_id].to_i %> >
+          <td><%= order.id %></td>
+          <td><%= order.user.username %></td>
+          <td><%= order.dishes.map(&:name).join(" , ") %></td>
+          <td><%= order.dishes.inject(0) {|sum, e| sum + e.price} %></td>
+          </tr>
+          <% end %>
+      <% end %>
+      </table><br><br>
+
+      <h1>List of dishes</h1>
+      <table class="table table-hover">
+        <tr>
+          <th>Dish</th>
+          <th>Restaurant</th>
+          <th>Number</th>
+          <th>Total price</th>
+        </tr>
+        <% if @presenter.has_key? :counted_dishes %>
+            <% @presenter[:counted_dishes].each do |dish, count| %>
+                <tr>
+                  <td><%= dish.name %></td>
+                  <td><%= dish.restaurant.name %></td>
+                  <td><%= count %></td>
+                  <td><%= dish.price * count /1000 %>k VND</td>
+                </tr>
+            <% end %>
+        <% end %>
+      </table>
+      <br><br>
+
+      <h1>List of costs</h1>
+      <table class="table">
+        <tr>
+          <th>Restaurant</th>
+          <th>Phone</th>
+          <th colspan="2">Total price</th>
+        </tr>
+        <% if @presenter.has_key? :all_costs %>
+            <% @presenter[:all_costs].each do |restaurant, details| %>
+                <tr class="info">
+                  <td><%= restaurant.name %></td>
+                  <td><%= restaurant.phone %></td>
+                  <td colspan="2"><%= details[:cost] / 1000 %>k VND</td>
+                </tr>
+                <% details[:dishes].each do |dish, cost| %>
+                    <tr>
+                      <td></td>
+                      <td><%= dish.name %></td>
+                      <td><strong>(<%= cost[:count] %>) </strong></td>
+                      <td><%= cost[:cost] / 1000 %>k</td>
+                    </tr>
+                <% end %>
+            <% end %>
+        <% end %>
+
+        <% if @presenter.has_key? :total_cost %>
+            <tr class="warning">
+              <td colspan="2"> TOTAL COST</td>
+              <td><strong><%= @presenter[:total_cost] / 1000 %>k</strong>
+                <% if @presenter[:total_cost] > @presenter[:budget] %>
+                    <strong> (over budget)</strong>
+                <% end %>
+              </td>
+            </tr>
+
+            <tr class="warning">
+              <td colspan="2"> BUDGET</td>
+              <td><%= @presenter[:budget] / 1000 %>k</td>
+            </tr>
+        <% end %>
+      </table>

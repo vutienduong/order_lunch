@@ -1,0 +1,13 @@
+<div class="row">
+  <p>DISH DETAIL</p>
+  <div class="col-md-4">
+    <%= image_tag @dish.image_url, onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: @dish.name, size: "120x120" %>
+    <p class="text-uppercase"><%= @dish.name %></p>
+    <strong><%= @dish.price %></strong>
+    <p><%= link_to @dish.restaurant.name, restaurant_path(@dish.restaurant) %></p>
+    <p><%= @dish.description %></p>
+    <% if is_admin? %>
+        <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>
+    <% end %>
+  </div>
+</div>

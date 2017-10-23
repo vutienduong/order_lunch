@@ -1,0 +1,24 @@
+<div class="col-md-8">
+  <h1> EDIT DISH</h1>
+  <p>Restaurant: <%= @dish.restaurant.name %> </p>
+  <%= form_for @dish do |f| %>
+      <div class="form-group">
+        <%= f.label :name %>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :price %>
+        <%= f.text_field :price, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_field :description, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <p><%= f.label 'Image' %></p>
+        <p><%= f.file_field :image_url %></p>
+      </div>
+
+      <p><%= f.submit %></p>
+  <% end %>
+</div>

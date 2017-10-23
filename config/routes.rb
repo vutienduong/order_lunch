@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       get 'select_menu'
       get 'select_dish'
       get 'order'
-      get 'add_dish_to_order'
+      get 'add_dish_to_order_no_ajax'
       get 'delete_today_order_session'
       get 'copy_order'
       post 'edit_note'
@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
     collection do
       get 'test'
+      get 'get_all_orders_today'
     end
   end
 
@@ -34,7 +35,7 @@ Rails.application.routes.draw do
   get 'restaurant/:id/new_dish', to: 'dishes#new'
   get 'order/show_personal_orders', to: 'orders#show_personal_orders'
 
-      resources :menus, only: [:show, :index] do
+  resources :menus, only: [:show, :index] do
     collection do
       get 'request_menu'
     end
@@ -55,11 +56,15 @@ Rails.application.routes.draw do
     resources :users do
       collection do
         get 'manage'
+        get 'manage_company'
+        get 'manage_all_days'
+        get 'get_manage'
+        post 'manage_all_days', to: 'users#manage_all'
+
       end
     end
     resources :dishes
     resources :restaurants
-
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

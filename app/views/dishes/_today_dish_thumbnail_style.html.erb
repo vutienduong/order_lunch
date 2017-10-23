@@ -1,0 +1,19 @@
+<template id="template-dish-today">
+  <div class="row" class="template-dish-row-dish" id="today-order-template">
+    <div class="col-md-12">
+      <div class="thumbnail">
+        <div class="caption">
+          <%= image_tag "template-image-url", onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: "template-image-name", size: "60x60", :data => {price: 0}, class: "each-dish-img", onclick: 'showPrice(this)' %>
+          <strong class="each-dish-name"></strong>
+          <p class="each-dish-price"></p>
+          <p class="each-dish-id"></p>
+          <p>
+                  <span>
+                    <a class="btn btn-warning glyphicon glyphicon-remove" id="remove_btn_today_order_template" onclick="removeDishToday(this)"></a>
+                  </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
