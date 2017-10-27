@@ -1,0 +1,17 @@
+<h1><%= @restaurant.name %></h1>
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Action</th>
+  </tr>
+  <% @restaurant.dishes.each do |d| %>
+  <tr>
+    <td><%= d.name %></td>
+    <td><%= d.price %></td>
+    <td><%= d.description %></td>
+    <td><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id} %></td>
+  </tr>
+  <% end %>
+</table>

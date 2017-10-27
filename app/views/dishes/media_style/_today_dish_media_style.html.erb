@@ -1,0 +1,14 @@
+<div class="media today-dish-right" id=<%= "today_order_#{r.id}" %> data-price="<%= r.price %>" data-id="<%= r.id %>">
+  <div class="media-left">
+    <%= image_tag r.image_url, onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: r.name, size: "60x60", :data => {price: r.price}, class: "each-dish-img" %>
+  </div>
+  <div class="media-body">
+    <strong class="each-dish-name"><%= r.name %></strong>
+    <p class="each-dish-price"><%= r.price %></p>
+
+  </div>
+  <div class="media-right">
+    <a class="btn btn-warning glyphicon glyphicon-remove" id=<%= "remove_btn_today_order_#{r.id}" %> onclick="removeDishToday(this)"></a>
+  </div>
+
+</div>

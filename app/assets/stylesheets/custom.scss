@@ -132,6 +132,52 @@ tr#highlight-current-user-order {
   right: 0;
 }
 
-.over-budget-highlight{
+.over-budget-highlight {
   color: red;
+}
+
+.today-dish-right {
+  background-color: bisque;
+}
+
+.order-restaurant-show {
+  background-color: lavender;
+}
+
+.dish-media-wrap {
+  background-color: khaki;
+  margin-bottom: 20px;
+}
+
+// pagination test
+.container2 {
+  margin-top: 20px;
+}
+
+.page {
+  display: none;
+}
+
+.page-active {
+  display: block;
+}
+
+// end pagination test
+
+#order-new-wrap-list-dish {
+  height: 200px;
+  overflow: scroll;
+  background-color: bisque;
+}
+
+#order-new-wrap-dish-pagination {
+  background-color: beige;
+}
+
+#search-result {
+  //position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 2;
+  //background: transparent;
 }

@@ -1,0 +1,7 @@
+<p><strong>Order Details</strong></p>
+<p><%= @order.user.username %></p>
+<p><%= @order.date %></p>
+<p>
+  <%= @order.dishes.map(&:name).join(" , ") %>
+</p>
+<p><%= link_to 'Delete', admin_order_path(@order), method: :delete %> </p>

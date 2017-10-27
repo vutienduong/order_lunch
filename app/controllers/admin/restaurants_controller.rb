@@ -14,12 +14,12 @@ class Admin::RestaurantsController < AdminsController
         file_name = Pathname('').join('restaurants', "#{@restaurant.id}_#{uploaded_io.original_filename}")
         OLUploadImage.upload(file_name, uploaded_io)
 
-        @restaurant.update_attributes(image_logo: file_name)
+        @restaurant.update(image_logo: file_name)
       end
 
       redirect_to restaurant_path(@restaurant)
     else
-      render "Error edit restaurant"
+      render "Error create restaurant"
     end
   end
 
@@ -30,19 +30,16 @@ class Admin::RestaurantsController < AdminsController
   def update
     require Rails.root.join('app/services/upload_image')
     @restaurant = Restaurant.find(params[:id])
-    restaurant_params
-    #TODO: update image for restaurant. error when update but create normal
-    unless @restaurant.blank?
+    if @restaurant.update(restaurant_params)
       uploaded_io = params[:restaurant][:image_logo]
       unless uploaded_io.blank?
         file_name = Pathname('').join('restaurants', "#{@restaurant.id}_#{uploaded_io.original_filename}")
         OLUploadImage.upload(file_name, uploaded_io)
-        @restaurant.update_attributes(image_logo: file_name)
+        @restaurant.update(image_logo: file_name)
       end
-
-      if @restaurant.update(restaurant_params)
-        redirect_to restaurants_path(@restaurant)
-      end
+      redirect_to restaurants_path(@restaurant)
+    else
+      render "Error edit restaurant"
     end
   end
 

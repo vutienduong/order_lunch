@@ -1,4 +1,8 @@
 <div class="row">
+  <h1><%= dateFormat(Date.today) %></h1>
+  <% if is_admin? %>
+      <%= link_to "New orders", new_admin_order_path %>
+  <% end %>
   <table class="table table-hover table-striped">
     <tr>
       <th>Order ID</th>
@@ -10,7 +14,13 @@
     </tr>
     <% @all_orders.each do |r| %>
         <tr <%= "class=success" if r.id == session[:today_order_id].to_i %>>
-          <td><%= r.id %></td>
+          <td>
+            <% if is_admin? %>
+                <%= link_to r.id, admin_order_path(r) %>
+            <% else %>
+                <%= r.id %>
+            <% end %>
+          </td>
           <td><%= r.user.username %></td>
           <td>
             <%= r.dishes.map(&:name).join(" + ") %>
@@ -22,7 +32,7 @@
           <% unless defined? _no_copy_button %>
               <td>
                 <% unless r.id == session[:today_order_id].to_i %>
-                    <%= link_to '', {controller: 'users', action: 'copy_order', copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
+                    <%= link_to '', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
                 <% end %>
               </td>
           <% end %>
