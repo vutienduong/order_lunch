@@ -1,0 +1,41 @@
+var ChosenDishTr = (function(){
+
+    var addDish = function (s) {
+        dish_obj = $(s).data("dish")
+        $("#order-new-list-dish").append(ChosenDishTr.createDishTr(dish_obj))
+        //debugger
+        old_total = parseInt($("#order-new-total-price").text())
+        new_total = old_total + parseInt(dish_obj["price"])
+        $("#order-new-total-price").text(new_total)
+    }
+
+    var createDishTr = function(dish_obj){
+        var new_dish = $("<tr><td></td><td></td></tr>")
+
+        $(new_dish.children()[0]).text(dish_obj["id"])
+        $(new_dish.children()[1]).text(dish_obj["name"])
+
+        createRemoveBtn(new_dish)
+        return new_dish
+    }
+
+    var createRemoveBtn = function(parent){
+        var remove_btn = $("<td><a href='#'>remove</a></td>")
+        remove_btn.click(function() {
+            $(this).closest('tr').remove();
+            reduceCostInTotal();
+            return false;
+        })
+        parent.append(remove_btn)
+    }
+
+    var reduceCostInTotal = function(){
+
+    }
+
+    return {
+        createDishTr: createDishTr,
+        addDish: addDish,
+    }
+})();
+

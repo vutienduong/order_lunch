@@ -1,6 +1,6 @@
 <div class="col-md-8">
   <h1> EDIT RESTAURANT</h1>
-  <%= form_for @restaurant do |f| %>
+  <%= form_for @restaurant, url:admin_restaurant_path do |f| %>
       <div class="form-group">
         <%= f.label :name %>
         <%= f.text_field :name, class: "form-control" %>

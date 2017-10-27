@@ -1,0 +1,16 @@
+<h2>Select Dish</h2>
+<div class="container2" id="order-new-wrap-dish-pagination">
+  <% @slice_dishes.each_with_index do |dishes, idx| %>
+      <div class="page" id="dish-page-<%= idx+1 %>">
+        <table class="table">
+          <% dishes.each do |dish| %>
+              <tr>
+                <td><%= dish.name %></td>
+                <td><%= link_to 'add', '#', data: {dish: dish}, onclick: "ChosenDishTr.addDish(this)" %></td>
+              </tr>
+          <% end %>
+        </table>
+      </div>
+  <% end %>
+  <ul id="pagination-demo" class="pagination-lg pull-center"></ul>
+</div>

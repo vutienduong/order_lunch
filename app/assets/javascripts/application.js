@@ -7,7 +7,7 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // compiled file.
 //
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives.js) for details
 // about supported directives.
 //
 //= require jquery
@@ -44,12 +44,12 @@ function showPrice(dish) {
 }
 
 function removeDishToday(dish) {
-    row = $(dish).closest('div[class^="row"]')
+    row = $(dish).closest('div[id^="today_order_"]')
     user_id = $("#today-my-order-user-id").text() || null
     dish_params = {
         dish: {
             order_id: null,
-            dish_id: row.find(".each-dish-id").text(),
+            dish_id: row.data("id"),
             user_id: user_id,
             action: "remove"
         }
@@ -91,7 +91,7 @@ function addDishToday2(dish) {
     }
 
     dish_obj = {}
-    dish_obj["id"] = dish_parent.find(".each-dish-id").text()
+    dish_obj["id"] = dish_parent.data("id")
 
     user_id = $("#today-my-order-user-id").text()
     dish_params = {dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"}}
@@ -110,15 +110,16 @@ function addDishToday2(dish) {
 
             dish_obj["name"] = dish_parent.find(".each-dish-name").text()
             dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
-            debugger
 
             tmpl.find(".each-dish-name").text(dish_obj["name"])
             tmpl.find(".each-dish-price").text(dish_price)
-            tmpl.find(".each-dish-id").text(dish_obj["id"])
             tmpl.find(".btn btn-warning glyphicon glyphicon-remove").attr("id", "remove_btn_today_order_" + dish_obj["id"])
 
-
-            tmpl.find("#today-order-template").attr({"id": "today_order_" + dish_obj["id"], "data-price": dish_price})
+            tmpl.find("#today-order-template").attr({
+                "id": "today_order_" + dish_obj["id"],
+                "data-price": dish_price,
+                "data-id": dish_obj["id"]
+            })
             tmpl.find(".each-dish-img").attr({
                 "src": dish_obj["image_url"],
                 "alt": dish_obj["name"],
@@ -137,7 +138,7 @@ function addDishToday2(dish) {
     });
 }
 
-function editOrderNote(note){
+function editOrderNote(note) {
     note = $("#today-order-note-edit").val()
     order_params = {order: {note: note}}
     $.ajax({
@@ -155,7 +156,7 @@ function editOrderNote(note){
     }).fail(function () {
         showEditNoteResult(false)
         console.log("Update Note Fail!!!")
-    }).always(function(){
+    }).always(function () {
         console.log("Update Note Always!!!")
     });
 }
@@ -184,17 +185,17 @@ function postAjax(order_id, dish_id, user_id, action) {
 }
 
 function showEditNoteResult(success) {
-    if (success){
+    if (success) {
         shown_component = $("#edit-note-success-alert")
-    }else{
+    } else {
         shown_component = $("#edit-note-fail-alert")
     }
-    shown_component.fadeTo(2000, 500).slideUp(500, function(){
+    shown_component.fadeTo(2000, 500).slideUp(500, function () {
         shown_component.slideUp(500);
     });
 };
 
-checkTotalPrice = function(){
+checkTotalPrice = function () {
     console.log(parseInt($("#total_price_today").text()))
     if (parseInt($("#total_price_today").text()) > 80000) {
         $("#total_price_today").addClass("over-budget-highlight")
@@ -206,24 +207,26 @@ checkTotalPrice = function(){
     }
 }
 
-checkOrderOverBudget = function(){
+checkOrderOverBudget = function () {
     a = $(".total-price-order")
-    for(var i = 0; i< a.length; i++){
+    for (var i = 0; i < a.length; i++) {
         b = $(a[i])
-        if (parseInt(b.text()) > 80000){
+        if (parseInt(b.text()) > 80000) {
             b.attr("style", "color: red");
-        }}
+        }
+    }
 }
 
-trackAllChange = $(function(){
+testOnclick = function (s) {
+    debugger
+
+    console.log("test on click")
+}
+
+
+trackAllChange = $(function () {
     $("#total_price_today").change(checkTotalPrice)
     checkTotalPrice()
-
-/*
-    $("#total_price_today").click(function () {
-        $(".target").change();
-    });*/
-
 
     $('#today-order-note-modal').on('show.bs.modal', function (e) {
         console.log("today-order-note")
@@ -236,9 +239,55 @@ trackAllChange = $(function(){
     checkOrderOverBudget()
 });
 
+twbsPaginationDemo = $(function () {
+    $('#pagination-demo').twbsPagination({
+        totalPages: 5,
+// the current page that show on start
+        startPage: 1,
+
+// maximum visible pages
+        visiblePages: 5,
+        initiateStartPageClick: true,
+
+// template for pagination links
+        href: false,
+
+// variable name in href template for page number
+        hrefVariable: '{{number}}',
+
+// Text labels
+        first: 'First',
+        prev: 'Previous',
+        next: 'Next',
+        last: 'Last',
+
+// carousel-style pagination
+        loop: false,
+
+// callback function
+        onPageClick: function (event, page) {
+            $('.page-active').removeClass('page-active');
+            $('#dish-page-' + page).addClass('page-active');
+        },
+
+// pagination Classes
+        paginationClass: 'pagination',
+        nextClass: 'next',
+        prevClass: 'prev',
+        lastClass: 'last',
+        firstClass: 'first',
+        pageClass: 'page',
+        activeClass: 'active',
+        disabledClass: 'disabled'
+    });
+});
+
 $(function () {
     trackAllChange;
+    twbsPaginationDemo;
+
 });
+
 
 //$(document).ready(trackAllChange);
 

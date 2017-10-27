@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     collection do
       get 'test'
       get 'get_all_orders_today'
+      post 'test_ajax'
     end
   end
 
@@ -33,14 +34,18 @@ Rails.application.routes.draw do
 
   get '/signup', to: 'foods#index'
   get 'restaurant/:id/new_dish', to: 'dishes#new'
-  get 'order/show_personal_orders', to: 'orders#show_personal_orders'
+  get 'orders/show_personal_orders', to: 'orders#show_personal_orders'
 
   resources :menus, only: [:show, :index] do
     collection do
       get 'request_menu'
     end
   end
-  resources :restaurants, only: [:show, :index]
+  resources :restaurants, only: [:show, :index] do
+    member do
+      get 'show_detail'
+    end
+  end
   resources :dishes, only: [:show, :index]
 
   resources :managers do
@@ -65,9 +70,14 @@ Rails.application.routes.draw do
     end
     resources :dishes
     resources :restaurants
+    resources :orders do
+      collection do
+        post 'ajax_get_dishes_by_date'
+      end
+    end
   end
 
-  # The priority is based upon order of creation: first created -> highest priority.
+  # The priority is based upon orders of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"

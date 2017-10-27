@@ -10,27 +10,25 @@
     <div class="col-md-8 panel panel-default">
       <div id="all_restaurants" class="tabcontent">
         <div id="today-date" class="panel-heading">
-          <%= Date.today() %>
+          <h2><%= Date.today() %></h2>
         </div>
         <div id="today-menu" class="panel-body">
           <% @menu.restaurants.each do |r| %>
-              <div class="col-xs-6 col-md-8">
-                <h2><%= r.name %></h2>
-                <%= link_to image_tag(r.image_logo, alt: r.name, size: "120x120", onerror: "this.src='#{RestaurantsHelper::IMAGE_RESTAURANT_DEFAULT}'"), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1}, class: "thumbnail" %>
+              <div class="media order-restaurant-show">
+                <div class="media-left">
+                  <%= link_to image_tag(r.image_logo, alt: r.name, size: "120x120", onerror: "this.src='#{RestaurantsHelper::IMAGE_RESTAURANT_DEFAULT}'"), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1} %>
+                </div>
+                <div class="media-body"><p class="lead"><%= r.name %></p></div>
               </div>
           <% end %>
-        </div>
-        <div id="today-menu-footer">
         </div>
       </div>
 
       <div id="all_dishes" class="tabcontent">
         <div class="container-fluid">
-          <div class="row">
             <% @dishes.each do |r| %>
-                <%= render partial: 'dishes/dish_media_style', locals: {r: r} %>
+                <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: r} %>
             <% end %>
-          </div>
         </div>
       </div>
 
@@ -49,29 +47,16 @@
       <div id="today-my-order">
         <div id="today-my-order-title">
           <p>Your Order Today
+            (id:
             <hidden id="today-my-order-user-id"><%= session[:user_id] %></hidden>
+            )
           </p>
         </div>
-
 
         <% unless @today_order.blank? %>
             <div id="today-my-order-content">
               <% @today_order.dishes.each do |r| %>
-                  <div class="row" id=<%= "today_order_#{r.id}" %> data-price="<%= r.price %>">
-                    <div class="col-md-12">
-                      <div class="thumbnail">
-                        <div class="caption">
-                          <%= image_tag r.image_url, onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: r.name, size: "60x60", :data => {price: r.price}, class: "each-dish-img" %>
-                          <p><strong class="each-dish-name"><%= r.name %></strong>(
-                            <hidden class="each-dish-id"><%= r.id %></hidden>
-                            )
-                          </p>
-                          <p class="each-dish-price"><%= r.price %></p>
-                          <a class="btn btn-warning glyphicon glyphicon-remove" id=<%= "remove_btn_today_order_#{r.id}" %> onclick="removeDishToday(this)"></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <%= render partial: "dishes/media_style/today_dish_media_style", locals: {r: r} %>
               <% end %>
             </div>
 
@@ -88,7 +73,7 @@
 
   </div>
 
-  <%= render partial: 'dishes/today_dish_template' %>
+  <%= render partial: 'dishes/media_style/today_dish_template_media_style' %>
 
 </div>
 </div>

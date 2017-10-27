@@ -1,7 +1,7 @@
 <div class="col-md-8">
   <h1> EDIT DISH</h1>
   <p>Restaurant: <%= @dish.restaurant.name %> </p>
-  <%= form_for @dish do |f| %>
+  <%= form_for @dish, url:admin_dish_path do |f| %>
       <div class="form-group">
         <%= f.label :name %>
         <%= f.text_field :name, class: "form-control" %>
