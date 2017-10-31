@@ -2,7 +2,7 @@
   <div class="thumbnail">
     <%= render partial: 'layouts/components/image_tag_inline', locals:{image: d.image, size: [100, 100], object: 'dish', options: {alt: "Image"}} %>
     <div class="caption">
-      <p><strong><%= link_to d.name, dish_path(d) %></strong>(<%= d.price.to_i %>)</p>
+      <p><strong><%= link_to d.name, dish_path(d) %></strong>(<%= displayCostAsThousand(d.price) %>)</p>
       <p><%= d.description %></p>
       <% if params[:select_dish] %>
           <p><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id}, class: "btn btn-primary" %>

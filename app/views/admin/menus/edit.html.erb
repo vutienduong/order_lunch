@@ -1,11 +1,13 @@
 <h1>[Admin] Edit Menu</h1>
 <%= form_for @menu, url: admin_menu_path do |f| %>
-
-    <p><%= f.label :date %></p>
-    <p><%= f.datetime_select :date, selected: Time.now %></p> <br>
-
-
-    <p><%= f.collection_select(:restaurant_ids, Restaurant.all, :id, :name, {:prompt => "Select Restaurant"}, {:multiple => true}) %></p>
-
-    <p><%= f.submit %></p>
+    <div class="container">
+      <p><%=Date.today %></p>
+      <%= render partial: 'menus/select_restaurants_form', locals: {f: f} %>
+    </div>
 <% end %>
+
+<script>
+    $(function(){
+        NewMenuForm();
+    });
+</script>
