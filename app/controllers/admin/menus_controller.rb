@@ -1,5 +1,4 @@
 class Admin::MenusController < AdminsController
-
   def new
     @menu = Menu.new
     @dummy = {dummy: nil}
@@ -8,12 +7,11 @@ class Admin::MenusController < AdminsController
 
   def create
     @menu = Menu.new(menu_params)
-    byebug
-
     if @menu.save
       redirect_to menu_path(@menu)
     else
-      render plain: 'Error when Create menu'
+      @error = {code: '00x', msg: @menu.errors.messages}
+      render 'layouts/error'
     end
   end
 
@@ -26,12 +24,12 @@ class Admin::MenusController < AdminsController
     if @menu.update(menu_params)
       redirect_to menu_path(@menu)
     else
-      render plain: "Edit fail"
+      @error = {code: '00x', msg: @menu.errors.messages}
+      render 'layouts/error'
     end
   end
 
   def request_menu
-
   end
 
   def destroy

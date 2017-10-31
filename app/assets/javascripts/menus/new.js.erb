@@ -1,41 +1,16 @@
-var NewMenuForm = (function () {
+var NewMenuForm = function () {
 
-    Array.prototype.contains = function (v) {
-        for (var i = 0; i < this.length; i++) {
-            if (this[i] === v) return true;
-        }
-        return false;
-    };
-
-    Array.prototype.unique = function () {
-        var arr = [];
-        for (var i = 0; i < this.length; i++) {
-            if (!arr.contains(this[i])) {
-                arr.push(this[i]);
-            }
-        }
-        return arr;
-    };
+    leftList = $("#new-menu-all-restaurants");
+    rightList = $("#menu_restaurant_ids");
 
     addBtn = $("#new-menu-push");
-    addBtn.on("click", function () {
-        console.log("fk")
-    });
+    removeBtn = $("#new-menu-pop");
+    submitBtn =
 
     addBtn.click(function () {
-        console.log("fk 2")
-    });
-
-
-    push = function () {
         console.log("push");
-        leftList = $("#new-menu-all-restaurants");
-        rightList = $("#menu_restaurant_ids");
 
-        maxWidth = 228;
-        maxHeight = 70;
         rightList.attr("multiple", "multiple");
-
         all_chosen_values = [];
 
         rightList.find("option").each(function () {
@@ -60,22 +35,19 @@ var NewMenuForm = (function () {
                 }
             }
         });
-    };
+    });
 
-    pop = function () {
+    removeBtn.click(function () {
         console.log("pop");
-        rightList = $("#menu_restaurant_ids");
         rightList.find("option").each(function () {
             if ($(this).is(':selected')) {
                 $(this).remove();
             }
         })
-    };
+    });
 
-    setAllOptionSelected = function(){
-        //$("#menu_restaurant_ids option").prop("selected", true);
+    $("input[name=commit]").click(function(){
+        $("#menu_restaurant_ids option").prop("selected", true);
         //$("#menu_restaurant_ids").val("12", "13");
-    };
-
-    return {push: push, pop: pop, setSelected: setAllOptionSelected}
-})();
+    });
+};

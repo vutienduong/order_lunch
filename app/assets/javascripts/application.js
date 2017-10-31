@@ -285,7 +285,6 @@ twbsPaginationDemo = $(function () {
 $(function () {
     trackAllChange;
     twbsPaginationDemo;
-
 });
 
 

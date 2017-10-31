@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-md-4">
+    <%= select_tag 'dummy', options_from_collection_for_select(Restaurant.all, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, id: "new-menu-all-restaurants" %>
+  </div>
+  <div class="col-md-2">
+    <div class="row">
+      <a class="btn btn-default" id="new-menu-push">ADD</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-default" id="new-menu-pop">REMOVE</a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <%= f.collection_select(:restaurant_ids, @menu.restaurants, :id, :name, {}, multiple: true) %>
+  </div>
+</div>
+
+
+<div class="row">
+  <p><%= f.submit %></p>
+</div>
