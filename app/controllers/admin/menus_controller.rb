@@ -2,11 +2,13 @@ class Admin::MenusController < AdminsController
 
   def new
     @menu = Menu.new
+    @dummy = {dummy: nil}
     #@restaurants = Restaurant.all
   end
 
   def create
     @menu = Menu.new(menu_params)
+    byebug
 
     if @menu.save
       redirect_to menu_path(@menu)

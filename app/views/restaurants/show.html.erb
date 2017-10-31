@@ -9,6 +9,9 @@
           <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
           <p>Address: <%= @restaurant.address %></p>
           <p>Phone: <%= @restaurant.phone %> </p>
+          <div>
+            <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @restaurant.image, size: [100, 100], object: 'restaurant', options: {}} %>
+          </div>
         </div>
         <% if is_admin? %>
             <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_restaurant_path(@restaurant), _delete_link: admin_restaurant_path(@restaurant), _new_link: {name: 'New dish', url: {controller: "admin/dishes", action: "new", id: @restaurant.id}}} %>
@@ -17,7 +20,7 @@
       <div class="panel panel-body">
         <div class="row">
           <% @restaurant.dishes.each do |d| %>
-             <%= render partial: 'dish_in_restaurant_show', locals: {d: d} %>
+              <%= render partial: 'dish_in_restaurant_show', locals: {d: d} %>
           <% end %>
         </div>
       </div>

@@ -8,7 +8,7 @@
     </div>
 
     <p><%= o.label :date %>
-      <%= o.date_select :date %> <a href="#" onclick="">select</a></p>
+      <%= o.date_select :date %> <a href="#" onclick="ChosenDishList(<%= Date.today%>).createListPage()">select</a></p>
 
     <p><%= o.label :note %>
       <%= o.text_area :note %></p>
@@ -21,9 +21,9 @@
         <%= render partial: 'orders/new/list_dish' %>
       </div>
     </div>
-    <input type="hidden" id="order_dish" name="order[dishes][]" />
-    <input type="hidden" id="order_total_price" name="order[total_price]" />
-    <input type="hidden" id="order_user_id" name="order[user_id]" />
+    <input type="hidden" id="order_dish" name="order[dishes][]"/>
+    <input type="hidden" id="order_total_price" name="order[total_price]"/>
+    <input type="hidden" id="order_user_id" name="order[user_id]"/>
 
-    <%= o.submit onclick: "NewDishForm.copyToHiddenField()"%>
+    <%= o.submit onclick: "NewDishForm.copyToHiddenField()" %>
 <% end %>

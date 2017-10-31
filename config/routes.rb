@@ -69,7 +69,11 @@ Rails.application.routes.draw do
       end
     end
     resources :dishes
-    resources :restaurants
+    resources :restaurants do
+      member do
+        get 'show_image'
+      end
+    end
     resources :orders do
       collection do
         post 'ajax_get_dishes_by_date'

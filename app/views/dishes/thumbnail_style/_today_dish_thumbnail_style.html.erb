@@ -3,7 +3,8 @@
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
-          <%= image_tag "template-image-url", onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: "template-image-name", size: "60x60", :data => {price: 0}, class: "each-dish-img", onclick: 'showPrice(this)' %>
+          <%= render partial: 'layouts/components/image_tag_inline', locals:{image: "template-image-url", size: [60, 60], object: 'restaurant', options: {class_name: "each-dish-img", onlick: 'showPrice(this)', data: {price: 0}, alt: "template-image-name"}} %>
+
           <strong class="each-dish-name"></strong>
           <p class="each-dish-price"></p>
           <p class="each-dish-id"></p>
