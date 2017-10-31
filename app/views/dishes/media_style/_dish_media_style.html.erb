@@ -1,7 +1,8 @@
 <div class="dish-media-wrap">
   <div class="media" data-id="<%= r.id %>">
     <div class="media-left">
-      <%= image_tag r.image_url, onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", size: "120x120", class: "each-dish-img" %>
+      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img"}} %>
+
     </div>
     <div class="media-body">
       <strong><%= link_to r.name, dish_path(r), class: "each-dish-name" %></strong>

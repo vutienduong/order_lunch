@@ -1,5 +1,6 @@
-var ChosenDishTr = (function(){
-
+var ChosenDishTr = (function () {
+    var priceTag = $("#order-new-total-price");
+    var currentPrice = parseInt(priceTag.text());
     var addDish = function (s) {
         dish_obj = $(s).data("dish")
         $("#order-new-list-dish").append(ChosenDishTr.createDishTr(dish_obj))
@@ -9,28 +10,28 @@ var ChosenDishTr = (function(){
         $("#order-new-total-price").text(new_total)
     }
 
-    var createDishTr = function(dish_obj){
+    var createDishTr = function (dish_obj) {
         var new_dish = $("<tr><td></td><td></td></tr>")
 
-        $(new_dish.children()[0]).text(dish_obj["id"])
+        $(new_dish.children()[0]).text(dish_obj["id"]).data("price", dish_obj["price"])
         $(new_dish.children()[1]).text(dish_obj["name"])
 
-        createRemoveBtn(new_dish)
+        createRemoveBtn(new_dish, dish_obj["price"]);
         return new_dish
     }
 
-    var createRemoveBtn = function(parent){
-        var remove_btn = $("<td><a href='#'>remove</a></td>")
-        remove_btn.click(function() {
+    var createRemoveBtn = function (parent, price) {
+        var remove_btn = $("<td><a href='#'>remove</a></td>").data("price", price);
+        remove_btn.click(function () {
+            reduceCostInTotal(this);
             $(this).closest('tr').remove();
-            reduceCostInTotal();
             return false;
         })
         parent.append(remove_btn)
     }
 
-    var reduceCostInTotal = function(){
-
+    var reduceCostInTotal = function (dish) {
+        $("#order-new-total-price").text(parseInt($("#order-new-total-price").text()) - parseInt($(dish).data("price")));
     }
 
     return {

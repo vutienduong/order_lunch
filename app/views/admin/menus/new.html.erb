@@ -1,12 +1,27 @@
-
 <h1>New Menu</h1>
+
 <%= form_for @menu, url: admin_menus_path do |f| %>
-
-    <p><%= f.label :date %></p>
-    <p><%= f.datetime_select :date, selected: Time.now %></p> <br>
-
-
-    <p><%= f.collection_select(:restaurant_ids, Restaurant.all, :id, :name, {:prompt => "Select Restaurant"}, {:multiple => true}) %></p>
-
-    <p><%= f.submit %></p>
+    <div class="container">
+      <p><%= f.label :date %></p>
+      <p><%= f.date_select :date, selected: Date.today %></p> <br>
+      <div class="row">
+        <div class="col-md-4">
+          <%= select_tag 'dummy', options_from_collection_for_select(Restaurant.all, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, id: "new-menu-all-restaurants" %>
+        </div>
+        <div class="col-md-2">
+          <div class="row">
+            <a class="btn btn-default" id="new-menu-push" onclick="NewMenuForm.push()">ADD</a>
+          </div>
+          <div class="row">
+            <a class="btn btn-default" id="new-menu-pop" onclick="NewMenuForm.pop()">REMOVE</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <%= f.collection_select(:restaurant_ids, {}, :id, :name, {multiple: true}) %>
+        </div>
+      </div>
+      <div class="row">
+        <p><%= f.submit onclick: "NewMenuForm.setSelected()" %></p>
+      </div>
+    </div>
 <% end %>

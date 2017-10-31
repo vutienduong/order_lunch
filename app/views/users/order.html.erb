@@ -16,7 +16,7 @@
           <% @menu.restaurants.each do |r| %>
               <div class="media order-restaurant-show">
                 <div class="media-left">
-                  <%= link_to image_tag(r.image_logo, alt: r.name, size: "120x120", onerror: "this.src='#{RestaurantsHelper::IMAGE_RESTAURANT_DEFAULT}'"), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1} %>
+                  <%= link_to render(partial: 'layouts/components/image_tag_inline', locals: {image: r.image, size: [120, 120], object: 'restaurant', options: {alt: r.name}}), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1} %>
                 </div>
                 <div class="media-body"><p class="lead"><%= r.name %></p></div>
               </div>
@@ -26,9 +26,9 @@
 
       <div id="all_dishes" class="tabcontent">
         <div class="container-fluid">
-            <% @dishes.each do |r| %>
-                <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: r} %>
-            <% end %>
+          <% @dishes.each do |r| %>
+              <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: r} %>
+          <% end %>
         </div>
       </div>
 

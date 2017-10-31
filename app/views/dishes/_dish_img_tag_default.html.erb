@@ -1,1 +1,1 @@
-<%= image_tag src, onerror: "this.src='#{RestaurantsHelper::IMAGE_DISH_DEFAULT}'", alt: alt, size: size, :data => price_data, class: class_name %>
+<%= render partial: 'layouts/components/image_tag_inline', locals:{image: src, size: size, object: 'dish', options: {class_name: class_name, data: price_data, alt: alt} %>

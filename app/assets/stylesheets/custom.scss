@@ -181,3 +181,12 @@ tr#highlight-current-user-order {
   z-index: 2;
   //background: transparent;
 }
+
+#menu_restaurant_ids{
+  width: 228px;
+  height: 70px;
+}
+
+#menu_restaurant_ids[multiple]{
+  height: auto;
+}

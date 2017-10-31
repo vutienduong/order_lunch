@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171017095400) do
+ActiveRecord::Schema.define(version: 20171030071847) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20171017095400) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.string   "image_url"
+    t.binary   "image"
   end
 
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
@@ -82,6 +83,7 @@ ActiveRecord::Schema.define(version: 20171017095400) do
     t.datetime "updated_at", null: false
     t.string   "image_logo"
     t.string   "phone"
+    t.binary   "image"
   end
 
   create_table "users", force: :cascade do |t|
