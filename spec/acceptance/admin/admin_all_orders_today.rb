@@ -1,28 +1,23 @@
-feature 'Manage Page', %q{
+feature '[Admin] All orders today', %q{
 As an admin,
-in order to manage Users, Menus, Restaurants,
-I have privilege to access Manage page
+in order to see all order today, create new order and edit existed order,
+I have privilege to access All orders page
 } do
 
-  it 'should have three tabs for users, menus and restaurants' do
+  # it should have all tests of all_orders_page for normal user
+  it 'should move to New Order page when click to New Order button' do
 
   end
 
-  context 'All Users tab' do
-    it 'should have same functions as [Admin] User Index page' do
+  it 'should have New Order button' do
 
-    end
   end
 
-  context 'All Menus tab' do
-    it 'should have same functions as [Admin] Menus Index page' do
+  it 'should display order ID under link form' do
 
-    end
   end
 
-  context 'All Restaurant tab' do
-    it 'should have same functions as [Admin] Restaurant Index page' do
+  it 'should move to order page when click to Order ID' do
 
-    end
   end
 end
