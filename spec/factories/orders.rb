@@ -2,9 +2,7 @@ require 'faker'
 
 FactoryBot.define do
   factory :order do |f|
-    byebug
-    f.name {Faker::Name.title}
-    f.address {Faker::Address.city}
-    f.phone {Faker::PhoneNumber.phone_number}
+    f.date Faker::Date.between('2017-01-01', '2017-12-31')
+    f.user
   end
 end
