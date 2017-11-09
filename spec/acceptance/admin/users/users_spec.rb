@@ -1,5 +1,4 @@
 require 'acceptance/acceptance_helper'
-require 'support/utilitize'
 
 feature 'Admin see users index', %q{
  As an admin
