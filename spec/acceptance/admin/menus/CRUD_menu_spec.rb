@@ -163,7 +163,7 @@ I want to see all menus, and create, edit, delete menu
       scenario 'select a specified date, click Create Menu', js: true do
         EXAMPLE_DATE.map {|k, val| page.find("select#menu_date_#{k}i").select(val)}
         click_button 'Create Menu'
-        expect_page_show_error page, '{:restaurants=>["can\'t be blank"]'
+        expect_page_show_error '{:restaurants=>["can\'t be blank"]'
       end
 
       describe 'create menu without select date' do
@@ -185,7 +185,7 @@ I want to see all menus, and create, edit, delete menu
 
         scenario 'with no restaurant' do
           click_button 'Create Menu'
-          expect_page_show_error page, '{:restaurants=>["can\'t be blank"]'
+          expect_page_show_error '{:restaurants=>["can\'t be blank"]'
         end
       end
     end
@@ -208,7 +208,7 @@ I want to see all menus, and create, edit, delete menu
         @remove_button.click
         expect(@right_list.all('option')).to be_empty
         click_button 'Update Menu'
-        expect_page_show_error page, '{:restaurants=>["can\'t be blank"]}'
+        expect_page_show_error '{:restaurants=>["can\'t be blank"]}'
       end
     end
 
