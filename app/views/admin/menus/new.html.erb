@@ -3,7 +3,7 @@
 <%= form_for @menu, url: admin_menus_path do |f| %>
     <div class="container">
       <p><%= f.label :date %></p>
-      <p><%= f.date_select :date, selected: Date.today %></p> <br>
+      <p id="menu_date"><%= f.date_select :date, selected: Date.today %></p> <br>
 
       <%= render partial: 'menus/select_restaurants_form', locals: {f: f} %>
 

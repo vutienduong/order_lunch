@@ -29,8 +29,6 @@ class Admin::UsersController < AdminsController
 
   def update
     @user = User.find(params[:id])
-    #render params.inspect
-    #return
     if @user.update(user_params)
       redirect_to user_path(@user)
     else

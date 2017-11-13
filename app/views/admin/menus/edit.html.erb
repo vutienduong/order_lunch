@@ -1,7 +1,7 @@
 <h1>[Admin] Edit Menu</h1>
 <%= form_for @menu, url: admin_menu_path do |f| %>
     <div class="container">
-      <p><%=Date.today %></p>
+      <p><%=@menu.date %></p>
       <%= render partial: 'menus/select_restaurants_form', locals: {f: f} %>
     </div>
 <% end %>

@@ -31,7 +31,7 @@ class Admin::RestaurantsController < AdminsController
     if @restaurant.update(restaurant_params)
       #uploaded_io = params[:restaurant][:image_logo]
       #upload_image_after_create_restaurant(uploaded_io, @restaurant)
-      redirect_to restaurants_path(@restaurant)
+      redirect_to restaurant_path(@restaurant)
     else
       @error = {code: '00x', msg: @restaurant.errors.messages}
       render 'layouts/error'
