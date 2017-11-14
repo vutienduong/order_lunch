@@ -1,14 +1,14 @@
 module ApplicationHelper
   NUMBER_OF_DISH_PER_PAGE = 3
-  def displayCostAsThousand(cost)
+  def display_cost_as_thousand(cost)
     "#{cost/1000} k VND"
   end
 
-  def dateFormat(date)
+  def date_format(date)
     date.gregorian
   end
 
-  def pageTitle(name)
+  def page_title(name)
     render html: "<h1>#{name}</h1>".html_safe
   end
 end

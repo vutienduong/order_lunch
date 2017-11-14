@@ -32,7 +32,7 @@ I have privilege to access Manage Luch (today/all day) page
       vals = [].push(first_order.id)
                  .push(first_order.user.username)
                  .push(all_name_of(first_order.dishes).join(' , '))
-                 .push(displayCostAsThousand(first_order.dishes.inject(0) {|s, d| s + d.price}))
+                 .push(display_cost_as_thousand(first_order.dishes.inject(0) {|s, d| s + d.price}))
 
       check_content_each_td tr, vals
     end
@@ -48,7 +48,7 @@ I have privilege to access Manage Luch (today/all day) page
       vals = [].push(first_dish.name)
                  .push(first_dish.restaurant.name)
                  .push(count_first_dish)
-                 .push(displayCostAsThousand(first_dish.price * count_first_dish))
+                 .push(display_cost_as_thousand(first_dish.price * count_first_dish))
     end
 
     it 'should have list of costs' do
@@ -75,7 +75,7 @@ I have privilege to access Manage Luch (today/all day) page
       tr = table.all('tr')[1]
       vals = [].push(first_restaurant.name)
                  .push(first_restaurant.phone)
-                 .push(displayCostAsThousand(cost))
+                 .push(display_cost_as_thousand(cost))
 
       check_content_each_td tr, vals
 
@@ -85,7 +85,7 @@ I have privilege to access Manage Luch (today/all day) page
         vals = [].push('')
                    .push(dish_h.first.name)
                    .push("(#{dish_h.last[:count].to_s})")
-                   .push(displayCostAsThousand dish_h.last[:cost])
+                   .push(display_cost_as_thousand dish_h.last[:cost])
         check_content_each_td tr, vals
         dish_idx += 1
       end

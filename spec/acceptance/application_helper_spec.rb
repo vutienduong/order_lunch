@@ -1,13 +1,13 @@
 feature 'Application helper methods' do
-context 'displayCostAsThousand' do
+context 'display_cost_as_thousand' do
 
 end
 
-context 'dateFormat' do
+context 'date_format' do
 
 end
 
-context 'pageTitle' do
+context 'page_title' do
 
 end
 end
