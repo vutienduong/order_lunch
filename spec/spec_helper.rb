@@ -133,6 +133,8 @@ RSpec.configure do |config|
     DatabaseCleaner.start
   end
 
+  config.include Capybara::DSL
+
   config.after do
     DatabaseCleaner.clean
   end

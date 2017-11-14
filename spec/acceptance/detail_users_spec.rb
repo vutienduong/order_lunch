@@ -11,9 +11,5 @@ details user} do
       logged_as normal_user
       visit users_path
     end
-
-    it "test" do
-      save_and_open_page
-    end
   end
 end
