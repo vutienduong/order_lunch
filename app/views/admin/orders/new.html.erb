@@ -1,4 +1,4 @@
-<%= pageTitle("New orders") %>
+<%= page_title("New orders") %>
 <%= form_for @order, url: admin_orders_path do |o| %>
     <p><%= o.label :user %>
       <input type="text" name="order[user]" id="order-new-user-search" value="" onkeyup="SearchUserForm.searchUser(this.value)"/>

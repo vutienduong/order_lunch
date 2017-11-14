@@ -1,5 +1,5 @@
 <div class="row">
-  <h1><%= dateFormat(Date.today) %></h1>
+  <h1><%= date_format(Date.today) %></h1>
   <% if is_admin? %>
       <%= link_to "New orders", new_admin_order_path %>
   <% end %>

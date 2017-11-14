@@ -13,7 +13,7 @@
             <td><%= link_to order.id, admin_order_path(order) %></td>
             <td><%= order.user.username %></td>
             <td><%= order.dishes.map(&:name).join(" , ") %></td>
-            <td><%= displayCostAsThousand(order.dishes.inject(0) {|sum, e| sum + e.price}) %></td>
+            <td><%= display_cost_as_thousand(order.dishes.inject(0) {|sum, e| sum + e.price}) %></td>
           </tr>
       <% end %>
   <% end %>
@@ -33,7 +33,7 @@
             <td><%= dish.name %></td>
             <td><%= dish.restaurant.name %></td>
             <td><%= count %></td>
-            <td><%= displayCostAsThousand(dish.price * count) %></td>
+            <td><%= display_cost_as_thousand(dish.price * count) %></td>
           </tr>
       <% end %>
   <% end %>
@@ -52,14 +52,14 @@
           <tr class="info">
             <td><%= restaurant.name %></td>
             <td><%= restaurant.phone %></td>
-            <td colspan="2"><%= displayCostAsThousand(details[:cost]) %></td>
+            <td colspan="2"><%= display_cost_as_thousand(details[:cost]) %></td>
           </tr>
           <% details[:dishes].each do |dish, cost| %>
               <tr>
                 <td></td>
                 <td><%= dish.name %></td>
                 <td><strong>(<%= cost[:count] %>) </strong></td>
-                <td><%= cost[:cost] / 1000 %>k</td>
+                <td><%= display_cost_as_thousand cost[:cost] %></td>
               </tr>
           <% end %>
       <% end %>
@@ -68,7 +68,7 @@
   <% if @presenter.has_key? :total_cost %>
       <tr class="warning">
         <td colspan="2"> TOTAL COST</td>
-        <td><strong><%= displayCostAsThousand(@presenter[:total_cost]) %></strong>
+        <td><strong><%= display_cost_as_thousand(@presenter[:total_cost]) %></strong>
           <% if @presenter[:total_cost] > @presenter[:budget] %>
               <strong> (over budget)</strong>
           <% end %>
@@ -77,7 +77,7 @@
 
       <tr class="warning">
         <td colspan="2"> BUDGET</td>
-        <td><%= displayCostAsThousand(@presenter[:budget]) %></td>
+        <td><%= display_cost_as_thousand(@presenter[:budget]) %></td>
       </tr>
   <% end %>
 </table>
