@@ -1,4 +1,4 @@
-class Admin::UsersController < AdminsController
+class Admin::UsersController < Admin::AdminsController
 
   def index
     @users = User.all
@@ -43,7 +43,7 @@ class Admin::UsersController < AdminsController
       flash[:success] = "Welcome to the EH Order Lunch App!"
       redirect_to @user
     else
-      render 'create'
+      render plain:'create'
     end
   end
 
@@ -57,7 +57,7 @@ class Admin::UsersController < AdminsController
   def get_manage
     @date = Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
     manage_company(@date)
-    render 'manage_company'
+    render plain:'manage_company'
   end
 
   def manage_all_days
@@ -70,7 +70,7 @@ class Admin::UsersController < AdminsController
     @order = Order.new #dummy, TODO: remove it
     @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
     manage_company(@date)
-    render 'manage_all_days'
+    render plain:'manage_all_days'
   end
 
 

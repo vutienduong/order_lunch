@@ -1,4 +1,4 @@
-class Admin::MenusController < AdminsController
+class Admin::MenusController < Admin::AdminsController
   def new
     @menu = Menu.new
     @dummy = {dummy: nil}

@@ -1,4 +1,4 @@
-class Admin::DishesController < AdminsController
+class Admin::DishesController < Admin::AdminsController
   def new
     if Restaurant.find_by(id: params.permit(:id)[:id])
       @dish = Dish.new(restaurant_id: params[:id])
