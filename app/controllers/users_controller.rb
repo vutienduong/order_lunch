@@ -7,7 +7,6 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-    #byebug
   end
 
   def show
@@ -15,12 +14,16 @@ class UsersController < ApplicationController
   end
 
   def edit
-    check_user_permission(params[:id].to_i)
-    @user = User.find(params[:id])
+    if check_user_permission(params[:id].to_i)
+      @user = User.find(params[:id])
+    end
   end
 
   def update
-    check_user_permission(params[:id])
+    unless check_user_permission(params[:id].to_i)
+      return
+    end
+
     @user = User.find(params[:id])
     if @user.update(user_params)
       redirect_to user_path(@user)
@@ -232,10 +235,13 @@ class UsersController < ApplicationController
     params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note)
   end
 
-  def check_user_permission(editted_user_id)''
+  def check_user_permission(editted_user_id)
     unless editted_user_id == session[:user_id]
       @error = ErrorCode::ERR_DENY_EDIT_PERMISSION
       render 'layouts/error'
+      false
+    else
+      true
     end
   end
 end
