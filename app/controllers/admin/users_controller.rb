@@ -77,8 +77,6 @@ class Admin::UsersController < AdminsController
   def manage_company(fetch_date = Date.today)
     @menu = Menu.find_by_date(fetch_date)
     @today_orders = Order.where("DATE(date)=?", fetch_date)
-    #today_all_order_ids = @today_orders.map(&:id)
-    #today_all_ordered_dishes = DishOrder.where(order_id: today_all_order_ids)
 
     today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
     today_all_ordered_dishes = today_all_ordered_dishes.flatten
@@ -89,7 +87,7 @@ class Admin::UsersController < AdminsController
     all_costs = {}
     counted_dishes.each do |dish, count|
       restaurant = dish.restaurant
-      unless all_costs.has_key? restaurant
+      if !all_costs.has_key? restaurant
         all_costs[restaurant] = {}
         all_costs[restaurant][:dishes] = {dish => {count: count, cost: dish.price * count}}
         all_costs[restaurant][:cost] = dish.price * count
@@ -112,7 +110,9 @@ class Admin::UsersController < AdminsController
 
   private
   def user_params
+    if params[:user][:password].blank?
+      params[:user].except!(:password)
+    end
     params.require(:user).permit(:username, :email, :password, :admin)
   end
-
 end
