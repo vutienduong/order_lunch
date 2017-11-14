@@ -1,6 +1,6 @@
 class Admin::DishesController < AdminsController
   def new
-    if Restaurant.find_by_id(params.permit(:id)[:id])
+    if Restaurant.find_by(id: params.permit(:id)[:id])
       @dish = Dish.new(restaurant_id: params[:id])
     else
       @error = ErrorCode::ERR_NON_EXISTED_RESTAURANT
@@ -25,7 +25,7 @@ class Admin::DishesController < AdminsController
   end
 
   def show
-    unless @dish = Dish.find_by_id(params.permit(:id)[:id])
+    unless @dish = Dish.find_by(id: params.permit(:id)[:id])
       @error = ErrorCode::ERR_NON_EXISTED_DISH
       render 'layouts/error'
     end

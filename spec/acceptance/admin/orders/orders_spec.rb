@@ -220,7 +220,7 @@ delete order for other users
         it 'should delete that order from Order table and DishOrder table' do
           expect(page).to have_link 'Delete'
           click_link 'Delete'
-          expect(Order.find_by_id(order_1.id)).to be_nil
+          expect(Order.find_by(id: order_1.id)).to be_nil
           expect(DishOrder.find_by_order_id(order_1.id)).to be_nil
         end
       end
