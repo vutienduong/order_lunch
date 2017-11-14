@@ -6,6 +6,8 @@ I want to see all users,
 have permission to create new user, see edit, delete links
 } do
 
+  User.destroy_all
+
   let!(:admin) {create(:user, admin: true)}
   let!(:normal_user) {create(:user, admin: false)}
   let!(:normal_user2) {create(:user, admin: false)}
@@ -133,10 +135,8 @@ have permission to create new user, see edit, delete links
       it 'should update password after save' do
         visit edit_user_path(normal_user)
         fill_in 'Password', with: new_pass
-        #'input[name=user[password]]'
         click_button 'Update User'
         expect(page).to have_current_path user_path(normal_user)
-        save_and_open_page
 
         expect(User.find(normal_user.id).authenticate(new_pass)).to eq(normal_user)
       end
@@ -163,6 +163,4 @@ have permission to create new user, see edit, delete links
       expect(User.find(normal_user.id).authenticate(new_pass)).to be_falsey
     end
   end
-
-
 end

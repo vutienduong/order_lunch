@@ -68,10 +68,11 @@ delete order for other users
 
       describe 'Go to [Admin] new order page' do
         it 'should show all dishes under pagination from' do
-          byebug
-          (1..9).each do |n|
+          (0..2).each do |n|
             eval("expect(page).to have_content dish_#{n/3 + 1}_#{n%3 + 1}.name")
           end
+
+          expect(page).to_not have_content dish_2_1.name
         end
 
         it 'should have pagination with exact functions' do

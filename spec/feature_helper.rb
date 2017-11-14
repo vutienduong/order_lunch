@@ -31,6 +31,10 @@ module FeatureHelpers
     page.set_rack_session(is_admin: user.admin?)
   end
 
+  def set_today_order_id id
+    page.set_rack_session(today_order_id: id)
+  end
+
   def logged_as_admin
     admin = create(:user, admin: true)
     logged_as admin
@@ -121,6 +125,17 @@ module FeatureHelpers
 
   def expect_field_have_value field, val
     expect(page.find_field(field).value).to eq val
+  end
+
+  def check_content_each_td tr, arr, child = 'td'
+    within tr do
+      tds = page.all(child)
+      i = 0
+      arr.each do |cont|
+        expect(tds[i]).to have_content cont
+        i += 1
+      end
+    end
   end
 end
 
