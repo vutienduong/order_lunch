@@ -1,4 +1,4 @@
-class Admin::RestaurantsController < AdminsController
+class Admin::RestaurantsController < Admin::AdminsController
   def new
     @restaurant = Restaurant.new
     render 'restaurants/new'

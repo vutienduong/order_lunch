@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  #before_action :logged_in_user
+  STATUS_OK = 'ok'.freeze
+  STATUS_FAIL = 'fail'.freeze
+  MSG_SUCCESS = 'Success!'.freeze
 
   def admin?
     @user.admin
@@ -14,15 +16,11 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if check_user_permission(params[:id].to_i)
-      @user = User.find(params[:id])
-    end
+    @user = User.find(params[:id]) if check_user_permission(params[:id].to_i)
   end
 
   def update
-    unless check_user_permission(params[:id].to_i)
-      return
-    end
+    return unless check_user_permission(params[:id].to_i)
 
     @user = User.find(params[:id])
     if @user.update(user_params)
@@ -34,49 +32,34 @@ class UsersController < ApplicationController
   end
 
   def select_dish
-    @var1 = "Var 1"
+    @var1 = 'Var 1'
     redirect_to controller: 'restaurants', action: 'show_detail', id: params[:id], select_dish: 1
   end
 
   def order
-    @menu = Menu.where('date BETWEEN ? AND ?', DateTime.now.beginning_of_day, DateTime.now.end_of_day).last
-    get_order_today
-    # dishes, total_price
-    if @menu.nil?
-      # if this is admin, redirect to "menus/new"
+    @menu = Menu.find_by(date: Date.today)
+
+    if @menu.blank?
       render 'menus/request_menu'
     else
-      @menu_includes = Menu.includes(restaurants: :dishes).find(@menu.id)
+      @today_order = find_order_by_user_id_and_date session[:user_id], Date.today
+
+      session[:today_order] = @today_order.blank? ? nil : @today_order
+      session[:today_order_id] = session[:today_order].blank? ? nil : session[:today_order]['id']
+
       @dishes = []
-      @menu_includes.restaurants.each do |r|
-        @dishes.push(r.dishes)
-      end
-      @dishes = @dishes.flatten
-      @total_price = @today_order.nil? ? 0 : @today_order.dishes.inject(0) {|sum, e| sum + e.price}
+      @menu.restaurants.each {|r| @dishes.push(r.dishes)}
+      @dishes.flatten!
+      @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
     end
 
     # all orders
-    @all_orders = Order.where("DATE(date)=?", Date.today)
+    @all_orders = Order.where('DATE(date)=?', Date.today)
   end
 
   def get_all_orders_today
-    @all_orders = Order.where("DATE(date)=?", Date.today)
+    @all_orders = Order.where('DATE(date)=?', Date.today)
     render 'get_all_orders_today'
-  end
-
-  def get_order_today
-    @today_order = Order.where('user_id= ? AND date BETWEEN ? AND ?', session[:user_id], DateTime.now.beginning_of_day, DateTime.now.end_of_day).first
-
-    if @today_order.blank?
-      @order = Order.new(user_id: session[:user_id], date: Date.today)
-      if @order.save
-        session[:today_order_id] = @order.id
-        session[:today_order] = @order
-      end
-    else
-      session[:today_order_id] = @today_order.id
-      session[:today_order] = @today_order
-    end
   end
 
   def delete_today_order_session
@@ -84,58 +67,64 @@ class UsersController < ApplicationController
     render plain: 'Delete today orders session'
   end
 
-  def add_dish_to_order(isAjax)
-    msg = {:status => "fail"}
-
-    @log={} # Note: relate to @log[] = ... later, can cause error without this initialize
-    if session[:today_order].nil?
-      #edit new orders for that day
-      @order = Order.new(user_id: session[:user_id], date: Date.today)
-      if @order.save
-        @order.id = Order.last.id
-        session[:today_order] = @order
-        session[:today_order_id] = @order.id
-        @log[:first] = "edit new orders success"
-      end
-    else
-      # orders for that day already existed
-      @order = session[:today_order]
-    end
-
-    # add dish for that orders
-    @order_dish = DishOrder.new(order_id: session[:today_order_id], dish_id: params[:dish][:dish_id])
-
-    if @order_dish.save
-      @log[:second] = "Update orders-dish success" # Note: this line can cause error because of lacking of @log={}
-      msg = {:status => "ok", :message => "Success!", :html => "<b>...</b>", today: session[:today_order]}
-    end
-
-    # guarantee that always response json
-    respond_to do |format|
-      format.json {render :json => msg}
-    end
-  end
-
   def save_order
     add_dish_params
-    if params[:dish][:action] == "add"
-      add_dish_to_order (true)
+    if params[:dish][:action] == 'add'
+      add_dish_to_order
     else
-      remove_dish_from_order(true)
+      remove_dish_from_order
     end
   end
 
-  def remove_dish_from_order(isAjax)
-    unless session[:today_order].nil?
-      @order_dishes = DishOrder.where(order_id: session[:today_order_id]).where(dish_id: params[:dish][:dish_id]).all
-      @order_dishes.first.destroy if @order_dishes.length >=1
+  def _add_dish_to_order_back_up
+    order_params = {user_id: session[:user_id], date: Date.today}
+    @order = find_order_by_user_id_and_date session[:user_id], Date.today
+    @order = Order.create! order_params if @order.blank?
+
+    DishOrder.create!(order_id: @order.id, dish_id: params[:dish][:dish_id])
+    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: @order}
+    response_to_json msg
+  end
+
+  def _remove_dish_from_order_back_up
+    @order = find_order_by_user_id_and_date session[:user_id], Date.today
+    unless @order.blank?
+      @order_dishes = DishOrder.where('order_id = ? AND dish_id = ?', @order.id, params[:dish][:dish_id]).all
+      @order_dishes.last.destroy if @order_dishes.length >= 1
+      order = Order.find_by(id: order_id)
+      order.destroy if order.blank? || order.dishes.blank?
+    end
+    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: @order}
+    response_to_json msg
+  end
+
+  def add_dish_to_order
+    @log = {} # Note: relate to @log[] = ... later, can cause error without this initialize
+    order_params = {user_id: session[:user_id], date: Date.today}
+    retrieve_order_and_update_session order_params
+
+    # add dish for that order
+    @order_dish = DishOrder.new(order_id: session[:today_order][:id], dish_id: params[:dish][:dish_id])
+    msg = @order_dish.save ? {status: STATUS_OK, message: MSG_SUCCESS, today: session[:today_order]} : {status: STATUS_FAIL}
+
+    # guarantee that always response json
+    response_to_json msg
+  end
+
+  def remove_dish_from_order
+    unless session[:today_order].blank?
+      order_id = session[:today_order]['id']
+      @order_dishes = DishOrder.where('order_id = ? AND dish_id = ?',
+                                      order_id,
+                                      params[:dish][:dish_id]).all
+      @order_dishes.last.destroy if @order_dishes.length >= 1
+      order = Order.find_by(id: order_id)
+      destroy_order_and_update_session order if order.blank? || order.dishes.blank?
     end
 
     # guarantee that always response json
-    respond_to do |format|
-      msg = {:status => "ok", :message => "Success!", :html => "<b>...</b>", today: session[:today_order]}
-      format.json {render :json => msg}
-    end
+    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: session[:today_order]}
+    response_to_json msg
   end
 
   def add_dish_to_order_no_ajax
@@ -143,9 +132,7 @@ class UsersController < ApplicationController
     order = Order.find(session[:today_order_id])
     unless order.blank?
       dish_order = DishOrder.new(order_id: session[:today_order_id], dish_id: params[:dish_id])
-      if dish_order.save
-        redirect_to order_user_path(session[:user_id])
-      end
+      redirect_to order_user_path(session[:user_id]) if dish_order.save
     end
   end
 
@@ -155,12 +142,10 @@ class UsersController < ApplicationController
 
   def edit_note
     order_id = session[:today_order_id]
-    @order = Order.find(order_id)
-    if @order.update(edit_note_params)
-      msg = {status: "ok"}
-    else
-      msg = {status: "fail"}
-    end
+    @order = Order.find_by(id: order_id)
+    msg = {}
+    msg[:status] = @order.blank? ? STATUS_FAIL : (@order.update(edit_note_params) ? STATUS_OK : STATUS_FAIL)
+
     respond_to do |format|
       format.json {render :json => msg}
     end
@@ -168,12 +153,9 @@ class UsersController < ApplicationController
 
   def copy_order
     copy_info_params
-    # delete all current dishes of current user
     current_order_id =session[:today_order_id]
     @dish_orders = DishOrder.where(order_id: current_order_id).all
-    @dish_orders.each do |d|
-      d.destroy
-    end
+    @dish_orders.each {|d| d.destroy}
 
     # add all copied dishes follow copied user
     unless params[:copy_info][:dish_ids].blank?
@@ -185,35 +167,38 @@ class UsersController < ApplicationController
 
     # update note
     @order = Order.find(current_order_id)
-    unless @order.blank?
-      @order.update_attributes(note: params[:copy_info][:note])
-    end
+    @order.update_attributes(note: params[:copy_info][:note]) unless @order.blank?
     redirect_to order_user_path(session[:user_id])
   end
 
 
   def test
-=begin
-    m = Menu.find_by_date(Date.today)
-    @restaurants = m.restaurants
-    @dishes = m.restaurants.map(&:dishes).flatten
-
-    @slice_dishes = @dishes.each_slice(ApplicationHelper::NUMBER_OF_DISH_PER_PAGE).to_a
-=end
   end
 
   def test_ajax
-    users = User.where("email LIKE ? ", "%#{params[:keyword]}%").limit(10)
+    users = User.where('email LIKE ? ', "%#{params[:keyword]}%").limit(10)
     respond_to do |format|
-      format.json {render :json => {status: "ok", users: users}}
+      format.json {render json: {status: STATUS_OK, users: users}}
     end
   end
 
   def get_dish
-
   end
 
   private
+
+  def retrieve_order_and_update_session order_params
+    @order = find_order_by_user_id_and_date order_params[:user_id], order_params[:date]
+    @order = Order.create! order_params if @order.blank?
+    session[:today_order] = @order
+    session[:today_order_id] = @order.id
+  end
+
+  def destroy_order_and_update_session order
+    order.destroy
+    session[:today_order_id] = nil
+    session[:today_order] = nil
+  end
 
   def add_dish_to_order_params
     params.permit(:dish_id)
@@ -235,14 +220,26 @@ class UsersController < ApplicationController
     params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note)
   end
 
-  def check_user_permission(editted_user_id)
-    unless editted_user_id == session[:user_id]
-      @error = ErrorCode::ERR_DENY_EDIT_PERMISSION
-      render 'layouts/error'
-      false
-    else
-      true
+  def check_user_permission(edited_user_id)
+    return true if edited_user_id == session[:user_id]
+    @error = ErrorCode::ERR_DENY_EDIT_PERMISSION
+    render 'layouts/error'
+    false
+  end
+
+  def response_to_json msg
+    respond_to do |format|
+      format.json {render json: msg}
     end
   end
+
+  def query_date_string date
+    "date LIKE '%#{date}%'"
+  end
+
+  def find_order_by_user_id_and_date user_id, date
+    Order.where('DATE(date)=?', date).where('user_id = ?', user_id).first
+  end
+
 end
 
