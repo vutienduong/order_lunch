@@ -2,17 +2,12 @@ class Admin::MenusController < Admin::AdminsController
   def new
     @menu = Menu.new
     @dummy = {dummy: nil}
-    #@restaurants = Restaurant.all
   end
 
   def create
     @menu = Menu.new(menu_params)
-    if @menu.save
-      redirect_to menu_path(@menu)
-    else
-      @error = {code: '00x', msg: @menu.errors.messages}
-      render 'layouts/error'
-    end
+    raise CreateFailError @menu.errors.messages unless @menu.save
+    redirect_to menu_path(@menu)
   end
 
   def edit
