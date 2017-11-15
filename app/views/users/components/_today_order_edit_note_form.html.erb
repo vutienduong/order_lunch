@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">Note:</div>
     <div class="panel-body">
-      <p id="today-order-note"><%= @today_order.note %></p>
+      <p id="today-order-note"><%= @today_order.blank? ? '' : @today_order.note %></p>
 
       <div class="alert alert-fail" id="edit-note-fail-alert">
         <button type="button" class="close" data-dismiss="alert">x</button>

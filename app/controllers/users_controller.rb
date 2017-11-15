@@ -12,23 +12,21 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
+
+
   end
 
   def edit
-    @user = User.find(params[:id]) if check_user_permission(params[:id].to_i)
+    check_user_permission params[:id].to_i
+    @user = retrieve_user params[:id]
   end
 
   def update
-    return unless check_user_permission(params[:id].to_i)
-
-    @user = User.find(params[:id])
-    if @user.update(user_params)
-      redirect_to user_path(@user)
-    else
-      @error = ErrorCode::ERR_USER_EDIT_FAIL
-      render 'layouts/error'
-    end
+    check_user_permission params[:id].to_i
+    @user = retrieve_user params[:id]
+    raise MyError::UpdateFailError unless @user.update(user_params)
+    redirect_to user_path(@user)
   end
 
   def select_dish
@@ -153,7 +151,7 @@ class UsersController < ApplicationController
 
   def copy_order
     copy_info_params
-    current_order_id =session[:today_order_id]
+    current_order_id = session[:today_order_id]
     @dish_orders = DishOrder.where(order_id: current_order_id).all
     @dish_orders.each {|d| d.destroy}
 
@@ -220,13 +218,6 @@ class UsersController < ApplicationController
     params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note)
   end
 
-  def check_user_permission(edited_user_id)
-    return true if edited_user_id == session[:user_id]
-    @error = ErrorCode::ERR_DENY_EDIT_PERMISSION
-    render 'layouts/error'
-    false
-  end
-
   def response_to_json msg
     respond_to do |format|
       format.json {render json: msg}
@@ -237,9 +228,18 @@ class UsersController < ApplicationController
     "date LIKE '%#{date}%'"
   end
 
+  def check_user_permission edit_user_id
+    raise MyError::NonPermissionEditError unless (edit_user_id == session[:user_id] || session[:is_admin])
+  end
+
+  def retrieve_user id
+    user = User.find_by id: id
+    raise MyError::NonExistRecordError unless user
+    user
+  end
+
   def find_order_by_user_id_and_date user_id, date
     Order.where('DATE(date)=?', date).where('user_id = ?', user_id).first
   end
-
 end
 

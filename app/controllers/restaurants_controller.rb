@@ -11,6 +11,5 @@ class RestaurantsController < ApplicationController
 
   def index
     @restaurants = Restaurant.includes('dishes').all
-    #render plain: @restaurants.inspect
   end
 end

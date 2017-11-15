@@ -53,21 +53,22 @@
           </p>
         </div>
 
-        <% unless @today_order.blank? %>
-            <div id="today-my-order-content">
+
+        <div id="today-my-order-content">
+          <% unless @today_order.blank? %>
               <% @today_order.dishes.each do |r| %>
-                  <%= render partial: "dishes/media_style/today_dish_media_style", locals: {r: r} %>
+                  <%= render partial: 'dishes/media_style/today_dish_media_style', locals: {r: r} %>
               <% end %>
-            </div>
+          <% end %>
+        </div>
 
-            <%= render partial: 'users/components/today_order_edit_note_form' %>
-            <!-- for Note -->
+        <%= render partial: 'users/components/today_order_edit_note_form' %>
+        <!-- for Note -->
 
-            <div class="row">
-              <p>Total: <strong><span id="total_price_today"><%= @total_price %></span></strong></p>
-              <h4 id="total-price-warning"></h4>
-            </div>
-        <% end %>
+        <div class="row">
+          <p>Total: <strong><span id="total_price_today"><%= @total_price %></span></strong></p>
+          <h4 id="total-price-warning"></h4>
+        </div>
       </div>
     </div>
 

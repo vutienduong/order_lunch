@@ -17,34 +17,23 @@ class Admin::UsersController < Admin::AdminsController
   end
 
   def destroy
+    raise MyError::AdminDeleteHimselfError if admin_delete_himself? params[:id]
     @user = User.find(params[:id])
-    if session[:is_admin] and params[:id].to_i == session[:user_id]
-      @error = ErrorCode::ERR_USER_DELETE_CURRENT_ADMIN
-      render 'layouts/error'
-    else
-      @user.destroy
-      redirect_to users_path
-    end
+    @user.destroy
+    redirect_to users_path
   end
 
   def update
     @user = User.find(params[:id])
-    if @user.update(user_params)
-      redirect_to user_path(@user)
-    else
-      render plain: 'edit fail'
-    end
+    raise MyError::UpdateFailError unless @user.update(user_params)
+    redirect_to user_path(@user)
   end
 
   def create
     @user = User.new(user_params)
-    if @user.save
-      #log_in @user
-      flash[:success] = "Welcome to the EH Order Lunch App!"
-      redirect_to @user
-    else
-      render plain:'create'
-    end
+    raise MyError::CreateFailError unless @user.save
+    flash[:success] = 'Welcome to the EH Order Lunch App!'
+    redirect_to @user
   end
 
   def manage
@@ -57,7 +46,7 @@ class Admin::UsersController < Admin::AdminsController
   def get_manage
     @date = Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
     manage_company(@date)
-    render plain:'manage_company'
+    render plain: 'manage_company'
   end
 
   def manage_all_days
@@ -70,7 +59,7 @@ class Admin::UsersController < Admin::AdminsController
     @order = Order.new #dummy, TODO: remove it
     @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
     manage_company(@date)
-    render plain:'manage_all_days'
+    render plain: 'manage_all_days'
   end
 
 
@@ -114,5 +103,9 @@ class Admin::UsersController < Admin::AdminsController
       params[:user].except!(:password)
     end
     params.require(:user).permit(:username, :email, :password, :admin)
+  end
+
+  def admin_delete_himself? deleted_id
+    session[:is_admin] && deleted_id == session[:user_id]
   end
 end

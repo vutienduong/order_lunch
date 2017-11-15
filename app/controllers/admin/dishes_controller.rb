@@ -1,23 +1,14 @@
 class Admin::DishesController < Admin::AdminsController
   def new
-    if Restaurant.find_by(id: params.permit(:id)[:id])
-      @dish = Dish.new(restaurant_id: params[:id])
-    else
-      @error = ErrorCode::ERR_NON_EXISTED_RESTAURANT
-      render 'layouts/error'
-    end
+    raise MyError::NonExistRecordError unless Restaurant.find_by(id: params.permit(:id)[:id])
+    @dish = Dish.new(restaurant_id: params[:id])
   end
 
   def create
     @dish = Dish.new(dish_params)
     @dish.image_url = ''
-    if @dish.save
-      # upload_image_after_create_dish(params[:dish], @dish)
-      redirect_to restaurant_path(@dish.restaurant_id)
-    else
-      @error = {code: '00x', msg: @dish.errors.messages}
-      render 'layouts/error'
-    end
+    raise CreateFailError @dish.errors.messages unless @dish.save
+    redirect_to restaurant_path(@dish.restaurant_id)
   end
 
   def index
@@ -25,10 +16,8 @@ class Admin::DishesController < Admin::AdminsController
   end
 
   def show
-    unless @dish = Dish.find_by(id: params.permit(:id)[:id])
-      @error = ErrorCode::ERR_NON_EXISTED_DISH
-      render 'layouts/error'
-    end
+    @dish = Dish.find_by(id: params.permit(:id)[:id])
+    raise NonExistRecordError 'Dish is not exist' unless @dish
   end
 
   def edit
@@ -43,13 +32,9 @@ class Admin::DishesController < Admin::AdminsController
 
   def update
     @dish = Dish.find(params[:id])
-    if @dish.update(dish_params)
-      # upload_image_after_create_dish(params[:dish], @dish)
-      redirect_to @dish
-    else
-      @error = {code: '00x', msg: @dish.errors.messages}
-      render 'layouts/error'
-    end
+    raise CreateFailError @dish.errors.messages unless @dish.update(dish_params)
+    # upload_image_after_create_dish(params[:dish], @dish)
+    redirect_to @dish
   end
 
 
