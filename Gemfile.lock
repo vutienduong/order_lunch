@@ -135,6 +135,7 @@ GEM
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
     pdf-core (0.5.1)
+    pg (0.21.0)
     poltergeist (1.16.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -279,6 +280,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   monban-generators
+  pg
   poltergeist
   prawn
   prawn-table
