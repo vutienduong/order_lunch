@@ -20,6 +20,11 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    active_model_serializers (0.10.6)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.2)
     activejob (4.2.9)
       activesupport (= 4.2.9)
       globalid (>= 0.3.0)
@@ -61,6 +66,8 @@ GEM
     capybara-webkit (1.11.1)
       capybara (>= 2.3.0, < 2.8.0)
       json
+    case_transform (0.2)
+      activesupport
     childprocess (0.8.0)
       ffi (~> 1.0, >= 1.0.11)
     cliver (0.3.2)
@@ -104,6 +111,7 @@ GEM
       jquery-rails
       railties (>= 3.1.0)
     json (1.8.6)
+    jsonapi-renderer (0.1.3)
     launchy (2.4.3)
       addressable (~> 2.3)
     loofah (2.1.1)
@@ -255,6 +263,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   bcrypt (= 3.1.11)
   bootstrap-sass
   byebug

@@ -16,31 +16,23 @@ class Admin::OrdersController < Admin::AdminsController
 
   def create
     @order = Order.new(create_order_params)
-    if @order.save
 
-      #params[:order][:dish_ids].each do |dish_id|
-      #  DishOrder.create(dish_id: dish_id, order_id: @order.id)
-      #end
+    #params[:order][:dish_ids].each do |dish_id|
+    #  DishOrder.create(dish_id: dish_id, order_id: @order.id)
+    #end
 
-      redirect_to get_all_orders_today_users_path
-    else
-      render plain: "Create order fail"
-    end
+    raise MyError::CreateFailError.new @order.errors.messages unless @order.save
   end
 
   def new
     _get_dishes_of_menu_by_date(Date.today)
-    if defined? @menu
-      render 'menus/request_menu'
-    end
+    render 'menus/request_menu' if defined? @menu
   end
 
   def destroy
     @order = Order.find(params[:id])
-    @dish_order = DishOrder.where("order_id=?", @order.id)
-    unless @dish_order.blank?
-      @dish_order.destroy_all
-    end
+    @dish_order = DishOrder.where('order_id=?', @order.id)
+    @dish_order.destroy_all unless @dish_order.blank?
     @order.destroy
     redirect_to get_all_orders_today_users_path
   end
@@ -48,12 +40,7 @@ class Admin::OrdersController < Admin::AdminsController
   def ajax_get_dishes_by_date
     date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i, params[:date][:day].to_i)
     _get_dishes_of_menu_by_date(date)
-
-    if defined? @menu
-      res = {status: "fail", menu: @menu}
-    else
-      res = {status: "ok", slice_dishes: @slice_dishes}
-    end
+    res = defined? @menu ? {status: 'fail', menu: @menu} : {status: 'ok', slice_dishes: @slice_dishes}
     respond_to do |format|
       format.json {render :json => res}
     end
@@ -61,11 +48,10 @@ class Admin::OrdersController < Admin::AdminsController
 
   private
   def create_order_params
-    dish_ids = params[:order][:dishes][0].split(",")
+    dish_ids = params[:order][:dishes][0].split(',')
     params[:order][:dish_ids] = dish_ids
-
     params.require(:order).permit(:note, :date, :user_id, :total_price, :dish_ids => [])
-    #params[:order][:date] = Date.civil(params[:orders]["date(1i)"].to_i, params[:orders]["date(2i)"].to_i, params[:orders]["date(3i)"].to_i)
+    #params[:order][:date] = Date.civil(params[:orders]['date(1i)'].to_i, params[:orders]['date(2i)'].to_i, params[:orders]['date(3i)'].to_i)
   end
 
   def _get_dishes_of_menu_by_date(date)

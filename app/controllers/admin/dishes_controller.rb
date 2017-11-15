@@ -7,7 +7,7 @@ class Admin::DishesController < Admin::AdminsController
   def create
     @dish = Dish.new(dish_params)
     @dish.image_url = ''
-    raise CreateFailError @dish.errors.messages unless @dish.save
+    raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
     redirect_to restaurant_path(@dish.restaurant_id)
   end
 
@@ -17,7 +17,7 @@ class Admin::DishesController < Admin::AdminsController
 
   def show
     @dish = Dish.find_by(id: params.permit(:id)[:id])
-    raise NonExistRecordError 'Dish is not exist' unless @dish
+    raise MyError::NonExistRecordError.new 'Dish is not exist' unless @dish
   end
 
   def edit
@@ -32,7 +32,7 @@ class Admin::DishesController < Admin::AdminsController
 
   def update
     @dish = Dish.find(params[:id])
-    raise CreateFailError @dish.errors.messages unless @dish.update(dish_params)
+    raise MyError::CreateFailError.new @dish.errors.messages unless @dish.update(dish_params)
     # upload_image_after_create_dish(params[:dish], @dish)
     redirect_to @dish
   end

@@ -7,14 +7,10 @@ class Admin::RestaurantsController < Admin::AdminsController
   def create
     @restaurant = Restaurant.new(restaurant_params)
     @restaurant.image_logo = ''
-    if @restaurant.save
-      #uploaded_io = params[:restaurant][:image_logo]
-      #upload_image_after_create_restaurant(uploaded_io, @restaurant)
-      redirect_to restaurant_path(@restaurant)
-    else
-      @error = {code: '00x', msg: @restaurant.errors.messages}
-      render 'layouts/error'
-    end
+    raise MyError::CreateFailError.new @restaurant.errors.messages unless @restaurant.save
+    #uploaded_io = params[:restaurant][:image_logo]
+    #upload_image_after_create_restaurant(uploaded_io, @restaurant)
+    redirect_to restaurant_path(@restaurant)
   end
 
   def index
@@ -28,14 +24,10 @@ class Admin::RestaurantsController < Admin::AdminsController
 
   def update
     @restaurant = Restaurant.find(params[:id])
-    if @restaurant.update(restaurant_params)
-      #uploaded_io = params[:restaurant][:image_logo]
-      #upload_image_after_create_restaurant(uploaded_io, @restaurant)
-      redirect_to restaurant_path(@restaurant)
-    else
-      @error = {code: '00x', msg: @restaurant.errors.messages}
-      render 'layouts/error'
-    end
+    raise MyError::CreateFailError.new @restaurant.errors.messages unless @restaurant.update restaurant_params
+    #uploaded_io = params[:restaurant][:image_logo]
+    #upload_image_after_create_restaurant(uploaded_io, @restaurant)
+    redirect_to restaurant_path(@restaurant)
   end
 
   def destroy
@@ -47,7 +39,7 @@ class Admin::RestaurantsController < Admin::AdminsController
 
   def show_image
     @restaurant = Restaurant.find(params[:id])
-    send_data @restaurant.image, :type => 'image/png',:disposition => 'inline'
+    send_data @restaurant.image, :type => 'image/png', :disposition => 'inline'
   end
 
   private
@@ -55,7 +47,6 @@ class Admin::RestaurantsController < Admin::AdminsController
     unless params[:restaurant][:image_logo].blank?
       params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     end
-
     params.require(:restaurant).permit(:name, :address, :phone, :image)
   end
 
@@ -64,7 +55,6 @@ class Admin::RestaurantsController < Admin::AdminsController
     unless uploaded_io.blank?
       file_name = Pathname('').join('restaurants', "#{restaurant.id}_#{uploaded_io.original_filename}")
       OLUploadImage.upload(file_name, uploaded_io)
-
       restaurant.update(image_logo: file_name)
     end
   end
