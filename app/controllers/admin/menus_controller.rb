@@ -6,7 +6,7 @@ class Admin::MenusController < Admin::AdminsController
 
   def create
     @menu = Menu.new(menu_params)
-    raise CreateFailError @menu.errors.messages unless @menu.save
+    raise MyError::CreateFailError.new @menu.errors.messages unless @menu.save
     redirect_to menu_path(@menu)
   end
 
@@ -16,12 +16,8 @@ class Admin::MenusController < Admin::AdminsController
 
   def update
     @menu = Menu.find(params[:id])
-    if @menu.update(menu_params)
-      redirect_to menu_path(@menu)
-    else
-      @error = {code: '00x', msg: @menu.errors.messages}
-      render 'layouts/error'
-    end
+    raise MyError::UpdateFailError.new @menu.errors.messages unless @menu.update(menu_params)
+    redirect_to menu_path(@menu)
   end
 
   def request_menu

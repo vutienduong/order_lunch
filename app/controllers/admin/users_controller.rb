@@ -25,13 +25,13 @@ class Admin::UsersController < Admin::AdminsController
 
   def update
     @user = User.find(params[:id])
-    raise MyError::UpdateFailError unless @user.update(user_params)
+    raise MyError::UpdateFailError.new @user.errors.messages unless @user.update(user_params)
     redirect_to user_path(@user)
   end
 
   def create
     @user = User.new(user_params)
-    raise MyError::CreateFailError unless @user.save
+    raise MyError::CreateFailError.new @user.errors.messages unless @user.save
     flash[:success] = 'Welcome to the EH Order Lunch App!'
     redirect_to @user
   end

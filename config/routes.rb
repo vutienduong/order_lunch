@@ -8,6 +8,10 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/404', to: 'errors#not_found'
+  get '/500', to: 'errors#internal_server_error'
+  #get 'not_visible', to: 'home#not_visible'
+
   resources :users, only: [:show, :index, :edit, :update] do
     member do
       get 'select_menu'

@@ -62,6 +62,7 @@ group :test do
 end
 
 gem 'prawn'
+gem 'active_model_serializers'
 
 gem 'prawn-table'
 gem 'bootstrap-sass'

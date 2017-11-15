@@ -1,7 +1,7 @@
 module MyError
   class UpdateFailError < CustomError
-    def initialize
-      super(:update_fail, 422, 'Update fail')
+    def initialize msg = 'Update fail'
+      super(:update_fail, 422, msg)
     end
   end
 end
