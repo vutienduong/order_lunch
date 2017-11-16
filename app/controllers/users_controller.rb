@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  include UsersHelper
+  include SQLGenerator
+  include UploadImageS3
+
   STATUS_OK = 'ok'.freeze
   STATUS_FAIL = 'fail'.freeze
   MSG_SUCCESS = 'Success!'.freeze
@@ -171,6 +175,17 @@ class UsersController < ApplicationController
 
 
   def test
+    #@sql = SQLGenerator.generate_sql
+
+    # UsersHelper.fix_data
+    # @sql = UsersHelper.retest_fix ? 'fix done' : 'fix fail'
+    # record = User.last
+    # record = Dish.find_by id: 42
+    # @sql = generate_sql record
+
+
+    @sql = ''
+    UploadImageS3.test_upload
   end
 
   def test_ajax
