@@ -1,7 +1,7 @@
 <div class="row">
   <p>DISH DETAIL</p>
   <div class="col-md-4">
-    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @dish.image, size: [120, 120], object: 'dish', options: {alt: @dish.name}} %>
+    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @dish.image, restaurant: @dish, size: [120, 120], object: 'dish', options: {alt: @dish.name}} %>
 
     <p class="text-uppercase"><%= @dish.name %></p>
     <strong><%= @dish.price %></strong>
