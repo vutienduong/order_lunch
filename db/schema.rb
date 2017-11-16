@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116044340) do
+ActiveRecord::Schema.define(version: 20171116081826) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -79,10 +79,14 @@ ActiveRecord::Schema.define(version: 20171116044340) do
   create_table "restaurants", force: :cascade do |t|
     t.string   "name"
     t.text     "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.string   "phone"
     t.binary   "image"
+    t.string   "image_logo_file_name"
+    t.string   "image_logo_content_type"
+    t.integer  "image_logo_file_size"
+    t.datetime "image_logo_updated_at"
   end
 
   create_table "users", force: :cascade do |t|
