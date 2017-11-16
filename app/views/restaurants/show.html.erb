@@ -9,7 +9,10 @@
           <p>Address: <%= @restaurant.address %></p>
           <p>Phone: <%= @restaurant.phone %> </p>
           <div>
-            <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @restaurant.image, size: [100, 100], object: 'restaurant', options: {}} %>
+            <% #render partial: 'layouts/components/image_tag_inline', locals:{image: @restaurant.image, size: [100, 100], object: 'restaurant', options: {}} %>
+          </div>
+          <div>
+            <%= image_tag @restaurant.image_logo.url(:square) %>
           </div>
         </div>
         <% if is_admin? %>
