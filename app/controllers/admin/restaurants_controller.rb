@@ -6,7 +6,7 @@ class Admin::RestaurantsController < Admin::AdminsController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.image_logo = ''
+    # @restaurant.image_logo = ''
     raise MyError::CreateFailError.new @restaurant.errors.messages unless @restaurant.save
     #uploaded_io = params[:restaurant][:image_logo]
     #upload_image_after_create_restaurant(uploaded_io, @restaurant)
@@ -44,10 +44,12 @@ class Admin::RestaurantsController < Admin::AdminsController
 
   private
   def restaurant_params
+=begin
     unless params[:restaurant][:image_logo].blank?
       params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     end
-    params.require(:restaurant).permit(:name, :address, :phone, :image)
+=end
+    params.require(:restaurant).permit(:name, :address, :phone, :image_logo)
   end
 
   def upload_image_after_create_restaurant(uploaded_io, restaurant)
