@@ -1,1 +1,2 @@
-<%= image_tag get_image_source(image, object), size: "#{size[0]}x#{size[1]}", class: options[:class_name], alt: options[:alt], data: options[:data], onclick: options[:onclick] %>
+<%# image_tag get_s3_image_source(restaurant), size: "#{size[0]}x#{size[1]}", class: options[:class_name], alt: options[:alt], data: options[:data], onclick: options[:onclick] %>
+<%= image_tag get_s3_image_source(restaurant), class: options[:class_name], alt: options[:alt], data: options[:data], onclick: options[:onclick] %>
