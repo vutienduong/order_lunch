@@ -69,7 +69,7 @@ Rails.application.routes.draw do
         get 'manage_all_days'
         get 'get_manage'
         post 'manage_all_days', to: 'users#manage_all'
-
+        get 'export_manage_pdf'
       end
     end
     resources :dishes
@@ -81,6 +81,7 @@ Rails.application.routes.draw do
     resources :orders do
       collection do
         post 'ajax_get_dishes_by_date'
+        get 'export_pdf'
       end
     end
   end

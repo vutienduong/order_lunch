@@ -96,6 +96,17 @@ class Admin::UsersController < Admin::AdminsController
     }
   end
 
+  def export_manage_pdf
+    manage_company
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ManagePagePdf.new@presenter
+        send_data pdf.render, filename: 'order_report.pdf', type: 'application/pdf'
+      end
+    end
+  end
+
 
   private
   def user_params
