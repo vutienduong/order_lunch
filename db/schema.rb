@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116081826) do
+ActiveRecord::Schema.define(version: 20171116091806) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -25,10 +25,13 @@ ActiveRecord::Schema.define(version: 20171116081826) do
     t.string   "name"
     t.decimal  "price"
     t.text     "description"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.string   "image_url"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.binary   "image"
+    t.string   "image_logo_file_name"
+    t.string   "image_logo_content_type"
+    t.integer  "image_logo_file_size"
+    t.datetime "image_logo_updated_at"
   end
 
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
