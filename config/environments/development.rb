@@ -40,6 +40,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.paperclip_defaults = {
       storage: :s3,
+      url: "s3-us-east-2.amazonaws.com",
       s3_credentials: {
           bucket: 'order-lunch',
           access_key_id: 'AKIAIAE364NXJQAAYY7A',
