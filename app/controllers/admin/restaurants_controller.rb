@@ -5,7 +5,6 @@ class Admin::RestaurantsController < Admin::AdminsController
   end
 
   def create
-    byebug
     @restaurant = Restaurant.new(restaurant_params)
     # @restaurant.image_logo = ''
     raise MyError::CreateFailError.new @restaurant.errors.messages unless @restaurant.save
