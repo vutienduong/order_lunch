@@ -70,12 +70,16 @@ Rails.application.routes.draw do
         get 'get_manage'
         post 'manage_all_days', to: 'users#manage_all'
         get 'export_manage_pdf'
+        get 'scrap_data'
       end
     end
     resources :dishes
     resources :restaurants do
       member do
         get 'show_image'
+      end
+      collection do
+        get 'scrap_dish'
       end
     end
     resources :orders do

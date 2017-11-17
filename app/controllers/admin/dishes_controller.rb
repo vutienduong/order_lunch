@@ -6,7 +6,6 @@ class Admin::DishesController < Admin::AdminsController
 
   def create
     @dish = Dish.new(dish_params)
-    byebug
     raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
     redirect_to restaurant_path(@dish.restaurant_id)
   end

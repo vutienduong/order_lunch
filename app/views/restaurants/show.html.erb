@@ -2,12 +2,17 @@
 <div class="container-fluid">
   <div class="col-md-8">
     <h1>Restaurant details</h1>
+    <% if is_admin? %>
+    <%= link_to 'Scrap dishes (from Foody)', {controller: "admin/restaurants", action: "scrap_dish", id: @restaurant.id, ref_link: @restaurant.ref_link}, class:'btn btn-warning' %>
+    <% end %>
+
     <div class="panel panel-default">
       <div class="row media panel-heading">
         <div class="media-body">
           <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
           <p>Address: <%= @restaurant.address %></p>
           <p>Phone: <%= @restaurant.phone %> </p>
+          <p>Link: <%= link_to('Here', @restaurant.ref_link, data: { confirm: "Are you sure?" }) if @restaurant.ref_link %></p>
           <div>
             <% #render partial: 'layouts/components/image_tag_inline', locals:{image: @restaurant.image, size: [100, 100], object: 'restaurant', options: {}} %>
           </div>
