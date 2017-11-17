@@ -1,0 +1,12 @@
+<h2>Dishes</h2>
+<%@dishes.each do |dish| %>
+    <div>
+    <p>Name: <%= dish['dish_name'] %></p>
+    <p>Price: <%= dish['price'] %></p>
+    <p>Description: <%= dish['dish_desc'] %></p>
+    </div>
+    <br>
+<% end %>
+
+<h2>Coupon</h2>
+<%= @coupon %>

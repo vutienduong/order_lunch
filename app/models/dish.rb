@@ -1,4 +1,6 @@
+require "open-uri"
 class Dish < ActiveRecord::Base
+  attr_reader :image_logo_remote_url
   validates :name, presence: true, uniqueness: {scope: :restaurant, message: 'each restaurant doesn\'t have two dishes which are same named'}
 
   validates_numericality_of :price, greater_than_or_equal_to: 1000
@@ -18,4 +20,9 @@ class Dish < ActiveRecord::Base
 
   # Validate the attached image is image/jpg, image/png, etc
   validates_attachment_content_type :image_logo, :content_type => /\Aimage\/.*\Z/
+
+  def image_logo_remote_url=(url_value)
+    self.image_logo = URI.parse(url_value)
+    @image_logo_remote_url = url_value
+  end
 end
