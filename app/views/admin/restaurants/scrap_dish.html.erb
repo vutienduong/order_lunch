@@ -1,0 +1,22 @@
+<% if @log[:success] %>
+    <h3> Create all dishes successful </h3>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+      </tr>
+      <% @dishes.each do |dish| %>
+      <tr>
+        <td><%= dish.name %></td>
+        <td><%= dish.price %></td>
+        <td><%= dish.description %></td>
+      </tr>
+      <% end %>
+    </table>
+<% else %>
+    <h3> Create all dishes fail </h3>
+    <h4> Reason </h4>
+    <p><%= @log[:exception] %></p>
+<% end %>
+<%= link_to 'All restaurants', restaurants_path, class: 'btn btn-default' %>

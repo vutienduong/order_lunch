@@ -1,4 +1,14 @@
-<h1>List of orders</h1>
+<div class="dropdown ">
+  <button class="btn btn-default dropdown-toggle glyphicon glyphicon-export" type="button" id="export-button-group" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Export(PDF)
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="export-button-group">
+    <li><%= link_to 'Export Orders Today', export_pdf_admin_orders_path(format: :pdf)%></li>
+    <li><%= link_to 'Export Manage Page', export_manage_pdf_admin_users_path(format: :pdf)%></li>
+  </ul>
+</div>
+
+<h2>List of orders</h2>
 <table class="table table-hover">
   <tr>
     <th>Order ID</th>
@@ -19,7 +29,7 @@
   <% end %>
 </table><br><br>
 
-<h1>List of dishes</h1>
+<h2>List of dishes</h2>
 <table class="table table-hover">
   <tr>
     <th>Dish</th>
@@ -40,7 +50,7 @@
 </table>
 <br><br>
 
-<h1>List of costs</h1>
+<h2>List of costs</h2>
 <table class="table">
   <tr>
     <th>Restaurant</th>
@@ -81,3 +91,4 @@
       </tr>
   <% end %>
 </table>
+

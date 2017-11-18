@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="thumbnail">
         <div class="caption">
-          <%= render partial: 'layouts/components/image_tag_inline', locals:{image: "template-image-url", size: [60, 60], object: 'restaurant', options: {class_name: "each-dish-img", onlick: 'showPrice(this)', data: {price: 0}, alt: "template-image-name"}} %>
+          <%= render partial: 'layouts/components/image_tag_inline', locals:{image: "template-image-url", size: [60, 60], object: 'restaurant', options: {class_name: "each-dish-img", onlick: 'showPrice(this)', data: {price: 0}, alt: "template-image-name", img_size: 'thumb'}} %>
 
           <strong class="each-dish-name"></strong>
           <p class="each-dish-price"></p>

@@ -1,5 +1,6 @@
 module ApplicationHelper
   NUMBER_OF_DISH_PER_PAGE = 3
+
   def display_cost_as_thousand(cost)
     "#{cost/1000} k VND"
   end

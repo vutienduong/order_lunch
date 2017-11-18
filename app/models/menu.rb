@@ -6,3 +6,4 @@ class Menu < ActiveRecord::Base
   has_many :restaurants, through: :menu_restaurants
   accepts_nested_attributes_for :restaurants
 end
+

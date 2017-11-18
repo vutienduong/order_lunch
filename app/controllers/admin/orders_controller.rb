@@ -46,6 +46,17 @@ class Admin::OrdersController < Admin::AdminsController
     end
   end
 
+  def export_pdf
+    @orders = Order.where('DATE(date)=?', Date.today).all
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = OrderPdf.new(@orders)
+        send_data pdf.render, filename: 'order_report.pdf', type: 'application/pdf'
+      end
+    end
+  end
+
   private
   def create_order_params
     dish_ids = params[:order][:dishes][0].split(',')
