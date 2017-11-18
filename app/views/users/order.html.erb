@@ -16,7 +16,7 @@
           <% @menu.restaurants.each do |r| %>
               <div class="media order-restaurant-show">
                 <div class="media-left">
-                  <%= link_to render(partial: 'layouts/components/image_tag_inline', locals: {image: r.image, size: [120, 120], object: 'restaurant', options: {alt: r.name}}), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1} %>
+                  <%= link_to render(partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'restaurant', options: {alt: r.name}}), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1, img_size: 'thumb'} %>
                 </div>
                 <div class="media-body"><p class="lead"><%= r.name %></p></div>
               </div>

@@ -1,4 +1,5 @@
 class Admin::UsersController < Admin::AdminsController
+  include Scraper
 
   def index
     @users = User.all
@@ -94,6 +95,41 @@ class Admin::UsersController < Admin::AdminsController
                   total_cost: total_cost,
                   budget: @today_orders.length * 80000
     }
+  end
+
+  def export_manage_pdf
+    manage_company
+    respond_to do |format|
+      format.html
+      format.pdf do
+        pdf = ManagePagePdf.new @presenter
+        send_data pdf.render, filename: 'order_report.pdf', type: 'application/pdf'
+      end
+    end
+  end
+
+  def scrap_data
+    # p Scraper::HeadersScraper.new.crawl
+
+    before = 'https://www.foody.vn/ho-chi-minh'
+    after = 'goi-mon'
+    # res_url = 'hung-map-bun-moc-bun-bo-hue'
+    # res_url = 'pho-le-vo-van-tan'
+    # res_url = 'trieu-phong-vo-van-tan'
+    # res_url = 'pho-le-nguyen-trai'
+    # res_url = 'hoang-ky-com-ga-xoi-mo'
+    # res_url = 'vi-sai-gon-bun-thit-nuong'
+    # res_url = 'banh-canh-cua-14-tran-binh-trong'
+    # res_url = 'ut-huong'
+    # res_url = 'tylum-hu-tieu-nam-vang'
+    # res_url = 'hai-tu-quy-bun-ca-ro-dong-nem-cua-be'
+    res_url = 'quan-yen-bun-ca-sua-nha-trang-le-hong-phong'
+    res_url = ''
+    full_url = File.join before, res_url, after
+    a = Scraper::TestScraper.new.crawl full_url
+    # a = Scraper::GitRepoScraper.new.crawl
+    @dishes = a['dishes']
+    @coupon = a['coupon']
   end
 
 

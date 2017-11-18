@@ -1,6 +1,6 @@
 <div class="col-xs-6 col-md-3">
   <div class="thumbnail">
-    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img"}} %>
+    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, restaurant: r, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img", img_size: 'thumb'}} %>
 
     <div class="caption">
       <strong>(<hidden class="each-dish-id"><%= r.id %></hidden>)  <%= link_to r.name, dish_path(r), class:"each-dish-name" %></strong>
