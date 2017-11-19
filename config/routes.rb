@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     end
   end
   resources :dishes, only: [:show, :index]
+  resources :pictures, only: [:show, :index, :new, :create]
 
   resources :managers do
     member do
@@ -88,6 +89,7 @@ Rails.application.routes.draw do
         get 'export_pdf'
       end
     end
+    resources :pictures
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

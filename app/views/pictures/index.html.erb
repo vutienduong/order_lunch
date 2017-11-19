@@ -1,0 +1,20 @@
+<h1> Picture library </h1>
+
+<%= link_to 'New Image', new_picture_path %>
+<table class="table table-striped">
+  <tr>
+    <th>Name</th>
+    <th>Image</th>
+    <% if is_admin? %>
+    <th colspan="2">Action </th>
+    <% end %>
+  </tr>
+  <% @pictures.each do |p| %>
+      <tr>
+        <td><%= p.name %></td>
+        <td><%= image_tag p.image.url :thumb %></td>
+        <td><%= link_to 'Edit', edit_admin_picture_path(p) %></td>
+        <td><%= link_to 'Delete', admin_picture_path(p), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+      </tr>
+  <% end %>
+</table>
