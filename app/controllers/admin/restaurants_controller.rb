@@ -88,7 +88,7 @@ class Admin::RestaurantsController < Admin::AdminsController
     # unless params[:restaurant][:image_logo].blank?
     #   params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     # end
-    params.require(:restaurant).permit(:name, :address, :phone, :image_logo, :ref_link)
+    params.require(:restaurant).permit(:name, :address, :phone, :image_logo, :ref_link, :description)
   end
 
   def scrap_params
