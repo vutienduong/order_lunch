@@ -1,7 +1,11 @@
-<p><strong>Order Details</strong></p>
-<p><%= @order.user.username %></p>
-<p><%= @order.date %></p>
+<h1>Order Details</h1>
+<p>User: <%= @order.user.username %></p>
+<p>Date: <%= @order.date %></p>
 <p>
-  <%= @order.dishes.map(&:name).join(" , ") %>
+  Dishes: <%= @order.dishes.map(&:name).join(" , ") %>
 </p>
+<br>
 <p><%= link_to 'Delete', admin_order_path(@order), method: :delete %> </p>
+<% if is_admin? %>
+    <%= render partial: 'layouts/components/amend_button_group', locals: {_delete_link: admin_order_path(@order)} %>
+<% end %>
