@@ -1,22 +1,22 @@
-
 <div class="btn-group-vertical" role="group" aria-label="left-menu-label">
-  <%= link_to 'Order for today', order_user_path(session[:user_id]), {type: "button", class: "btn btn-default"} %>
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Info <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <% if is_admin? %>
-        <li><%= link_to 'MANAGE LUNCH TODAY', manage_company_admin_users_path %></li>
-        <li><%= link_to 'MANAGE LUNCH ALL DAYS', manage_all_days_admin_users_path %></li>
-    <% end %>
-    <li><%= link_to 'All orders today', get_all_orders_today_users_path %></li>
+  <%= link_to 'Order for today', order_user_path(session[:user_id]), {type: "button", class: "btn btn-primary"} %>
 
-    <li><%= link_to 'My orders history', orders_show_personal_orders_path %></li>
-    <li role="separator" class="divider"></li>
-    <li><%= link_to "All Users", users_path %></li>
-    <li><%= link_to "All Restaurants", restaurants_path %></li>
-    <li><%= link_to "All Menus", menus_path %></li>
-  </ul>
+  <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+    <!--Info <span class="caret"></span></button>-->
+  <button role="separator" class="divider"></button>
+  <% if is_admin? %>
+      <%= link_to 'MANAGE LUNCH TODAY', manage_company_admin_users_path, class: "btn btn-default" %>
+      <%= link_to 'MANAGE LUNCH ALL DAYS', manage_all_days_admin_users_path, class: "btn btn-default" %>
+  <% end %>
+  <button role="separator" class="divider"></button>
+  <%= link_to 'All orders today', get_all_orders_today_users_path, class: "btn btn-info" %>
+
+  <%= link_to 'My orders history', orders_show_personal_orders_path, class: "btn btn-info" %>
+  <button role="separator" class="divider"></button>
+  <%= link_to "All Users", users_path, class: "btn btn-info" %>
+  <%= link_to "All Restaurants", restaurants_path, class: "btn btn-info" %>
+  <%= link_to "All Menus", menus_path, class: "btn btn-info" %>
+  <%= link_to "All Pictures", pictures_path, class: "btn btn-info" %>
 </div>
 
 
