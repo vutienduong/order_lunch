@@ -186,3 +186,8 @@ tr#highlight-current-user-order {
   width: 228px;
   height: auto;
 }
+
+td, th {
+  word-wrap: break-word;
+  max-width: 350px;
+}
