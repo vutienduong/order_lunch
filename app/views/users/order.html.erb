@@ -10,21 +10,22 @@
     <div class="col-md-8 panel panel-default">
       <div id="all_restaurants" class="tabcontent">
         <div id="today-date" class="panel-heading">
-          <h2><%= Date.today() %></h2>
+          <h2>All restaurants <%= Date.today() %></h2>
         </div>
         <div id="today-menu" class="panel-body">
           <% @menu.restaurants.each do |r| %>
               <div class="media order-restaurant-show">
                 <div class="media-left">
-                  <%= link_to render(partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'restaurant', options: {alt: r.name}}), {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1, img_size: 'thumb'} %>
+                  <%= render partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'restaurant', options: {alt: r.name, img_size: 'thumb'}} %>
                 </div>
-                <div class="media-body"><p class="lead"><%= r.name %></p></div>
+                <div class="media-body"><p class="lead"><%= link_to r.name, {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1, } %></p></div>
               </div>
           <% end %>
         </div>
       </div>
 
       <div id="all_dishes" class="tabcontent">
+        <h2>All dishes <%= Date.today() %></h2>
         <div class="container-fluid">
           <% @dishes.each do |r| %>
               <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: r} %>
@@ -33,6 +34,7 @@
       </div>
 
       <div id="all_orders" class="tabcontent">
+        <h2>All orders <%= Date.today() %></h2>
         <% if defined? @all_orders %>
             <%= render partial: 'users/components/today_all_order_details' %>
         <% else %>
@@ -43,7 +45,7 @@
 
     </div>
 
-    <div id="today-personal" class="col-md-3 col-md-offset-1">
+    <div id="today-personal" class="col-md-4">
       <div id="today-my-order">
         <div id="today-my-order-title">
           <p>Your Order Today

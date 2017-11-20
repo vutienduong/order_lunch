@@ -201,6 +201,25 @@ class UsersController < ApplicationController
   end
 
 
+  def change_password
+    check_user_permission params[:id]
+    @user = User.find params[:id]
+  end
+
+  def confirm_change_password
+    check_user_permission params[:id]
+    valid_params = change_pass_params
+    @user = User.find params[:id]
+    if @user.authenticate valid_params[:old_password]
+      raise MyError::BlankNewPassword if valid_params[:password].blank?
+      valid_params.except! :old_password
+      @user.update valid_params
+      redirect_to user_path @user
+    else
+      raise MyError::WrongOldPassword
+    end
+  end
+
   def test
     #@sql = SQLGenerator.generate_sql
 
@@ -232,7 +251,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :password)
+    params.require(:user).permit(:username, :email, :password, :slack_name)
   end
 
   def add_dish_params
@@ -269,6 +288,10 @@ class UsersController < ApplicationController
 
   def find_order_by_user_id_and_date user_id, date
     Order.where('DATE(date)=?', date).where('user_id = ?', user_id).first
+  end
+
+  def change_pass_params
+    params.require(:user).permit(:old_password, :password)
   end
 end
 
