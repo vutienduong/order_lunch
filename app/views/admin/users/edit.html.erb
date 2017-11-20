@@ -1,4 +1,5 @@
 <h1>[Admin] Edit User</h1>
+<%= link_to 'Change password', change_password_user_path, class:"btn btn-warning" %><br>
 <%= form_for @user, url: admin_user_path do |f| %>
     <p><%= f.label :username %></p>
     <p><%= f.text_field :username %></p> <br>
@@ -6,8 +7,8 @@
     <p><%= f.label :email %></p>
     <p><%= f.text_field :email %></p><br>
 
-    <p><%= f.label :password %></p>
-    <p><%= f.text_field :password %></p><br>
+    <p><%= f.label :slack_name %></p>
+    <p><%= f.text_field :slack_name %></p>
 
     <p><%= f.check_box(:admin, {}, 1, 0) %>
       <%= f.label "Is admin?" %></p>

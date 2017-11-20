@@ -1,7 +1,7 @@
 <div class="dish-media-wrap">
   <div class="media" data-id="<%= r.id %>">
     <div class="media-left">
-      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, restaurant: r, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img"}} %>
+      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, restaurant: r, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img", img_size: 'thumb'}} %>
 
     </div>
     <div class="media-body">

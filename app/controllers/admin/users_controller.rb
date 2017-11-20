@@ -1,5 +1,9 @@
 class Admin::UsersController < Admin::AdminsController
+
   include Scraper
+  include SlackNotification
+  WEBHOOK_URL = 'https://hooks.slack.com/services/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'.freeze
+  require 'swap_word'
 
   def index
     @users = User.all
@@ -132,13 +136,64 @@ class Admin::UsersController < Admin::AdminsController
     @coupon = a['coupon']
   end
 
+  def ping_slack
+    #notifier = Slack::Notifier.new WEBHOOK_URL, channel: "#test-order-lunch", username: "notifier"
+
+    # notifier.ping "Hello Duong"
+    # notifier.ping "Hello order lunch"
+
+    #message = "Hello world, [check](http://example.com) it <a href='http://example.com'>out</a>"
+    # message = "Go to [here](#{ol_link}) to order lunch"
+
+    # message = "<!channel> hey check [this](#{ol_link}) out"
+    # message = Slack::Notifier::Util::LinkFormatter.format(message)
+
+    # link_text = Slack::Notifier::Util::Escape.html("User <duong.vu@employmenthero.com>")
+    # message = "Write to [#{link_text}](mailto:duong.vu@employmenthero.com)"
+    # notifier.ping message
+
+    # notifier.post text: "feeling spooky", icon_emoji: ":ghost:"
+    # notifier.post text: "feeling chimpy", icon_url: "http://static.mailchimp.com/web/favicon.png"
+    #
+    # a_ok_note = {
+    #     fallback: "Everything looks peachy",
+    #     text: "Everything looks peachy",
+    #     color: "good"
+    # }
+    # notifier.post text: "with an attachment", attachments: [a_ok_note]
+
+    # notifier.post text: "please order lunch", at: [:here, :waldo, :Vu_Tien_Duong, "Vu Tien Duong".to_sym]
+
+    #notifier.post text: "hello channel", channel: ["test-order-lunch", "@duong.vu"]
+
+    # notifier = Slack::Notifier.new WEBHOOK_URL do
+    #   middleware :swap_words # setting our stack w/ just defaults
+    # end
+
+    #notifier.ping "hipchat is awesome!"
+    # => pings slack with "slack is awesome!"
+
+    # notifier = Slack::Notifier.new WEBHOOK_URL do
+    #   # here we set new options for the middleware
+    #   middleware swap_words: { pairs: ["hipchat" => "slack",
+    #                                    "awesome" => "really awesome"]}
+    # end
+    #
+    # notifier.ping "hipchat is awesome!"
+
+    #notifier.post text: 'please order lunch', channel: "@duong.vu"
+
+    @result = send_notify_request_order
+    render 'send_notify_result'
+  end
+
 
   private
   def user_params
     if params[:user][:password].blank?
       params[:user].except!(:password)
     end
-    params.require(:user).permit(:username, :email, :password, :admin)
+    params.require(:user).permit(:username, :email, :password, :admin, :slack_name)
   end
 
   def admin_delete_himself? deleted_id

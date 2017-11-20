@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171119031716) do
+ActiveRecord::Schema.define(version: 20171120065523) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20171119031716) do
     t.string   "email"
     t.string   "password_digest"
     t.integer  "admin"
+    t.string   "slack_name"
   end
 
 end

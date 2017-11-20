@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-4">
-    <%= select_tag 'dummy', options_from_collection_for_select(Restaurant.all, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, id: "new-menu-all-restaurants" %>
+    <%= select_tag 'dummy', options_from_collection_for_select(@restaurants, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, size: @display_size, id: "new-menu-all-restaurants" %>
   </div>
   <div class="col-md-2">
     <div class="row">
