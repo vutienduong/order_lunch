@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include MyError::ErrorHandler
 
-  def current_user
-    super || User.new
-  end
+  # def current_user
+  #   super || User.new
+  # end
 end

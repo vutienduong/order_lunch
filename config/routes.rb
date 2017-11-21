@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get 'sessions/new'
 
-  root 'users#index'
+  root 'welcomes#index'
   resources :foods do
     collection do
       get 'export_pdf'

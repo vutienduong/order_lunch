@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   include UsersHelper
   include SQLGenerator
   include UploadImageS3
+  before_action :require_login
 
   STATUS_OK = 'ok'.freeze
   STATUS_FAIL = 'fail'.freeze

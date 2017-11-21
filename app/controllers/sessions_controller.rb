@@ -2,7 +2,11 @@ class SessionsController < ApplicationController
   include SessionsHelper
 
   def new
-    render 'new'
+    if logged_in?
+      render 'welcomes/index'
+    else
+      render 'new'
+    end
   end
 
   def create
