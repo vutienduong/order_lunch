@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   get '/404', to: 'errors#not_found'
   get '/500', to: 'errors#internal_server_error'
+  get '/help', to: 'users#help'
   #get 'not_visible', to: 'home#not_visible'
 
   resources :users, only: [:show, :index, :edit, :update] do
@@ -63,6 +64,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :comments, only: [:new, :index, :create, :show]
+
   namespace :admin do
     resources :menus
     resources :users do
@@ -75,6 +78,7 @@ Rails.application.routes.draw do
         get 'export_manage_pdf'
         get 'scrap_data'
         get 'ping_slack'
+        get 'add_initial_user'
       end
     end
     resources :dishes
@@ -93,6 +97,7 @@ Rails.application.routes.draw do
       end
     end
     resources :pictures
+    resources :comments
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

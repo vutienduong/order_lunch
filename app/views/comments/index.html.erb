@@ -1,0 +1,19 @@
+<h1>Feedbacks</h1>
+
+<ul class="media-list">
+  <% @comments.each do |comment| %>
+      <li class="media">
+        <div class="media-body">
+          <h4 class="media-heading"><%= comment.title %></h4>
+          <%= comment.content %>
+        </div>
+        <div class="pull-right" href="#">
+          <%= "in #{comment.date}, by" %> <strong><%= comment.author.username %></strong>
+        </div>
+      </li>
+  <% end %>
+</ul>
+
+
+<%= link_to 'New feedback', new_comment_path, class:"btn btn-default" %>
+

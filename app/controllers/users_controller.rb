@@ -184,8 +184,13 @@ class UsersController < ApplicationController
   def copy_order
     copy_info_params
     current_order_id = session[:today_order_id]
-    @dish_orders = DishOrder.where(order_id: current_order_id).all
-    @dish_orders.each {|d| d.destroy}
+    if current_order_id.blank? || @order = Order.find_by(id: current_order_id).blank?
+      @order = Order.create user_id: session[:user_id], date: Date.today
+      current_order_id = @order.id
+    else
+      @dish_orders = DishOrder.where(order_id: current_order_id).all
+      @dish_orders.each {|d| d.destroy}
+    end
 
     # add all copied dishes follow copied user
     unless params[:copy_info][:dish_ids].blank?
@@ -196,7 +201,7 @@ class UsersController < ApplicationController
     end
 
     # update note
-    @order = Order.find(current_order_id)
+    #@order = Order.find(current_order_id)
     @order.update_attributes(note: params[:copy_info][:note]) unless @order.blank?
     redirect_to order_user_path(session[:user_id])
   end
@@ -243,6 +248,10 @@ class UsersController < ApplicationController
   end
 
   def get_dish
+  end
+
+  def help
+    render 'help'
   end
 
   private
