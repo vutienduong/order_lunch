@@ -1,6 +1,6 @@
 class CreateDishComponents < ActiveRecord::Migration
   def change
-    create_table :salad_components do |t|
+    create_table :dish_components do |t|
       t.string :name
       t.string :type
       t.references :dish, index: true, foreign_key: true
