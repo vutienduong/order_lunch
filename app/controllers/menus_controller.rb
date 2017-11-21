@@ -1,4 +1,5 @@
 class MenusController < ApplicationController
+  before_action :require_login
   def index
     @menus = Menu.all
   end

@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   include MyError
+  before_action :require_login
   def index
     @comments = Comment.all
     @comment = Comment.new
