@@ -1,5 +1,8 @@
 class Admin::MenusController < Admin::AdminsController
   def new
+    @restaurants = Restaurant.all
+    len = @restaurants.length
+    @display_size = len < 20 ? len : 20
     @menu = Menu.new
     @dummy = {dummy: nil}
   end
@@ -12,6 +15,9 @@ class Admin::MenusController < Admin::AdminsController
 
   def edit
     @menu = Menu.find(params[:id])
+    @restaurants = Restaurant.all
+    len = @restaurants.length
+    @display_size = len < 20 ? len : 20
   end
 
   def update
