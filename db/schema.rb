@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171120065523) do
+ActiveRecord::Schema.define(version: 20171120103505) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20171120065523) do
     t.string   "image_logo_content_type"
     t.integer  "image_logo_file_size"
     t.datetime "image_logo_updated_at"
+    t.boolean  "sizeable"
+    t.boolean  "componentable"
   end
 
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
@@ -103,6 +105,26 @@ ActiveRecord::Schema.define(version: 20171120065523) do
     t.string   "ref_link"
     t.text     "description"
   end
+
+  create_table "salad_components", force: :cascade do |t|
+    t.string   "name"
+    t.string   "type"
+    t.integer  "dish_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "salad_components", ["dish_id"], name: "index_salad_components_on_dish_id"
+
+  create_table "sized_prices", force: :cascade do |t|
+    t.string   "size"
+    t.decimal  "price"
+    t.integer  "dish_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sized_prices", ["dish_id"], name: "index_sized_prices_on_dish_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
