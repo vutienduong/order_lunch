@@ -1,0 +1,5 @@
+<%= simple_form_for @picture, url: url do |f| %>
+    <%= f.input :name %>
+    <%= f.input :image, as: :file %>
+    <%= f.button :submit %>
+<% end %>

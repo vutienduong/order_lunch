@@ -4,6 +4,7 @@ class Admin::RestaurantsController < Admin::AdminsController
   FOODY_HOST = 'www.foody.vn'
   MISSING_LINK_MSG = 'Can\' scrap because missing Foody link'.freeze
   NOT_FOODY_MGS = 'Reference link of resraurant is not belonged to Foody provider'
+  NO_DISH_IMG_PATTERN = 'deli-dish-no-image.png'
 
   def new
     @restaurant = Restaurant.new
@@ -70,7 +71,7 @@ class Admin::RestaurantsController < Admin::AdminsController
               price: (dish['price'].to_d)*1000,
               description: dish['dish_desc'],
               restaurant: @restaurant)
-          adish.image_logo_remote_url = dish['img_src']
+          adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
           adish.save
           adish
         end
@@ -88,7 +89,7 @@ class Admin::RestaurantsController < Admin::AdminsController
     # unless params[:restaurant][:image_logo].blank?
     #   params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     # end
-    params.require(:restaurant).permit(:name, :address, :phone, :image_logo, :ref_link)
+    params.require(:restaurant).permit(:name, :address, :phone, :image_logo, :ref_link, :description)
   end
 
   def scrap_params

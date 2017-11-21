@@ -5,7 +5,7 @@
       </div>
 
       <div class="media-body">
-        <div class="media-heading"><strong><%= d.name %></strong> (<%= d.price %>)</div>
+        <div class="media-heading"><strong><%= link_to d.name, dishes_path(d)%></strong> (<%= d.price %>)</div>
         <%= d.description %>
       </div>
       <% if is_admin? %>

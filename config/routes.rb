@@ -23,6 +23,8 @@ Rails.application.routes.draw do
       post 'edit_note'
       post 'save_order'
       post 'add_dish'
+      get 'change_password'
+      patch 'confirm_change_password'
     end
 
     collection do
@@ -51,6 +53,7 @@ Rails.application.routes.draw do
     end
   end
   resources :dishes, only: [:show, :index]
+  resources :pictures, only: [:show, :index, :new, :create]
 
   resources :managers do
     member do
@@ -71,6 +74,7 @@ Rails.application.routes.draw do
         post 'manage_all_days', to: 'users#manage_all'
         get 'export_manage_pdf'
         get 'scrap_data'
+        get 'ping_slack'
       end
     end
     resources :dishes
@@ -88,6 +92,7 @@ Rails.application.routes.draw do
         get 'export_pdf'
       end
     end
+    resources :pictures
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

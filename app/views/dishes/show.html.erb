@@ -1,14 +1,31 @@
 <div class="row">
-  <p>DISH DETAIL</p>
-  <div class="col-md-4">
-    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @dish.image, restaurant: @dish, size: [120, 120], object: 'dish', options: {alt: @dish.name, img_size: 'original'}} %>
+  <div class="col-md-8">
+  <h1>DISH DETAILS</h1>
+  <%= render partial: 'layouts/components/image_tag_inline', locals: {image: @dish.image, restaurant: @dish, size: [120, 120], object: 'dish', options: {alt: @dish.name, img_size: 'medium'}} %>
+  <table class="table">
+    <tr>
+      <td>Name</td>
+      <td><%= @dish.name %></td>
+    </tr>
 
-    <p class="text-uppercase"><%= @dish.name %></p>
-    <strong><%= @dish.price %></strong>
-    <p><%= link_to @dish.restaurant.name, restaurant_path(@dish.restaurant) %></p>
-    <p><%= @dish.description %></p>
-    <% if is_admin? %>
-        <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>
-    <% end %>
-  </div>
+    <tr>
+      <td>Price</td>
+      <td><%= @dish.price %></td>
+    </tr>
+
+    <tr>
+      <td>Restaurant</td>
+      <td><%= link_to @dish.restaurant.name, restaurant_path(@dish.restaurant) %></td>
+    </tr>
+
+    <tr>
+      <td>Description:</td>
+      <td><%= @dish.description %></td>
+    </tr>
+  </table>
+  <% if is_admin? %>
+      <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>
+  <% end %>
 </div>
+</div>
+

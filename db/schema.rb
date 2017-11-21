@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171117060542) do
+ActiveRecord::Schema.define(version: 20171120065523) do
 
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(version: 20171117060542) do
   add_index "orders_dishes", ["dish_id"], name: "index_orders_dishes_on_dish_id"
   add_index "orders_dishes", ["order_id"], name: "index_orders_dishes_on_order_id"
 
+  create_table "pictures", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.string   "name"
     t.text     "address"
@@ -91,6 +101,7 @@ ActiveRecord::Schema.define(version: 20171117060542) do
     t.integer  "image_logo_file_size"
     t.datetime "image_logo_updated_at"
     t.string   "ref_link"
+    t.text     "description"
   end
 
   create_table "users", force: :cascade do |t|
@@ -100,6 +111,7 @@ ActiveRecord::Schema.define(version: 20171117060542) do
     t.string   "email"
     t.string   "password_digest"
     t.integer  "admin"
+    t.string   "slack_name"
   end
 
 end

@@ -3,17 +3,20 @@
     <%= link_to "EH Order Lunch", root_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "Help", '#' %></li>
         <% if logged_in? %>
-            <li><%= link_to "Users", '#' %></li>
+            <li><%= link_to "Home", order_user_path(current_user) %></li>
+            <li><%= link_to "Users", users_path %></li>
+            <% if is_admin? %>
+                <li><%= link_to "PING SLACK", ping_slack_admin_users_path %></li>
+            <% end %>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Account <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
-                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "Hello!  #{current_user.email}", current_user %></li>
                 <li><%= link_to "Settings", '#' %></li>
+
                 <% if current_user.admin? %>
                     <li><%= link_to "Manager Page", manage_admin_users_path %></li>
                 <% end %>
