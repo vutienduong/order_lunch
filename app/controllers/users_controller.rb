@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   include UsersHelper
   include SQLGenerator
   include UploadImageS3
+  before_action :require_login
 
   STATUS_OK = 'ok'.freeze
   STATUS_FAIL = 'fail'.freeze
@@ -110,7 +111,8 @@ class UsersController < ApplicationController
     @order = find_order_by_user_id_and_date user_id, date
     if @order.blank?
       @order = Order.create!(user_id: user_id, date: date)
-      msg = success_msg
+      @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
+      msg = @order_dish.save ? success_msg : fail_msg
     else
       @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
       msg = @order_dish.save ? success_msg : fail_msg
@@ -183,8 +185,13 @@ class UsersController < ApplicationController
   def copy_order
     copy_info_params
     current_order_id = session[:today_order_id]
-    @dish_orders = DishOrder.where(order_id: current_order_id).all
-    @dish_orders.each {|d| d.destroy}
+    if current_order_id.blank? || @order = Order.find_by(id: current_order_id).blank?
+      @order = Order.create user_id: session[:user_id], date: Date.today
+      current_order_id = @order.id
+    else
+      @dish_orders = DishOrder.where(order_id: current_order_id).all
+      @dish_orders.each {|d| d.destroy}
+    end
 
     # add all copied dishes follow copied user
     unless params[:copy_info][:dish_ids].blank?
@@ -195,7 +202,7 @@ class UsersController < ApplicationController
     end
 
     # update note
-    @order = Order.find(current_order_id)
+    #@order = Order.find(current_order_id)
     @order.update_attributes(note: params[:copy_info][:note]) unless @order.blank?
     redirect_to order_user_path(session[:user_id])
   end
@@ -242,6 +249,10 @@ class UsersController < ApplicationController
   end
 
   def get_dish
+  end
+
+  def help
+    render 'help'
   end
 
   private

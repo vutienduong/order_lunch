@@ -2,8 +2,9 @@ class Admin::RestaurantsController < Admin::AdminsController
   include Scraper
   include MyError
   FOODY_HOST = 'www.foody.vn'
+  THUAN_KIEU_HOST = 'comtamthuankieu.com.vn'
   MISSING_LINK_MSG = 'Can\' scrap because missing Foody link'.freeze
-  NOT_FOODY_MGS = 'Reference link of resraurant is not belonged to Foody provider'
+  NOT_REGISTERED_MGS = 'Reference link of resraurant is not belonged to registered provider'
   NO_DISH_IMG_PATTERN = 'deli-dish-no-image.png'
 
   def new
@@ -79,8 +80,34 @@ class Admin::RestaurantsController < Admin::AdminsController
       rescue => e
         @log[:exception] = e.message
       end
+
+    elsif URI(res_url).host.include? THUAN_KIEU_HOST
+      pre_url = File.join(res_url, '?page=')
+      full_urls = ['1', '2'].map {|n| pre_url + n}
+      @dishes = []
+      full_urls.each do |full_url|
+        a = Scraper::Thuan_Kieu_Scraper.new.crawl full_url
+        @dishes = @dishes + a['dishes']
+      end
+
+      @dishes.each{|d| d['price'].gsub!(' VND', '').gsub!(',', '')}
+
+      begin
+        @dishes = @dishes.map do |dish|
+          adish = Dish.create(
+              name: dish['dish_name'],
+              price: dish['price'].to_d,
+              restaurant: @restaurant)
+          adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+          adish.save
+          adish
+        end
+        @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
+      rescue => e
+        @log[:exception] = e.message
+      end
     else
-      raise MyError::CreateFailError.new NOT_FOODY_MGS
+      raise MyError::CreateFailError.new NOT_REGISTERED_MGS
     end
   end
 
