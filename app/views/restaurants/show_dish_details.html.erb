@@ -1,17 +1,27 @@
 <h1><%= @restaurant.name %></h1>
-<table class="table">
-  <tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Description</th>
-    <th>Action</th>
-  </tr>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-1 col-lg-1 col-xs-1"></div>
+    <div class="col-md-10 col-lg-10 col-xs-10">
   <% @restaurant.dishes.each do |d| %>
-  <tr>
-    <td><%= d.name %></td>
-    <td><%= d.price %></td>
-    <td><%= d.description %></td>
-    <td><%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id} %></td>
-  </tr>
+      <div class="row">
+        <div class="dish-media-wrap">
+          <div class="media">
+            <div class="media-left">
+              <%= render partial: 'layouts/components/image_tag_inline', locals: {image: d.image, restaurant: d, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img", img_size: 'thumb'}} %>
+            </div>
+            <div class="media-body">
+              <strong><%= link_to d.name, dish_path(d), class: "each-dish-name" %></strong>
+              <p class="each-dish-price"><%= d.price %></p>
+            </div>
+            <div class="media-right">
+              <%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id}, class: "btn btn-default glyphicon glyphicon-plus" %>
+            </div>
+          </div>
+        </div>
+      </div>
   <% end %>
-</table>
+    </div>
+    <div class="col-md-1 col-lg-1 col-xs-1"></div>
+  </div>
+</div>

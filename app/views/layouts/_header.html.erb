@@ -5,7 +5,7 @@
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>
             <li><%= link_to "Home", order_user_path(current_user) %></li>
-            <li><%= link_to "Users", users_path %></li>
+            <li><%= link_to "How to use", help_path %></li>
             <% if is_admin? %>
                 <li><%= link_to "PING SLACK", ping_slack_admin_users_path %></li>
             <% end %>

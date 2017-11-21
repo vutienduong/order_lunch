@@ -1,6 +1,7 @@
 <h1>List Users</h1>
 <% if is_admin_local %>
-    <%= link_to 'New User', new_admin_user_path, class: "btn btn-primary" %>
+    <%= link_to 'Add initial users', add_initial_user_admin_users_path, class: 'btn btn-warning' %>
+    <span>      </span><%= link_to 'New User', new_admin_user_path, class: "btn btn-primary" %>
 <% end %>
 <table class="table table-hover table-striped">
   <tr>

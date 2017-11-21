@@ -187,6 +187,39 @@ class Admin::UsersController < Admin::AdminsController
     render 'send_notify_result'
   end
 
+  def add_initial_user
+    user_list = [{username: 'Nguyen Tran Viet Dung', email: 'dung.nguyen@employmenthero.com', password: '1', admin: false, slack_name: 'dung.nguyen'},
+                 {username: 'Hong Tang Phu', email: 'phu.tanghong@employmenthero.com', password: '1', admin: false, slack_name: 'phu.tanghong'},
+                 {username: 'Son Tran', email: 'son.tran@employmenthero.com', password: '1', admin: false, slack_name: 'son.tran'},
+                 {username: 'Nguyen Minh Dang', email: 'dang.nguyen@employmenthero.com', password: '1', admin: false, slack_name: 'dang.nguyen'},
+                 {username: 'Truong Quang Vu', email: 'vu.truong@employmenthero.com', password: '1', admin: false, slack_name: 'vu.truong'},
+                 {username: 'Pham Chan Hung', email: 'hung.pham@employmenthero.com', password: '1', admin: false, slack_name: 'hung.pham'},
+                 {username: 'Truong Anh Tu', email: 'tu.truong@employmenthero.com', password: '1', admin: false, slack_name: 'tu.truong'},
+                 {username: 'Dao Van Hau', email: 'hau.dao@employmenthero.com', password: '1', admin: false, slack_name: 'hau.dao'},
+                 {username: 'Trinh Xuan Son', email: 'son.trinh@employmenthero.com', password: '1', admin: false, slack_name: 'son.trinh'},
+                 {username: 'Thai Vo', email: 'thai.vo@employmenthero.com', password: '1', admin: false, slack_name: 'thai.vo'},
+                 {username: 'Thai Viet Khoa', email: 'khoa.thai@employmenthero.com', password: '1', admin: false, slack_name: 'khoa.thai'},
+                 {username: 'Hoang Van Vinh', email: 'vinh.hoang@employmenthero.com', password: '1', admin: false, slack_name: 'vinh.hoang'},
+                 {username: 'Tran Duc Anh', email: 'anh.tran@employmenthero.com', password: '1', admin: false, slack_name: 'anh.tran'},
+                 {username: 'Bui Kim Thu', email: 'kimthu.bui@employmenthero.com', password: '1', admin: false, slack_name: 'kimthu.bui'},
+                 {username: 'Tran Phuoc Viet', email: 'viet.tran@employmenthero.com', password: '1', admin: false, slack_name: 'viet.tran'},
+                 {username: 'Tran Manh Hoang', email: 'hoang.tran@employmenthero.com', password: '1', admin: false, slack_name: 'hoang.tran'},
+                 {username: 'Vu Tien Duong', email: 'duong.vu@employmenthero.com', password: '1', admin: false, slack_name: 'duong.vu'},
+    #{username: '', email: '@employmenthero.com', password: '1', admin: false, slack_name: ''}
+    ]
+    @success = []
+    @fail = []
+
+    user_list.each do |user|
+      auser = User.new user
+      if auser.save
+        @success.push user[:username]
+      else
+        @fail.push user[:username]
+      end
+    end
+  end
+
 
   private
   def user_params
