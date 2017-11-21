@@ -110,7 +110,8 @@ class UsersController < ApplicationController
     @order = find_order_by_user_id_and_date user_id, date
     if @order.blank?
       @order = Order.create!(user_id: user_id, date: date)
-      msg = success_msg
+      @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
+      msg = @order_dish.save ? success_msg : fail_msg
     else
       @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
       msg = @order_dish.save ? success_msg : fail_msg
