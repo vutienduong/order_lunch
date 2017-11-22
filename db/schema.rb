@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121051010) do
+ActiveRecord::Schema.define(version: 20171122071743) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -45,9 +45,17 @@ ActiveRecord::Schema.define(version: 20171121051010) do
     t.datetime "image_logo_updated_at"
     t.boolean  "sizeable"
     t.boolean  "componentable"
+    t.integer  "tags_id"
   end
 
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
+  add_index "dishes", ["tags_id"], name: "index_dishes_on_tags_id"
+
+  create_table "dishes_tags", force: :cascade do |t|
+    t.integer "tags_id"
+    t.integer "dish_id"
+    t.integer "tag_id"
+  end
 
   create_table "foods", force: :cascade do |t|
     t.text     "title"
@@ -136,6 +144,13 @@ ActiveRecord::Schema.define(version: 20171121051010) do
   end
 
   add_index "sized_prices", ["dish_id"], name: "index_sized_prices_on_dish_id"
+
+  create_table "tags", force: :cascade do |t|
+    t.string  "name"
+    t.integer "dishes_id"
+  end
+
+  add_index "tags", ["dishes_id"], name: "index_tags_on_dishes_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

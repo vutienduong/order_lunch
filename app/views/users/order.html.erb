@@ -1,34 +1,58 @@
-<%= Date.today() %>
+<h2>All dishes <%= Date.today() %></h2>
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'all_restaurants')">All Restaurants</button>
-  <button class="tablinks" onclick="openCity(event, 'all_dishes')">All dishes</button>
+  <button class="tablinks" onclick="openCity(event, 'all_dishes')">DISHES</button>
   <button class="tablinks" onclick="openCity(event, 'all_orders')">All orders</button>
 </div>
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 panel panel-default">
-      <div id="all_restaurants" class="tabcontent" style="display:block;">
-        <div id="today-date" class="panel-heading">
-          <h2>All restaurants <%= Date.today() %></h2>
+      <div id="all_dishes" class="tabcontent" style="display:block;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Restaurants
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <% @menu.restaurants.each do |r| %>
+                <li>
+                  <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>)"><%= r.name %></a>
+                </li>
+            <% end %>
+          </ul>
         </div>
-        <div id="today-menu" class="panel-body">
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Tags
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <% @tags.each do |tag| %>
+                <li>
+                  <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="tag_tab_#{tag[0].blank? ? 'Others' : tag[0].id.to_s}" %>)"><%= tag[0].blank? ? 'nil' : tag[0].name %></a>
+                </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="row">
           <% @menu.restaurants.each do |r| %>
-              <div class="media order-restaurant-show">
-                <div class="media-left">
-                  <%= render partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'restaurant', options: {alt: r.name, img_size: 'thumb'}} %>
-                </div>
-                <div class="media-body"><p class="lead"><%= link_to r.name, {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1, } %></p></div>
+              <div id=<%= 'restaurant_tab_'+ r.id.to_s %> class="restaurant-tabcontent">
+                <% r.dishes.each do |d| %>
+                    <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
+                <% end %>
               </div>
           <% end %>
         </div>
-      </div>
 
-      <div id="all_dishes" class="tabcontent">
-        <h2>All dishes <%= Date.today() %></h2>
-        <div class="container-fluid">
-          <% @dishes.each do |r| %>
-              <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: r} %>
+        <div class="row">
+          <% @tags.each do |tag| %>
+              <div id=<%= tag[0].blank? ? 'tag_tab_nil' : "tag_tab_#{tag[0].id.to_s}" %> class="restaurant-tabcontent">
+                <% tag[1].each do |d| %>
+                    <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d[0]} %>
+                <% end %>
+              </div>
           <% end %>
         </div>
       </div>
@@ -40,7 +64,6 @@
         <% else %>
             <h3> No permission</h3>
         <% end %>
-
       </div>
 
     </div>
