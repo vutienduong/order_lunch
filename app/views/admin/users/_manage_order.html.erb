@@ -14,6 +14,7 @@
     <th>Order ID</th>
     <th>Username</th>
     <th>Dishes</th>
+    <th>Note</th>
     <th>Total price</th>
   </tr>
   <% if @presenter.has_key? :today_order %>
@@ -23,6 +24,7 @@
             <td><%= link_to order.id, admin_order_path(order) %></td>
             <td><%= order.user.username %></td>
             <td><%= order.dishes.map(&:name).join(" , ") %></td>
+            <td><%= order.note %></td>
             <td><%= display_cost_as_thousand(order.dishes.inject(0) {|sum, e| sum + e.price}) %></td>
           </tr>
       <% end %>

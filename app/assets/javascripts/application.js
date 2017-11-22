@@ -61,6 +61,10 @@ function openCity(evt, cityName) {
     evt.currentTarget.className += " active";
 }
 
+function showDishesForRetaurant(evt, restaurantName) {
+
+}
+
 function showPrice(dish) {
     alert(dish)
     var dishPrice = dish.getAttribute("data-price");
