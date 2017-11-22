@@ -1,0 +1,99 @@
+<%= Date.today() %>
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'all_restaurants')">All Restaurants</button>
+  <button class="tablinks" onclick="openCity(event, 'all_dishes')">All dishes</button>
+  <button class="tablinks" onclick="openCity(event, 'all_orders')">All orders</button>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 panel panel-default">
+      <div id="all_restaurants" class="tabcontent" style="display:block;">
+        <div id="today-date" class="panel-heading">
+          <h2>All restaurants <%= Date.today() %></h2>
+        </div>
+        <div id="today-menu" class="panel-body">
+          <% @menu.restaurants.each do |r| %>
+              <div class="media order-restaurant-show">
+                <div class="media-left">
+                  <%= render partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'restaurant', options: {alt: r.name, img_size: 'thumb'}} %>
+                </div>
+                <div class="media-body">
+                  <p class="lead"><%= link_to r.name, {controller: 'users', action: 'select_dish', id: r.id, :select_dish => 1, } %></p>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="all_dishes" class="tabcontent">
+        <h2>All dishes <%= Date.today() %></h2>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="btn-group-vertical">
+                <% @menu.restaurants.each do |r| %>
+                    <button class="restaurant-tablinks btn btn-default" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>)"><%= r.name %></button>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <% @menu.restaurants.each do |r| %>
+                  <div id=<%= 'restaurant_tab_'+ r.id.to_s %> class="restaurant-tabcontent">
+                    <% r.dishes.each do |d| %>
+                        <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
+                    <% end %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="all_orders" class="tabcontent">
+        <h2>All orders <%= Date.today() %></h2>
+        <% if defined? @all_orders %>
+            <%= render partial: 'users/components/today_all_order_details' %>
+        <% else %>
+            <h3> No permission</h3>
+        <% end %>
+      </div>
+
+    </div>
+
+    <div id="today-personal" class="col-md-4">
+      <div id="today-my-order">
+        <div id="today-my-order-title">
+          <p>Your Order Today
+            (id:
+            <hidden id="today-my-order-user-id"><%= session[:user_id] %></hidden>
+            )
+          </p>
+        </div>
+
+
+        <div id="today-my-order-content">
+          <% unless @today_order.blank? %>
+              <% @today_order.dishes.each do |r| %>
+                  <%= render partial: 'dishes/media_style/today_dish_media_style', locals: {r: r} %>
+              <% end %>
+          <% end %>
+        </div>
+
+        <%= render partial: 'users/components/today_order_edit_note_form' %>
+        <!-- for Note -->
+
+        <div class="row">
+          <p>Total: <strong><span id="total_price_today"><%= @total_price %></span></strong></p>
+          <h4 id="total-price-warning"></h4>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <%= render partial: 'dishes/media_style/today_dish_template_media_style' %>
+
+</div>
+</div>
+<%= render partial: 'users/components/today_order_edit_note_modal' %>

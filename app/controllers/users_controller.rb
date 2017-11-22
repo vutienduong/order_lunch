@@ -53,11 +53,27 @@ class UsersController < ApplicationController
       @dishes = []
       @menu.restaurants.each {|r| @dishes.push(r.dishes)}
       @dishes.flatten!
+
+      @tags = collect_follow_tags @dishes
       @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
     end
 
     # all orders
     @all_orders = Order.where('DATE(date)=?', Date.today)
+  end
+
+
+  def collect_follow_tags dishes
+    tags = {}
+    dishes.group_by(&:tags).each do |tag, dish|
+      name = tag.first
+      tags[name] = [] unless tags[name]
+      tags[name].push dish
+    end
+    tags
+  end
+
+  def cluster_follow_tags dishes
   end
 
   def get_all_orders_today

@@ -62,19 +62,31 @@ class Admin::RestaurantsController < Admin::AdminsController
 
     if URI(res_url).host.eql? FOODY_HOST
       a = Scraper::FoodyScraper.new.crawl full_url
-
-      @dishes = a['dishes']
-      @coupon = a['coupon']
       begin
-        @dishes = @dishes.map do |dish|
-          adish = Dish.create(
-              name: dish['dish_name'],
-              price: (dish['price'].to_d)*1000,
-              description: dish['dish_desc'],
-              restaurant: @restaurant)
-          adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
-          adish.save
-          adish
+        tags = a['tags']
+        tags.each do |tag|
+          tag_name = tag['tag_name']
+          tag_obj = Tag.find_by name: tag_name
+          tag_obj = tag_obj || Tag.create(name: tag_name)
+
+          @dishes = tag['dishes']
+          @dishes = @dishes.map do |dish|
+            if adish = Dish.where(name: dish['dish_name']).where(restaurant_id: @restaurant.id).first
+              old_tags = adish.tags
+              new_tags = (old_tags.include? tag_obj) ? old_tags : old_tags.push(tag_obj)
+              adish.update tags: new_tags
+              adish.save
+            else
+              adish = Dish.create(
+                  name: dish['dish_name'],
+                  price: (dish['price'].to_d)*1000,
+                  description: dish['dish_desc'],
+                  restaurant: @restaurant, tags: [tag_obj])
+              adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+              adish.save
+            end
+            adish
+          end
         end
         @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
       rescue => e
@@ -90,7 +102,7 @@ class Admin::RestaurantsController < Admin::AdminsController
         @dishes = @dishes + a['dishes']
       end
 
-      @dishes.each{|d| d['price'].gsub!(' VND', '').gsub!(',', '')}
+      @dishes.each {|d| d['price'].gsub!(' VND', '').gsub!(',', '')}
 
       begin
         @dishes = @dishes.map do |dish|

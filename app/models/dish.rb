@@ -12,6 +12,8 @@ class Dish < ActiveRecord::Base
   has_many :dish_orders
   has_many :orders, through: :dish_orders
 
+  has_and_belongs_to_many :tags
+
   has_attached_file :image_logo, styles: {
       thumb: '100x100>',
       square: '200x200#',

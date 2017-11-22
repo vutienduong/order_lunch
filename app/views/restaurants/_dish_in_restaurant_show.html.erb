@@ -4,6 +4,7 @@
     </div>
     <div class="media-body">
       <p><strong><%= link_to d.name, dish_path(d) %></strong>(<%= display_cost_as_thousand(d.price) %>)</p>
+      <p><%= d.tags.map(&:name).join(', ') %></p>
       <p class="item-long-content"><%= d.description %></p>
     </div>
 

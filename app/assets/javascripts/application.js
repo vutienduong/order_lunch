@@ -62,7 +62,21 @@ function openCity(evt, cityName) {
 }
 
 function showDishesForRetaurant(evt, restaurantName) {
+    var i, tabcontent, tablinks;
 
+    tabcontent = document.getElementsByClassName("restaurant-tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("restaurant-tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    //document.getElementById(restaurantName).style.display = "block";
+    restaurantName.style.display = "block";
+    evt.currentTarget.className += " active";
 }
 
 function showPrice(dish) {
