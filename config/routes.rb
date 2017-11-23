@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/404', to: 'errors#not_found'
   get '/500', to: 'errors#internal_server_error'
   get '/help', to: 'users#help'
+  get '/new_update', to: 'users#new_update'
   #get 'not_visible', to: 'home#not_visible'
 
   resources :users, only: [:show, :index, :edit, :update] do
