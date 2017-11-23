@@ -11,10 +11,11 @@ var ChosenDishTr = (function () {
     }
 
     var createDishTr = function (dish_obj) {
-        var new_dish = $("<tr><td></td><td></td></tr>")
+        var new_dish = $("<tr><td></td><td></td><td></td></tr>")
 
         $(new_dish.children()[0]).text(dish_obj["id"]).data("price", dish_obj["price"])
         $(new_dish.children()[1]).text(dish_obj["name"])
+        $(new_dish.children()[2]).text(dish_obj["price"])
 
         createRemoveBtn(new_dish, dish_obj["price"]);
         return new_dish
@@ -30,6 +31,13 @@ var ChosenDishTr = (function () {
         parent.append(remove_btn)
     }
 
+    var removeItSelf = function (){
+        self = event.srcElement
+        reduceCostInTotal(self);
+        $(self).closest('tr').remove();
+        return false;
+    }
+
     var reduceCostInTotal = function (dish) {
         $("#order-new-total-price").text(parseInt($("#order-new-total-price").text()) - parseInt($(dish).data("price")));
     }
@@ -37,6 +45,7 @@ var ChosenDishTr = (function () {
     return {
         createDishTr: createDishTr,
         addDish: addDish,
+        removeItSelf: removeItSelf,
     }
 })();
 
