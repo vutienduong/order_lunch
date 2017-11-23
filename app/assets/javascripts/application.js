@@ -104,10 +104,10 @@ function setCurrentButtonSameAsSelectedName(evt) {
     }
 }
 
-/*function hiddenOtherTags(restaurantName) {
-    $('a[id^="tag_tab_link_"]').hide()
+function hiddenOtherTags(restaurantName) {
+    $("a[id^=\"tag_tab_link_\"]").hide()
     $("a[id^=\"" + restaurantName + "\"]").show()
-}*/
+}
 
 function showPrice(dish) {
     alert(dish)
