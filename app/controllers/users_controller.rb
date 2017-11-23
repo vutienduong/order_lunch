@@ -51,13 +51,11 @@ class UsersController < ApplicationController
       session[:today_order] = @today_order.blank? ? nil : @today_order
       session[:today_order_id] = session[:today_order].blank? ? nil : session[:today_order]['id']
 
-      # @dishes = []
-      # @menu.restaurants.each {|r| @dishes.push(r.dishes)}
-      # @dishes.flatten!
-      # @tags = collect_follow_tags @dishes
+      @dishes = []
+      @menu.restaurants.each {|r| @dishes.push(r.dishes)}
+      @dishes.flatten!
 
-      @r_tags = collect_follow_tags_for_each_restaurant @menu
-
+      @tags = collect_follow_tags @dishes
       @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
     end
 
@@ -76,18 +74,7 @@ class UsersController < ApplicationController
     tags
   end
 
-  def collect_follow_tags_for_each_restaurant menu
-    r_tags = {}
-    menu.restaurants.each do |restaurant|
-      temp_tag = {}
-      restaurant.dishes.group_by(&:tags).each do |tag, dish|
-        name = tag.first
-        temp_tag[name] = [] unless temp_tag[name]
-        temp_tag[name].push dish
-      end
-      r_tags[restaurant.id.to_s] = temp_tag
-    end
-    r_tags
+  def cluster_follow_tags dishes
   end
 
   def get_all_orders_today
