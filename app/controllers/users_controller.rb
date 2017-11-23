@@ -24,12 +24,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    check_modified_user_permission params[:id].to_i
+    check_modified_user_permission params[:id]
     @user = retrieve_user params[:id]
   end
 
   def update
-    check_modified_user_permission params[:id].to_i
+    check_modified_user_permission params[:id]
     @user = retrieve_user params[:id]
     raise MyError::UpdateFailError unless @user.update(user_params)
     redirect_to user_path(@user)
@@ -270,6 +270,10 @@ class UsersController < ApplicationController
 
   def help
     render 'help'
+  end
+
+  def new_update
+    render 'new_update'
   end
 
   private
