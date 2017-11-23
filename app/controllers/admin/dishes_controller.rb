@@ -2,6 +2,7 @@ class Admin::DishesController < Admin::AdminsController
   def new
     raise MyError::NonExistRecordError unless Restaurant.find_by(id: params.permit(:id)[:id])
     @dish = Dish.new(restaurant_id: params[:id])
+    @tags = Tag.all
   end
 
   def create

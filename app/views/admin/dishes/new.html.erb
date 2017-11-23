@@ -9,8 +9,6 @@
     <p><%= f.label :image_logo %></p>
     <p><%= f.file_field :image_logo%></p>
 
-    <p><%= f.label :tag %></p>
-    <%= f.select_tag :tags, options_from_collection_for_select(@tag, 'id', 'name') %>
 
     <p><%= f.hidden_field :restaurant_id %> <!--TODO: dont hidden here-->
     <p><%= f.submit %></p>
