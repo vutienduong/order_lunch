@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   include UsersHelper
   include SQLGenerator
   include UploadImageS3
+  include UserPermissionUtility
   before_action :require_login
 
   STATUS_OK = 'ok'.freeze
@@ -23,12 +24,12 @@ class UsersController < ApplicationController
   end
 
   def edit
-    check_user_permission params[:id].to_i
+    check_modified_user_permission params[:id].to_i
     @user = retrieve_user params[:id]
   end
 
   def update
-    check_user_permission params[:id].to_i
+    check_modified_user_permission params[:id].to_i
     @user = retrieve_user params[:id]
     raise MyError::UpdateFailError unless @user.update(user_params)
     redirect_to user_path(@user)
@@ -225,12 +226,12 @@ class UsersController < ApplicationController
 
 
   def change_password
-    check_user_permission params[:id]
+    check_modified_user_permission params[:id]
     @user = User.find params[:id]
   end
 
   def confirm_change_password
-    check_user_permission params[:id]
+    check_modified_user_permission params[:id]
     valid_params = change_pass_params
     @user = User.find params[:id]
     if @user.authenticate valid_params[:old_password]
@@ -301,10 +302,6 @@ class UsersController < ApplicationController
 
   def query_date_string date
     "date LIKE '%#{date}%'"
-  end
-
-  def check_user_permission edit_user_id
-    raise MyError::NonPermissionEditError unless (edit_user_id == session[:user_id] || session[:is_admin])
   end
 
   def retrieve_user id
