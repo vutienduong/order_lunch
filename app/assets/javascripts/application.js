@@ -105,7 +105,7 @@ function setCurrentButtonSameAsSelectedName(evt) {
 }
 
 function hiddenOtherTags(restaurantName) {
-    $("a[id^=\"tag_tab_link_\"]").hide()
+    $('a[id^="tag_tab_link_"]').hide()
     $("a[id^=\"" + restaurantName + "\"]").show()
 }
 
