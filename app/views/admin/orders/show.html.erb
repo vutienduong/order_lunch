@@ -4,8 +4,7 @@
 <p>
   Dishes: <%= @order.dishes.map(&:name).join(" , ") %>
 </p>
-<br>
-<p><%= link_to 'Delete', admin_order_path(@order), method: :delete %> </p>
+
 <% if is_admin? %>
-    <%= render partial: 'layouts/components/amend_button_group', locals: {_delete_link: admin_order_path(@order)} %>
+    <%= render partial: 'layouts/components/amend_button_group', locals: {_delete_link: admin_order_path(@order), _edit_link: edit_admin_order_path(@order)} %>
 <% end %>

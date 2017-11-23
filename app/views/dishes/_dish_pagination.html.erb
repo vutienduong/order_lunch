@@ -6,6 +6,7 @@
           <% dishes.each do |dish| %>
               <tr>
                 <td><%= dish.name %></td>
+                <td><%= dish.price %></td>
                 <td><%= link_to 'add', '#', data: {dish: {id: dish.id, name: dish.name, price: dish.price, description: dish.description}}, onclick: "ChosenDishTr.addDish(this)" %></td>
               </tr>
           <% end %>
