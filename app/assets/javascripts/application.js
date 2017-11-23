@@ -87,6 +87,7 @@ function showDishesForRetaurant(evt, restaurantName) {
     setCurrentButtonSameAsSelectedName(evt)
 }
 
+/*
 function setCurrentButtonSameAsSelectedName(evt) {
     try {
         self = $(evt.srcElement)
@@ -108,6 +109,7 @@ function hiddenOtherTags(restaurantName) {
     $('a[id^="tag_tab_link_"]').hide()
     $("a[id^=\"" + restaurantName + "\"]").show()
 }
+*/
 
 function showPrice(dish) {
     alert(dish)
