@@ -1,5 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'bootstrap-datetimepicker';
 
 body {
   padding-top: 60px;
@@ -190,4 +191,9 @@ tr#highlight-current-user-order {
 td, th {
   word-wrap: break-word;
   max-width: 350px;
+}
+
+div.show-all-dishes{
+  max-height: 500px;
+  overflow-y: scroll;
 }

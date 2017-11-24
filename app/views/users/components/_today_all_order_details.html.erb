@@ -28,7 +28,7 @@
           <% unless defined? _no_copy_button %>
               <td>
                 <% unless r.id == session[:today_order_id].to_i %>
-                    <%= link_to '', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
+                    <%= link_to 'Copy', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note, select_date: @select_date}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
                 <% end %>
               </td>
           <% end %>

@@ -1,23 +1,19 @@
-<form action="" method="post" accept-charset="utf-8">
-  <p><input type="text" name="q" id="search-field" value="" onkeyup="SearchUserForm.searchUser(this.value)"/></p>
-</form>
-<div style="position: relative;">
-  <div id="search-result" class=""list-group>
+<div class="container">
+  <div class="row">
+    <div class='col-sm-6'>
+      <div class="form-group">
+        <div class='input-group date' id='datetimepicker1'>
+          <input type='text' class="form-control" />
+          <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
   </div>
-  <p>
-    The harm is people in the future won't be able to benefit from the brilliant answers everyone shares if there are
-    100 of the same question, so closing dupes and redirecting everyone to the original question is better for finding
-    best practices and fixes. See stackoverflow.com/help/duplicates for more info on why duplicates are closed. – rncrtr
-    Jun 21 '13 at 5:39
-    10
-    This is way more popular than the one it was supposedly duplicating. It's better worded, it has better answers,
-    ranks higher on google etc.. So many have benefited from this answer. In retrospect, it would have been a shame if
-    this was closed. There are some trivial ones that are bad as duplicates, but this doesn't fall in that category. –
-    Medorator Jul 2 '14 at 19:30
-  </p>
-  <p><% @sql.each do |sql| %>
-    <%= sql %> ;
-        <br>
-    <% end %>
-        </p>
 </div>

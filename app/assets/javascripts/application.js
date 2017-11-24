@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require_tree .
 //= require bootstrap-sprockets
+//= require moment
+//= require bootstrap-datetimepicker
 
 $(function() { /* to make sure the script runs after page load */
 
@@ -125,7 +127,7 @@ function removeDishToday(dish) {
             dish_id: row.data("id"),
             user_id: user_id,
             action: "remove"
-        }
+        }, select_date: $("#date-select-date").text()
     }
     $.ajax({
         method: 'POST',
@@ -167,7 +169,7 @@ function addDishToday2(dish) {
     dish_obj["id"] = dish_parent.data("id")
 
     user_id = $("#today-my-order-user-id").text()
-    dish_params = {dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"}}
+    dish_params = {dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"}, select_date: $("#date-select-date").text()}
     $.ajax({
         method: 'POST',
         url: '/users/' + user_id + '/save_order',
@@ -213,7 +215,7 @@ function addDishToday2(dish) {
 
 function editOrderNote(note) {
     note = $("#today-order-note-edit").val()
-    order_params = {order: {note: note}}
+    order_params = {order: {note: note}, select_date: $("#date-select-date").text()}
     $.ajax({
         method: 'POST',
         url: '/users/1/edit_note',
