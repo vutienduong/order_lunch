@@ -64,7 +64,7 @@ class Admin::UsersController < Admin::AdminsController
     @order = Order.new #dummy, TODO: remove it
     @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
     manage_company(@date)
-    render plain: 'manage_all_days'
+    render 'manage_all_days'
   end
 
 
