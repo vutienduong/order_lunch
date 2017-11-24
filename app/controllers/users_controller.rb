@@ -41,28 +41,30 @@ class UsersController < ApplicationController
   end
 
   def order
-    @menu = Menu.where('DATE(date)=?', Date.today).first
+    select_date = select_date_params[:select_date]
+    select_date = select_date ? Date.parse(select_date) : Date.today
+    @menu = Menu.where('DATE(date)=?', select_date).first
+    @select_date = select_date
 
-    if @menu.blank?
-      render 'menus/request_menu'
-    else
-      @today_order = find_order_by_user_id_and_date session[:user_id], Date.today
+    return if @menu.blank?
+    #render 'menus/request_menu'
 
-      session[:today_order] = @today_order.blank? ? nil : @today_order
-      session[:today_order_id] = session[:today_order].blank? ? nil : session[:today_order]['id']
+    @today_order = find_order_by_user_id_and_date session[:user_id], select_date
 
-      # @dishes = []
-      # @menu.restaurants.each {|r| @dishes.push(r.dishes)}
-      # @dishes.flatten!
-      # @tags = collect_follow_tags @dishes
+    #session[:today_order] = @today_order.blank? ? nil : @today_order
+    #session[:today_order_id] = session[:today_order].blank? ? nil : session[:today_order]['id']
 
-      @r_tags = collect_follow_tags_for_each_restaurant @menu
+    # @dishes = []
+    # @menu.restaurants.each {|r| @dishes.push(r.dishes)}
+    # @dishes.flatten!
+    # @tags = collect_follow_tags @dishes
 
-      @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
-    end
+    @r_tags = collect_follow_tags_for_each_restaurant @menu
+
+    @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
 
     # all orders
-    @all_orders = Order.where('DATE(date)=?', Date.today)
+    @all_orders = Order.where('DATE(date)=?', select_date)
   end
 
 
@@ -109,32 +111,10 @@ class UsersController < ApplicationController
     end
   end
 
-  def _add_dish_to_order_back_up
-    order_params = {user_id: session[:user_id], date: Date.today}
-    @order = find_order_by_user_id_and_date session[:user_id], Date.today
-    @order = Order.create! order_params if @order.blank?
-
-    DishOrder.create!(order_id: @order.id, dish_id: params[:dish][:dish_id])
-    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: @order}
-    response_to_json msg
-  end
-
-  def _remove_dish_from_order_back_up
-    @order = find_order_by_user_id_and_date session[:user_id], Date.today
-    unless @order.blank?
-      @order_dishes = DishOrder.where('order_id = ? AND dish_id = ?', @order.id, params[:dish][:dish_id]).all
-      @order_dishes.last.destroy if @order_dishes.length >= 1
-      order = Order.find_by(id: order_id)
-      order.destroy if order.blank? || order.dishes.blank?
-    end
-    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: @order}
-    response_to_json msg
-  end
-
   def add_dish_to_order
     @log = {} # Note: relate to @log[] = ... later, can cause error without this initialize
     user_id = session[:user_id]
-    date = Date.today
+    date = params[:select_date]
 
     success_msg = {status: STATUS_OK, message: MSG_SUCCESS}
     fail_msg = {status: STATUS_FAIL}
@@ -148,8 +128,8 @@ class UsersController < ApplicationController
       msg = @order_dish.save ? success_msg : fail_msg
     end
 
-    session[:today_order] = @order
-    session[:today_order_id] = @order.id
+    # session[:today_order] = @order
+    # session[:today_order_id] = @order.id
 
     msg[:today] = session[:today_order] if msg[:status].equal? STATUS_OK
 
@@ -158,35 +138,37 @@ class UsersController < ApplicationController
   end
 
   def remove_dish_from_order
-    unless session[:today_order].blank?
-      order_id = session[:today_order]['id']
+    date = params[:select_date]
+    order = find_order_by_user_id_and_date current_user.id, date
+    unless order.blank?
       @order_dishes = DishOrder.where('order_id = ? AND dish_id = ?',
-                                      order_id,
+                                      order.id,
                                       params[:dish][:dish_id]).all
       @order_dishes.last.destroy if @order_dishes.length >= 1
-      order = Order.find_by(id: order_id)
-      if order.blank? || order.dishes.blank?
+      if order.dishes.blank?
         order.destroy
-        session[:today_order_id] = nil
-        session[:today_order] = nil
+        # session[:today_order_id] = nil
+        # session[:today_order] = nil
+        order = nil
       end
     end
 
     # guarantee that always response json
-    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: session[:today_order]}
+    msg = {status: STATUS_OK, message: MSG_SUCCESS, today: order}
     response_to_json msg
   end
 
   def add_dish_to_order_no_ajax
     add_dish_to_order_params
-    order_id = session[:today_order_id]
+    date = Date.today
+    order = find_order_by_user_id_and_date current_user.id, date
     if order_id.blank?
-      order = find_order_by_user_id_and_date(session[:user_id], Date.today)
+      order = find_order_by_user_id_and_date(session[:user_id], date)
       order_id = order.id unless order.blank?
     end
 
     if order_id.blank?
-      order = Order.new(user_id: session[:user_id], date: Date.today, dish_ids: [params[:dish_id]])
+      order = Order.new(user_id: session[:user_id], date: date, dish_ids: [params[:dish_id]])
       raise MyError::CreateFailError.new 'Fail when try to create order' unless order.save
     else
       order = Order.find_by(id: order_id)
@@ -194,7 +176,7 @@ class UsersController < ApplicationController
       dish_ids = order.dishes.map(&:id).push(params[:dish_id])
       raise MyError::UpdateFailError.new 'Fail when try to add new dish for order' unless order.update(dish_ids: dish_ids)
     end
-    redirect_to order_user_path(session[:user_id])
+    redirect_to order_user_path(current_user.id)
   end
 
   def add_dish
@@ -202,10 +184,10 @@ class UsersController < ApplicationController
   end
 
   def edit_note
-    order_id = session[:today_order_id]
-    @order = Order.find_by(id: order_id)
+    date = params[:select_date]
+    order = find_order_by_user_id_and_date current_user.id, date
     msg = {}
-    msg[:status] = @order.blank? ? STATUS_FAIL : (@order.update(edit_note_params) ? STATUS_OK : STATUS_FAIL)
+    msg[:status] = order.blank? ? STATUS_FAIL : (order.update(edit_note_params) ? STATUS_OK : STATUS_FAIL)
 
     respond_to do |format|
       format.json {render :json => msg}
@@ -214,11 +196,13 @@ class UsersController < ApplicationController
 
   def copy_order
     copy_info_params
-    current_order_id = session[:today_order_id]
-    if current_order_id.blank? || @order = Order.find_by(id: current_order_id).blank?
-      @order = Order.create user_id: session[:user_id], date: Date.today
+    date = params[:copy_info][:select_date]
+    order = find_order_by_user_id_and_date current_user.id, date
+    if order.blank?
+      @order = Order.create user_id: current_user.id, date: date
       current_order_id = @order.id
     else
+      current_order_id = order.id
       @dish_orders = DishOrder.where(order_id: current_order_id).all
       @dish_orders.each {|d| d.destroy}
     end
@@ -234,7 +218,7 @@ class UsersController < ApplicationController
     # update note
     #@order = Order.find(current_order_id)
     @order.update_attributes(note: params[:copy_info][:note]) unless @order.blank?
-    redirect_to order_user_path(session[:user_id])
+    redirect_to order_user_path(current_user, select_date: date)
   end
 
 
@@ -267,8 +251,8 @@ class UsersController < ApplicationController
     # @sql = generate_sql record
 
 
-    @sql = ''
-    UploadImageS3.test_upload
+    #@sql = ''
+    #UploadImageS3.test_upload
   end
 
   def test_ajax
@@ -301,6 +285,7 @@ class UsersController < ApplicationController
 
   def add_dish_params
     params.require(:dish).permit(:user_id, :dish_id, :action, :order_id)
+    params.permit(:select_date)
   end
 
   def edit_note_params
@@ -308,7 +293,7 @@ class UsersController < ApplicationController
   end
 
   def copy_info_params
-    params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note)
+    params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note, :select_date)
   end
 
   def response_to_json msg
@@ -333,6 +318,10 @@ class UsersController < ApplicationController
 
   def change_pass_params
     params.require(:user).permit(:old_password, :password)
+  end
+
+  def select_date_params
+    params.permit(:select_date)
   end
 end
 

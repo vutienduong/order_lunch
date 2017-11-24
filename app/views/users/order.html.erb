@@ -1,112 +1,46 @@
-<h2>All dishes <%= Date.today() %></h2>
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'all_dishes')">DISHES</button>
-  <button class="tablinks" onclick="openCity(event, 'all_orders')">All orders</button>
-</div>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8 panel panel-default">
-      <div id="all_dishes" class="tabcontent" style="display:block;">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="restautant-dropdown-button">
-            All restaurants
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <% @menu.restaurants.each do |r| %>
-                <li>
-                  <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>); hiddenOtherTags('<%="tag_tab_link_#{r.id}" %>');"><%= r.name %></a>
-                </li>
-            <% end %>
-          </ul>
-        </div>
-
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="tag-dropdown-button">
-            All tags
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <% @r_tags.each do |r_id, r_tag| %>
-                <% r_tag.each do |tag| %>
-                    <li>
-                      <a href="#" id=<%= "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}" %> onclick="showDishesForRetaurant(event, <%="tag_tab_#{show_id_included_blank(r_id, tag[0])}" %>)"><%= tag[0].blank? ? 'Other' : tag[0].name %></a>
-                    </li>
-                <% end %>
-            <% end %>
-          </ul>
-        </div>
-        <div class="row" style="height:10px"></div>
-
-        <div class="row" style="margin:5px">
-          <% @menu.restaurants.each do |r| %>
-              <div id=<%= 'restaurant_tab_'+ r.id.to_s %> class="restaurant-tabcontent">
-                <% r.dishes.each do |d| %>
-                    <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
-                <% end %>
-              </div>
-          <% end %>
-        </div>
-
-
-        <div class="row" style="margin:5px">
-          <% @r_tags.each do |r_id, r_tag| %>
-              <% r_tag.each do |tag| %>
-                  <div id=<%= tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}" %> class="restaurant-tabcontent">
-                    <% tag[1].each do |d| %>
-                        <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d[0]} %>
-                    <% end %>
-                  </div>
-              <% end %>
-          <% end %>
-        </div>
-      </div>
-
-      <div id="all_orders" class="tabcontent" style="border: 2px">
-        <h2>All orders <%= Date.today() %></h2>
-        <% if defined? @all_orders %>
-            <%= render partial: 'users/components/today_all_order_details' %>
-        <% else %>
-            <h3> No permission</h3>
-        <% end %>
-      </div>
-
-    </div>
-
-    <div id="today-personal" class="col-md-4">
-      <div id="today-my-order">
-        <div id="today-my-order-title">
-          <p>Your Order Today
-            (id:
-            <hidden id="today-my-order-user-id"><%= session[:user_id] %></hidden>
-            )
-          </p>
-        </div>
-
-
-        <div id="today-my-order-content">
-          <% unless @today_order.blank? %>
-              <% @today_order.dishes.each do |r| %>
-                  <%= render partial: 'dishes/media_style/today_dish_media_style', locals: {r: r} %>
-              <% end %>
-          <% end %>
-        </div>
-
-        <%= render partial: 'users/components/today_order_edit_note_form' %>
-        <!-- for Note -->
-
-        <div class="row">
-          <p>Total: <strong><span id="total_price_today"><%= @total_price %></span></strong></p>
-          <h4 id="total-price-warning"></h4>
-        </div>
-      </div>
-    </div>
-
+<h2>Order lunch for <span id="date-select-date"><%= @select_date %></span> ( <%= additional_info_for_current_date @select_date %> )</h2>
+<div class="row" style="position: relative">
+  <div class="col-md-2">
+    <%= link_to 'Previous day', order_user_path(select_date: @select_date - 1), class: 'btn btn-default' %>
   </div>
 
-  <%= render partial: 'dishes/media_style/today_dish_template_media_style' %>
+  <div class='col-md-8 col-sm-8'>
+    <div class="form-group">
+      <div class='input-group date' id='datetimepicker1'>
+        <input data-format="yyyy-MM-dd" type="text" class="form-control"/>
+        <span class="input-group-addon">
+          <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+      </div>
+      <%= link_to 'Search', order_user_path(current_user), class:"btn btn-default", id:"order-search-date" %>
+  </div>
+  </div>
+  <script type="text/javascript">
+      $(function () {
+          $('#datetimepicker1').datetimepicker({
+          });
 
+          $('#order-search-date').click(function(evt) {
+              var date = $('#datetimepicker1').data().date
+              debugger
+              if(typeof date !== 'undefined'){
+                  d = new Date(date)
+                  dest_date = d.getFullYear().toString() + '-' +(d.getMonth()+1).toString() + '-' + d.getDate().toString()
+                  new_url = $(evt.currentTarget).attr('href')+ '?select_date=' + dest_date
+                  window.location.href = new_url;
+              }
+              return false;
+          });
+      });
+  </script>
+
+  <div class="col-md-2">
+    <%= link_to 'Next day', order_user_path(select_date: @select_date + 1), class: 'btn btn-default' %>
+  </div>
 </div>
-</div>
-<%= render partial: 'users/components/today_order_edit_note_modal' %>
+
+<% if @menu.blank? %>
+    <%= render partial: 'menus/request_menu' %>
+<% else %>
+    <%= render partial: 'order_form' %>
+<% end %>
