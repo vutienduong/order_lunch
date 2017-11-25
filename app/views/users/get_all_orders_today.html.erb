@@ -3,4 +3,4 @@
     <%= link_to "New orders", new_admin_order_path, class:'btn btn-primary' %>
     <br>
 <% end %>
-<%= render partial: 'users/components/today_all_order_details'%>
+<%= render partial: 'users/components/today_all_order_details', locals: {select_date: Date.today}%>
