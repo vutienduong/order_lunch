@@ -53,7 +53,7 @@
       <div id="all_orders" class="tabcontent">
         <h2>All orders <%= Date.today() %></h2>
         <% if defined? @all_orders %>
-            <%= render partial: 'users/components/today_all_order_details' %>
+            <%= render partial: 'users/components/today_all_order_details', locals: {select_date: Date.today} %>
         <% else %>
             <h3> No permission</h3>
         <% end %>

@@ -9,7 +9,7 @@
       <th>Action</th>
     </tr>
     <% @all_orders.each do |r| %>
-        <tr <%= "class=success" if r.id == session[:today_order_id].to_i %>>
+        <tr <%= "class=success" if r.user_id == current_user.id %>>
           <td>
             <% if is_admin? %>
                 <%= link_to r.id, admin_order_path(r) %>
@@ -27,8 +27,8 @@
           <td><%= r.note %></td>
           <% unless defined? _no_copy_button %>
               <td>
-                <% unless r.id == session[:today_order_id].to_i %>
-                    <%= link_to 'Copy', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note, select_date: @select_date}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
+                <% unless r.user_id == current_user.id %>
+                    <%= link_to 'Copy', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note, select_date: @select_date ? @select_date : select_date}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)" %>
                 <% end %>
               </td>
           <% end %>

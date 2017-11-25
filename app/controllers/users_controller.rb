@@ -93,6 +93,7 @@ class UsersController < ApplicationController
   end
 
   def get_all_orders_today
+
     @all_orders = Order.where('DATE(date)=?', Date.today)
     render 'get_all_orders_today'
   end
