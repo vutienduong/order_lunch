@@ -22,7 +22,6 @@
 
           $('#order-search-date').click(function(evt) {
               var date = $('#datetimepicker1').data().date
-              debugger
               if(typeof date !== 'undefined'){
                   d = new Date(date)
                   dest_date = d.getFullYear().toString() + '-' +(d.getMonth()+1).toString() + '-' + d.getDate().toString()
