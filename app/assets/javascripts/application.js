@@ -293,7 +293,6 @@ checkOrderOverBudget = function () {
 }
 
 testOnclick = function (s) {
-    debugger
 
     console.log("test on click")
 }
