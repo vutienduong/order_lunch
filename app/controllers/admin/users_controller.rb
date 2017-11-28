@@ -71,8 +71,34 @@ class Admin::UsersController < Admin::AdminsController
   def manage_company(fetch_date = Date.today)
     @menu = Menu.find_by_date(fetch_date)
     @today_orders = Order.where("DATE(date)=?", fetch_date)
+    thuankieu_comboes = []
 
-    today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
+    thuankieu_str = 'Thuận Kiều'
+    thuankieu_res = Restaurant.where("name like ?", "%#{thuankieu_str}%").first
+    thuankieu_id = thuankieu_res.id
+
+    if @menu.restaurant_ids.include? thuankieu_id
+      today_all_ordered_dishes = @today_orders.map do |t|
+        parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.price > 30000}
+
+        thuankieu_combo = parts[0]
+        normal_dishes = parts[1]
+
+        combo_ids = thuankieu_combo.map(&:id)
+
+        temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '), restaurant: thuankieu_res, price: thuankieu_combo.inject(0) {|s, e| s += e.price})
+        if thuankieu_comboes.include? combo_ids
+          temp_dish.id = -1 * thuankieu_comboes.index(combo_ids) - 1
+        else
+          thuankieu_comboes.push combo_ids
+          temp_dish.id = -1 * thuankieu_comboes.length
+        end
+        normal_dishes.push(temp_dish)
+      end
+    else
+      today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
+    end
+
     today_all_ordered_dishes = today_all_ordered_dishes.flatten
 
     counted_dishes = Hash.new(0).tap {|h| today_all_ordered_dishes.each {|dish| h[dish] += 1}}

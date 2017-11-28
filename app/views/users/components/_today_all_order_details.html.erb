@@ -22,7 +22,7 @@
             <%= r.dishes.map(&:name).join(" + ") %>
           </td>
           <td class="total-price-order">
-            <%= r.dishes.inject(0) {|sum, e| sum + e.price} %>
+            <%= show_price r.dishes.inject(0) {|sum, e| sum + e.price} %>
           </td>
           <td><%= r.note %></td>
           <% unless defined? _no_copy_button %>

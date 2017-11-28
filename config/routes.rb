@@ -67,6 +67,8 @@ Rails.application.routes.draw do
 
   resources :comments, only: [:new, :index, :create, :show]
 
+  resources :tags
+
   namespace :admin do
     resources :menus
     resources :users do
@@ -82,7 +84,11 @@ Rails.application.routes.draw do
         get 'add_initial_user'
       end
     end
-    resources :dishes
+    resources :dishes do
+      collection do
+        post 'new_tag'
+      end
+    end
     resources :restaurants do
       member do
         get 'show_image'

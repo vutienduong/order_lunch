@@ -9,6 +9,7 @@
     <p><%= f.label :image_logo %></p>
     <p><%= f.file_field :image_logo%></p>
 
+    <%= render partial: 'dishes/tag_select', locals: {f: f} %>
 
     <p><%= f.hidden_field :restaurant_id %> <!--TODO: dont hidden here-->
     <p><%= f.submit %></p>

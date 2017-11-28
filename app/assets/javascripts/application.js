@@ -17,9 +17,9 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
-$(function() { /* to make sure the script runs after page load */
+$(function () { /* to make sure the script runs after page load */
 
-    $('.item-long-content').each(function(event) { /* select all divs with the item class */
+    $('.item-long-content').each(function (event) { /* select all divs with the item class */
 
         var max_length = 80;
         /* set the max content length before a read more link will be added */
@@ -35,7 +35,7 @@ $(function() { /* to make sure the script runs after page load */
                 '<span class="more_text" style="display:none;">' + long_content + '</span>');
             /* Alter the html to allow the read more functionality */
 
-            $(this).find('a.read_more').click(function(event) { /* find the a.read_more element within the new html and bind the following code to it */
+            $(this).find('a.read_more').click(function (event) { /* find the a.read_more element within the new html and bind the following code to it */
                 event.preventDefault();
                 /* prevent the a from changing the url */
                 $(this).hide();
@@ -169,7 +169,10 @@ function addDishToday2(dish) {
     dish_obj["id"] = dish_parent.data("id")
 
     user_id = $("#today-my-order-user-id").text()
-    dish_params = {dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"}, select_date: $("#date-select-date").text()}
+    dish_params = {
+        dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"},
+        select_date: $("#date-select-date").text()
+    }
     $.ajax({
         method: 'POST',
         url: '/users/' + user_id + '/save_order',
@@ -312,6 +315,47 @@ trackAllChange = $(function () {
 
     checkOrderOverBudget()
 });
+
+
+function createNewTag() {
+    div = $("#new-dish-new-tag")
+    div.show();
+    $("#new-dish-new-tag-btn").click(function () {
+        tag_name = div.find('input').val();
+        if (tag_name === "") {
+            $("#create-tag-result").text("Tag name empty, please fill new tag name which you want to create").css("color", "red");
+            return false;
+        }
+
+        $.ajax({
+            method: 'POST',
+            url: '/admin/dishes/new_tag',
+            data: {tag_name: tag_name},
+            dataType: 'json'
+        }).done(function (response) {
+            console.log("Success !!!")
+            if (response.hasOwnProperty("status") && response["status"] == "ok") {
+                $("#create-tag-result").text("Create new tag [" + response.tag.name + "] succesfully").css("color", "blue");
+
+                tag_val = response.tag.id.toString()
+                new_option = $("<option></option>").val(tag_val).text(response.tag.name)
+
+                $("#dish_tag_ids").prepend(new_option)
+                $("#dish_tag_ids").val(tag_val);
+                return true
+            } else{
+                $("#create-tag-result").text("Create new tag fail").css("color", "red");
+            }
+        }).fail(function (jqXHR, textStatus) {
+            console.log("Request failed: " + textStatus)
+            $("#create-tag-result").text("Request to server fail").css("color", "red");
+        }).always(function (obj) {
+            console.log("Always !!!")
+        });
+    });
+
+
+}
 
 twbsPaginationDemo = $(function () {
     $('#pagination-demo').twbsPagination({
