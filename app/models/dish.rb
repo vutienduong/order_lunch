@@ -11,6 +11,7 @@ class Dish < ActiveRecord::Base
 
   has_many :dish_orders
   has_many :orders, through: :dish_orders
+  has_many :sized_prices #, -> { where sizeable: true }
 
   has_and_belongs_to_many :tags
 

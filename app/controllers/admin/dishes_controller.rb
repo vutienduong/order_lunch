@@ -1,4 +1,5 @@
 class Admin::DishesController < Admin::AdminsController
+  include ApplicationHelper
   def new
     raise MyError::NonExistRecordError unless Restaurant.find_by(id: params.permit(:id)[:id])
     @dish = Dish.new(restaurant_id: params[:id])
@@ -18,6 +19,7 @@ class Admin::DishesController < Admin::AdminsController
   def show
     @dish = Dish.find_by(id: params.permit(:id)[:id])
     raise MyError::NonExistRecordError.new 'Dish is not exist' unless @dish
+    @tags = Tag.all
   end
 
   def edit
@@ -28,6 +30,18 @@ class Admin::DishesController < Admin::AdminsController
     @dish = Dish.find(params[:id])
     @dish.destroy
     redirect_to restaurants_path
+  end
+
+  def new_tag
+    tag_name = tag_params[:tag_name]
+    tag = Tag.find_by(name: tag_name)
+    if tag.blank?
+      tag = Tag.new(name: tag_name)
+      msg = tag.save ? {status: STATUS_OK, message: MSG_SUCCESS, tag:{id: tag.id, name:tag_name}} : {status: STATUS_FAIL, msg: "Fail when create new tag with name (#{tag_name})."}
+    else
+      msg = {status: STATUS_FAIL, msg: "This tag is existed. Please choose an another name."}
+    end
+    response_to_json msg
   end
 
   def update
@@ -44,7 +58,7 @@ class Admin::DishesController < Admin::AdminsController
     #   params[:dish][:image] = params[:dish][:image_url].tempfile.read
     # end
 
-    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo)
+    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo, :tag_ids=> [])
   end
 
   def upload_image_after_create_dish(params_dish, dish)
@@ -55,5 +69,9 @@ class Admin::DishesController < Admin::AdminsController
       OLUploadImage.upload(file_name, uploaded_io)
       @dish.update_attributes(image_url: file_name)
     end
+  end
+
+  def tag_params
+    params.permit("tag_name")
   end
 end

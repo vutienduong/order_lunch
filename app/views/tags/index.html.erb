@@ -1,0 +1,13 @@
+<h1> All tags</h1>
+<table class="table table-striped">
+  <tr>
+    <th>Tag name</th>
+    <th>No. of dishes</th>
+  </tr>
+  <% Tag.all.each do |d| %>
+      <tr>
+        <td><%= link_to d.name, tag_path(d) %></td>
+        <td><%= d.dishes.count %></td>
+      </tr>
+  <% end %>
+</table>

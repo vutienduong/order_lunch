@@ -6,10 +6,10 @@
     </div>
     <div class="media-body">
       <strong><%= link_to r.name, dish_path(r), class: "each-dish-name" %></strong>
-      <p class="each-dish-price"><%= r.price %></p>
+      <p class="each-dish-price"><%= show_price_integer r.price %></p>
     </div>
     <div class="media-right">
-      <a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= r.price %>" onclick="addDishToday2(this)"></a>
+      <a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= show_price_integer r.price %>" onclick="addDishToday2(this)"></a>
     </div>
   </div>
 </div>

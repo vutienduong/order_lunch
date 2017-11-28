@@ -1,8 +1,13 @@
 module ApplicationHelper
   NUMBER_OF_DISH_PER_PAGE = 30
+  STATUS_OK = 'ok'.freeze
+  STATUS_FAIL = 'fail'.freeze
+  MSG_SUCCESS = 'Success!'.freeze
+  MAX_TAG_OPTION_NUMBER = 15
+
 
   def display_cost_as_thousand(cost)
-    "#{cost/1000} k VND"
+    "#{(cost/1000).to_i} k VND"
   end
 
   def date_format(date)
@@ -33,5 +38,20 @@ module ApplicationHelper
     else
       'future'
     end
+  end
+
+  def response_to_json msg
+    respond_to do |format|
+      format.json {render json: msg}
+    end
+  end
+
+
+  def show_price price
+    (price/1000).to_i.to_s + ',' + '000'
+  end
+
+  def show_price_integer price
+    price.to_i
   end
 end

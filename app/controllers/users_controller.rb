@@ -3,11 +3,9 @@ class UsersController < ApplicationController
   include SQLGenerator
   include UploadImageS3
   include UserPermissionUtility
+  include ApplicationHelper
   before_action :require_login
 
-  STATUS_OK = 'ok'.freeze
-  STATUS_FAIL = 'fail'.freeze
-  MSG_SUCCESS = 'Success!'.freeze
 
   def admin?
     @user.admin
@@ -295,12 +293,6 @@ class UsersController < ApplicationController
 
   def copy_info_params
     params.require(:copy_info).permit(:dish_ids, :user_id, :order_id, :note, :select_date)
-  end
-
-  def response_to_json msg
-    respond_to do |format|
-      format.json {render json: msg}
-    end
   end
 
   def query_date_string date

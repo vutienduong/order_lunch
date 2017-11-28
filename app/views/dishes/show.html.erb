@@ -9,6 +9,11 @@
     </tr>
 
     <tr>
+      <td>Tags</td>
+      <td><%= render partial: 'support/link', collection: @dish.tags, as: :tag, spacer_template: 'support/comma' %></td>
+    </tr>
+
+    <tr>
       <td>Price</td>
       <td><%= @dish.price %></td>
     </tr>
@@ -22,6 +27,7 @@
       <td>Description:</td>
       <td><%= @dish.description %></td>
     </tr>
+
   </table>
   <% if is_admin? %>
       <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>

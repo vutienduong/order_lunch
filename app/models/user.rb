@@ -4,4 +4,5 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true, length: {maximum: 255}
   has_secure_password
   validates :password_digest, presence: true, length: {minimum: 1}
+  has_many :orders, dependent: :destroy
 end

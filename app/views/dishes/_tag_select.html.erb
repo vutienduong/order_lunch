@@ -1,0 +1,16 @@
+<div class="form-group">
+<p><%= f.label :tags %></p>
+
+
+  <p><%= f.collection_select(:tag_ids, @tags, :id, :name, {}, multiple: true, size: @tags.length > ApplicationHelper::MAX_TAG_OPTION_NUMBER ? ApplicationHelper::MAX_TAG_OPTION_NUMBER : @tags.length) %>
+</p>
+</div>
+
+
+<a class="btn btn-primary" onclick="createNewTag()"> New tag</a>
+
+<div id="new-dish-new-tag" style="display: none">
+  <input type="text" id="new-dish-new-tag" placeholder="tag name"/>
+  <a id="new-dish-new-tag-btn" class="btn btn-default"> Create </a>
+  <p id="create-tag-result"></p>
+</div>
