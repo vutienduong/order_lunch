@@ -246,6 +246,11 @@ class Admin::UsersController < Admin::AdminsController
     end
   end
 
+  def retrieve_unordered_user
+    ordered_users = Order.where('DATE(date)=?', Date.today).map(&:user)
+    @unordered_users = User.all - ordered_users
+  end
+
 
   private
   def user_params

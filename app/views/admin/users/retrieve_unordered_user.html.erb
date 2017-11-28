@@ -1,0 +1,22 @@
+<h2>List of un-ordered users (today) up to now</h2>
+<div class="row">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <table class="table table-striped">
+      <tr>
+        <th>No.</th>
+        <th>Name</th>
+        <th>Slack name</th>
+      </tr>
+      <% count = 0 %>
+      <% @unordered_users.each do |user| %>
+          <tr>
+            <td><%= count+= 1 %></td>
+            <td><%= user.username %></td>
+            <td><%= user.slack_name %></td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="col-md-3"></div>
+</div>
