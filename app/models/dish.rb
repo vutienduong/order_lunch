@@ -13,6 +13,9 @@ class Dish < ActiveRecord::Base
   has_many :orders, through: :dish_orders
   has_many :sized_prices #, -> { where sizeable: true }
 
+  belongs_to :parent, class_name: 'Dish'
+  has_many :variants, class_name: 'Dish', foreign_key: 'parent_id'
+
   has_and_belongs_to_many :tags
 
   has_attached_file :image_logo, styles: {
@@ -27,5 +30,9 @@ class Dish < ActiveRecord::Base
   def image_logo_remote_url=(url_value)
     self.image_logo = URI.parse(url_value)
     @image_logo_remote_url = url_value
+  end
+
+  def display_name
+    name.split(/\[[^\[]*\]/).last
   end
 end

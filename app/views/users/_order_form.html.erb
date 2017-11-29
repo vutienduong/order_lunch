@@ -41,7 +41,7 @@
         <div class="row show-all-dishes" style="margin:5px">
           <% @menu.restaurants.each do |r| %>
               <div id=<%= 'restaurant_tab_'+ r.id.to_s %> class="restaurant-tabcontent">
-                <% r.dishes.each do |d| %>
+                <% r.dish_decorators.each do |d| %>
                     <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
                 <% end %>
               </div>

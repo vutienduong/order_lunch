@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122071743) do
+ActiveRecord::Schema.define(version: 20171129034354) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -46,8 +46,11 @@ ActiveRecord::Schema.define(version: 20171122071743) do
     t.boolean  "sizeable"
     t.boolean  "componentable"
     t.integer  "tags_id"
+    t.string   "size"
+    t.integer  "parent_id"
   end
 
+  add_index "dishes", ["parent_id"], name: "index_dishes_on_parent_id"
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
   add_index "dishes", ["tags_id"], name: "index_dishes_on_tags_id"
 
