@@ -61,8 +61,9 @@ class Admin::UsersController < Admin::AdminsController
   end
 
   def manage_all
-    @order = Order.new #dummy, TODO: remove it
-    @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
+    @order = Order.new
+    #@date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
+    @date = params[:order][:date]
     manage_company(@date)
     render 'manage_all_days'
   end
@@ -70,6 +71,8 @@ class Admin::UsersController < Admin::AdminsController
 
   def manage_company(fetch_date = Date.today)
     @menu = Menu.find_by_date(fetch_date)
+    return if @menu.blank?
+
     @today_orders = Order.where("DATE(date)=?", fetch_date)
     thuankieu_comboes = []
 

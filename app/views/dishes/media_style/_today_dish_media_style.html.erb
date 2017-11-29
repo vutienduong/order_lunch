@@ -4,7 +4,7 @@
 
   </div>
   <div class="media-body">
-    <strong class="each-dish-name"><%= r.name %></strong>
+    <strong class="each-dish-name"><%= "#{r.display_name} #{"[ Size: #{r.size} ]" if r.size}"%></strong>
     <p class="each-dish-price"><%= show_price_integer r.price %></p>
 
   </div>

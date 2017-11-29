@@ -11,4 +11,13 @@ class Restaurant < ActiveRecord::Base
 
   # Validate the attached image is image/jpg, image/png, etc
   validates_attachment_content_type :image_logo, :content_type => /\Aimage\/.*\Z/
+
+  def dish_decorators
+    show_dishes = dishes.compact
+    variants = show_dishes.map &:variants
+    variants.delete_if &:blank?
+    variants.flatten!
+    variants.each{|v| show_dishes.delete(v)}
+    show_dishes
+  end
 end

@@ -4,10 +4,46 @@
     <p><%= f.text_field :name %></p>
     <p><%= f.label :description %></p>
     <p><%= f.text_field :description %></p>
-    <p><%= f.label :price %></p>
-    <p><%= f.text_field :price %></p>
     <p><%= f.label :image_logo %></p>
-    <p><%= f.file_field :image_logo%></p>
+    <p><%= f.file_field :image_logo %></p>
+
+    <p><%= f.label :sizeable %> <%= f.check_box :sizeable %></p>
+
+    <div id="dish_price_wrap">
+      <p><%= f.label :price %></p>
+      <p><%= f.text_field :price %></p>
+    </div>
+
+
+    <div id="dish_sizes" style="display: none">
+      <table class="table table-bordered">
+        <tr>
+          <th>Size</th>
+          <th>Price</th>
+        </tr>
+
+        <tr>
+          <td>S</td>
+          <td><%= text_field :dish_size, :s %></td>
+        </tr>
+
+        <tr>
+          <td>M</td>
+          <td><%= text_field :dish_size, :m %></td>
+        </tr>
+
+        <tr>
+          <td>L</td>
+          <td><%= text_field :dish_size, :l %></td>
+        </tr>
+
+        <tr class="last-child">
+          <td colspan="2">
+            <button id="new_size_btn">New size</button>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <%= render partial: 'dishes/tag_select', locals: {f: f} %>
 
@@ -17,3 +53,46 @@
 <% end %>
 
 <%= link_to 'Back', restaurants_path %>
+<script>
+    $(function () {
+        $("#dish_sizeable").change(function () {
+            if (this.checked) {
+                $("#dish_sizes").show()
+                $("#dish_price_wrap").hide()
+            }
+            else {
+                $("#dish_sizes").hide()
+                $("#dish_price_wrap").show()
+            }
+            console.log("checked")
+            console.log(this.checked)
+        })
+
+        $("#new_size_btn").click(function () {
+            last_row = $($("#dish_sizes tr").get(-2))
+            if (last_row.data("idx") !== undefined) {
+                new_custom_row_id = last_row.data("idx") + 1
+            }
+            else {
+                new_custom_row_id = 1
+            }
+            new_row = $("<tr></tr>").data({idx: new_custom_row_id})
+                .append($("<td></td>")
+                    .append($("<input>").attr({
+                        type: "text",
+                        name: "dish_size[cn" + new_custom_row_id + "]",
+                        id: "dish_size_cn" + new_custom_row_id
+                    })))
+                .append($("<td></td>")
+                    .append($("<input>").attr({
+                        type: "text",
+                        name: "dish_size[cv" + new_custom_row_id + "]",
+                        id: "dish_size_cv" + new_custom_row_id
+                    })));
+            //$("#dish_sizes table").append(new_row)
+            new_row.insertBefore(".last-child")
+            //event.preventDefault();
+            return false;
+        })
+    });
+</script>

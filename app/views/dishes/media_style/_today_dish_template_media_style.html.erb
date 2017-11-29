@@ -1,7 +1,7 @@
 <template id="template-dish-today">
   <div class="media template-dish-row-dish today-dish-right" id="today-order-template">
     <div class="media-left">
-      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: "template-image-url", size: [60, 60], object: 'restaurant', options: {class_name: "each-dish-img", alt: "template-image-name", onclick: 'showPrice(this)', data: {price: 0}, img_size: 'thumb'}} %>
+      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: "template-image-url", size: [60, 60], object: 'restaurant', options: {class_name: "each-dish-img", alt: "template-image-name", data: {price: 0}, img_size: 'thumb'}} %>
     </div>
     <div class="media-body">
       <strong class="each-dish-name"></strong>

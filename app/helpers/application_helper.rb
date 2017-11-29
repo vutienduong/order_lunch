@@ -54,4 +54,17 @@ module ApplicationHelper
   def show_price_integer price
     price.to_i
   end
+
+  def display_price dish
+    if dish.variants.blank?
+      display_cost_as_thousand dish.price
+    else
+      list_price = dish.variants.map {|v| {v.size => display_cost_as_thousand(v.price)}}
+      list_price.prepend dish.size => display_cost_as_thousand(dish.price)
+    end
+  end
+
+  def today_order_display_name dish
+    dish.name + (dish.size ? "[#{dish.size}]" : '')
+  end
 end

@@ -1,5 +1,6 @@
 class Admin::DishesController < Admin::AdminsController
   include ApplicationHelper
+
   def new
     raise MyError::NonExistRecordError unless Restaurant.find_by(id: params.permit(:id)[:id])
     @dish = Dish.new(restaurant_id: params[:id])
@@ -7,8 +8,45 @@ class Admin::DishesController < Admin::AdminsController
   end
 
   def create
-    @dish = Dish.new(dish_params)
-    raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
+    sizes = params[:dish_size]
+    sizes.delete_if {|k, v| v.blank?}
+
+    if sizes.blank?
+      @dish = Dish.new(dish_params)
+      raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
+    else
+      all_sizes = {}
+      %w[s m l].each do |s_idx|
+        all_sizes[s_idx] = sizes[s_idx] if sizes[s_idx]
+        sizes.except!(s_idx)
+      end
+      #sizes.delete_if {|k, v| v.blank?}
+
+      until sizes.blank? do
+        temp = sizes.first[0]
+        if temp.include? 'cn'
+          cv = temp.tr('n', 'v')
+          all_sizes[sizes[temp]] = sizes[cv] if sizes[cv]
+        elsif temp[0].include? 'cv'
+          cv = temp.tr('v', 'n')
+          all_sizes[sizes[cv]] = sizes[temp] if sizes[cv]
+        else
+          cv = ''
+        end
+        sizes.except! temp
+        sizes.except! cv
+      end
+
+      parent_dish = nil
+      all_sizes&.each do |k, v|
+        new_params = dish_params.merge(size: k, price: v)
+        @dish = Dish.new(new_params)
+        @dish.name = "#{@dish.name} [#{@dish.size}]"
+        @dish.parent = parent_dish
+        raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
+        parent_dish ||= @dish
+      end
+    end
     redirect_to restaurant_path(@dish.restaurant_id)
   end
 
@@ -37,7 +75,7 @@ class Admin::DishesController < Admin::AdminsController
     tag = Tag.find_by(name: tag_name)
     if tag.blank?
       tag = Tag.new(name: tag_name)
-      msg = tag.save ? {status: STATUS_OK, message: MSG_SUCCESS, tag:{id: tag.id, name:tag_name}} : {status: STATUS_FAIL, msg: "Fail when create new tag with name (#{tag_name})."}
+      msg = tag.save ? {status: STATUS_OK, message: MSG_SUCCESS, tag: {id: tag.id, name: tag_name}} : {status: STATUS_FAIL, msg: "Fail when create new tag with name (#{tag_name})."}
     else
       msg = {status: STATUS_FAIL, msg: "This tag is existed. Please choose an another name."}
     end
@@ -58,7 +96,7 @@ class Admin::DishesController < Admin::AdminsController
     #   params[:dish][:image] = params[:dish][:image_url].tempfile.read
     # end
 
-    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo, :tag_ids=> [])
+    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo, :sizeable, :tag_ids => [])
   end
 
   def upload_image_after_create_dish(params_dish, dish)

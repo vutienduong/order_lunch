@@ -118,6 +118,11 @@ function showPrice(dish) {
     return false;
 }
 
+function showDetailPrices(dish){
+    event.preventDefault();
+    $($(event.currentTarget).data("toggle")).toggle()
+}
+
 function removeDishToday(dish) {
     row = $(dish).closest('div[id^="today_order_"]')
     user_id = $("#today-my-order-user-id").text() || null
@@ -154,10 +159,30 @@ function removeDishToday(dish) {
 }
 
 function addDishToday2(dish) {
+
+    dish_parent = $(dish).closest('div[class=media]')
+    dish_obj = {}
+    included_select_flag = $(dish_parent).find("select.each-dish-price").length
+
+    if(included_select_flag)
+    {
+        selected_size = $(dish_parent.find("select"))
+        if(selected_size.val() == ""){
+            alert("Please choose SIZE of dish")
+            return false;
+        }
+        dish_obj["id"]  = selected_size.val();
+        dish_price = selected_size.find(":selected").data("price");
+        dish_obj["name"] = generateFullNameForSize(dish_parent.find(".each-dish-name").text(), selected_size.find(":selected").data("size"))
+    }
+    else {
+        dish_obj["id"] = dish_parent.data("id")
+        dish_price = dish_parent.find(".each-dish-price").text();
+        dish_obj["name"] = dish_parent.find(".each-dish-name").text();
+    }
+
     total_price_span = $("#total_price_today")
     current_total_price = parseInt(total_price_span.text())
-    dish_parent = $(dish).closest('div[class=media]')
-    dish_price = dish_parent.find(".each-dish-price").text()
     new_total = current_total_price + parseInt(dish_price)
     $("#total-price-warning").text("")
     if (new_total > 80000) {
@@ -165,14 +190,14 @@ function addDishToday2(dish) {
             return false;
     }
 
-    dish_obj = {}
-    dish_obj["id"] = dish_parent.data("id")
 
     user_id = $("#today-my-order-user-id").text()
     dish_params = {
         dish: {order_id: null, dish_id: dish_obj["id"], user_id: user_id, action: "add"},
         select_date: $("#date-select-date").text()
     }
+
+
     $.ajax({
         method: 'POST',
         url: '/users/' + user_id + '/save_order',
@@ -186,7 +211,6 @@ function addDishToday2(dish) {
             var tmpl = $(document.getElementById('template-dish-today').content.cloneNode(true));
             var list = $("#today-my-order-content")
 
-            dish_obj["name"] = dish_parent.find(".each-dish-name").text()
             dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
 
             tmpl.find(".each-dish-name").text(dish_obj["name"])
@@ -215,6 +239,12 @@ function addDishToday2(dish) {
         console.log("Always !!!")
     });
 }
+
+function generateFullNameForSize(name, size)
+{
+  return name + "[ Size: " + size + " ]"
+}
+
 
 function editOrderNote(note) {
     note = $("#today-order-note-edit").val()
