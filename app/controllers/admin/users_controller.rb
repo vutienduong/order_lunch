@@ -82,7 +82,7 @@ class Admin::UsersController < Admin::AdminsController
 
     if @menu.restaurant_ids.include? thuankieu_id
       today_all_ordered_dishes = @today_orders.map do |t|
-        parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.price > 30000}
+        parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.price > 20000}
 
         thuankieu_combo = parts[0]
         normal_dishes = parts[1]
