@@ -81,22 +81,26 @@ class Admin::UsersController < Admin::AdminsController
     thuankieu_id = thuankieu_res.id
 
     if @menu.restaurant_ids.include? thuankieu_id
-      today_all_ordered_dishes = @today_orders.map do |t|
-        parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.price > 100}
+      extra_tag = Tag.where("name like ?", "Thuận Kiều - canh, cơm thêm%").first
+      if extra_tag
+        extra_tag_id = extra_tag.id
+        today_all_ordered_dishes = @today_orders.map do |t|
+          parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.tag_ids.exclude?(extra_tag_id)}
 
-        thuankieu_combo = parts[0]
-        normal_dishes = parts[1]
+          thuankieu_combo = parts[0]
+          normal_dishes = parts[1]
 
-        combo_ids = thuankieu_combo.map(&:id)
+          combo_ids = thuankieu_combo.map(&:id)
 
-        temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '), restaurant: thuankieu_res, price: thuankieu_combo.inject(0) {|s, e| s += e.price})
-        if thuankieu_comboes.include? combo_ids
-          temp_dish.id = -1 * thuankieu_comboes.index(combo_ids) - 1
-        else
-          thuankieu_comboes.push combo_ids
-          temp_dish.id = -1 * thuankieu_comboes.length
+          temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '), restaurant: thuankieu_res, price: thuankieu_combo.inject(0) {|s, e| s += e.price})
+          if thuankieu_comboes.include? combo_ids
+            temp_dish.id = -1 * thuankieu_comboes.index(combo_ids) - 1
+          else
+            thuankieu_comboes.push combo_ids
+            temp_dish.id = -1 * thuankieu_comboes.length
+          end
+          normal_dishes.push(temp_dish)
         end
-        normal_dishes.push(temp_dish)
       end
     else
       today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
