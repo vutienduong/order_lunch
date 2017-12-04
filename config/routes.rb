@@ -68,6 +68,16 @@ Rails.application.routes.draw do
   resources :comments, only: [:new, :index, :create, :show]
 
   resources :tags
+  resources :orders do
+    collection do
+      get 'order_custom_salad'
+      post 'order_custom_salad', to: 'orders#create_custom_salad'
+      get 'confirm_create_same_combo'
+      post 'check_custom_salad_name'
+      post 'add_dish_to_order'
+      post 'create_custom_salad_with_name'
+    end
+  end
 
   namespace :admin do
     resources :menus

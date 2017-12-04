@@ -67,4 +67,12 @@ module ApplicationHelper
   def today_order_display_name dish
     dish.name + (dish.size ? "[#{dish.size}]" : '')
   end
+
+  def build_note_for_custom_salad components
+    components.map {|k, v| "#{k}: #{v.map {|comp| DishedComponent.find_by(id: comp.first).name}.join(', ')} "}.join(". \n ")
+  end
+
+  def generate_custom_salad_name name
+    name = 'Custom Salad -' + name
+  end
 end

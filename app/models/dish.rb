@@ -11,10 +11,13 @@ class Dish < ActiveRecord::Base
 
   has_many :dish_orders
   has_many :orders, through: :dish_orders
-  has_many :sized_prices #, -> { where sizeable: true }
+  has_many :sized_prices
 
   belongs_to :parent, class_name: 'Dish'
   has_many :variants, class_name: 'Dish', foreign_key: 'parent_id'
+
+  has_many :dish_component_associations
+  has_many :dished_components, through: :dish_component_associations
 
   has_and_belongs_to_many :tags
 
