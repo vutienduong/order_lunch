@@ -1,0 +1,9 @@
+<div class="grant-border">
+  <h2> Select <%= component_group %></h2>
+  <div class="wrap-group-salad-component">
+    <% components.each do |b| %>
+        <%= b.name -%>
+        <%= h render partial: 'change_quantity_button', locals: {component_group: component_group, id: b.id} -%>
+    <% end %>
+  </div>
+</div>

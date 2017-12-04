@@ -89,7 +89,6 @@ class Admin::DishesController < Admin::AdminsController
     redirect_to @dish
   end
 
-
   private
   def dish_params
     # unless params[:dish][:image_url].blank?
