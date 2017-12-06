@@ -2,8 +2,11 @@ class Admin::UsersController < Admin::AdminsController
 
   include Scraper
   include SlackNotification
+  include CSVExport
+
   WEBHOOK_URL = 'https://hooks.slack.com/services/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'.freeze
   require 'swap_word'
+  require 'csv'
 
   def index
     @users = User.all
@@ -256,6 +259,15 @@ class Admin::UsersController < Admin::AdminsController
   def retrieve_unordered_user
     ordered_users = Order.where('DATE(date)=?', Date.today).map(&:user)
     @unordered_users = User.all - ordered_users
+  end
+
+  def export_orders_to_csv
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data all_orders_to_csv, filename: 'order_report_csv.csv', type: 'application/csv'
+      end
+    end
   end
 
 

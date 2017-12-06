@@ -93,6 +93,7 @@ Rails.application.routes.draw do
         get 'ping_slack'
         get 'add_initial_user'
         get 'retrieve_unordered_user'
+        get 'export_orders_to_csv'
       end
     end
     resources :dishes do
