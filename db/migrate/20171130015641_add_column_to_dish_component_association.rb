@@ -4,4 +4,3 @@ class AddColumnToDishComponentAssociation < ActiveRecord::Migration
     add_column :dish_component_associations, :dished_component_id, :integer
   end
 end
-O
