@@ -5,7 +5,9 @@
   <ul class="dropdown-menu" aria-labelledby="export-button-group">
     <li><%= link_to 'Export Orders Today', export_pdf_admin_orders_path(format: :pdf)%></li>
     <li><%= link_to 'Export Manage Page', export_manage_pdf_admin_users_path(format: :pdf)%></li>
+    <li><%= link_to 'Export Orders to CSV', export_orders_to_csv_admin_users_path(format: :csv) %></li>
   </ul>
+
 </div>
 
 <h2>List of orders</h2>
