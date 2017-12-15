@@ -1,0 +1,17 @@
+<h1> Send notify result </h1>
+<h3>Success:</h3>
+<% byebug %>
+<ul>
+<% @log[:success].each do |ss| %>
+    <li><%= ss %></li>
+<% end %>
+</ul>
+
+<h3>Fail:</h3>
+<ul>
+  <% @log[:fail].each do |ss| %>
+      <li><%= ss %></li>
+  <% end %>
+</ul>
+
+<%= link_to 'Back', root_path %>

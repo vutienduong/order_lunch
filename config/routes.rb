@@ -79,6 +79,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :notices, only: [:index, :show]
+
   namespace :admin do
     resources :menus
     resources :users do
@@ -94,11 +96,15 @@ Rails.application.routes.draw do
         get 'add_initial_user'
         get 'retrieve_unordered_user'
         get 'export_orders_to_csv'
+        get 'sap_page'
+        post 'sap_page', to: 'users#post_sap_page'
       end
     end
     resources :dishes do
       collection do
         post 'new_tag'
+        get 'import_page'
+        post 'import'
       end
     end
     resources :restaurants do
@@ -117,6 +123,7 @@ Rails.application.routes.draw do
     end
     resources :pictures
     resources :comments
+    resources :notices
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

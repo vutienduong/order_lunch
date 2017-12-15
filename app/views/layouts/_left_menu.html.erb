@@ -21,6 +21,11 @@
 
   <button role="separator" class="divider"></button>
   <%= link_to "Feedbacks", comments_path, class: "btn btn-info" %>
+
+  <button role="separator" class="divider"></button>
+  <% if is_admin? %>
+      <%= link_to 'SAP Page', sap_page_admin_users_path, class: "btn btn-black" %>
+  <% end %>
 </div>
 
 

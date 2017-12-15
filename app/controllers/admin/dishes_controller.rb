@@ -9,7 +9,7 @@ class Admin::DishesController < Admin::AdminsController
 
   def create
     sizes = params[:dish_size]
-    sizes.delete_if {|k, v| v.blank?}
+    sizes.delete_if { |k, v| v.blank? }
 
     if sizes.blank?
       @dish = Dish.new(dish_params)
@@ -75,9 +75,9 @@ class Admin::DishesController < Admin::AdminsController
     tag = Tag.find_by(name: tag_name)
     if tag.blank?
       tag = Tag.new(name: tag_name)
-      msg = tag.save ? {status: STATUS_OK, message: MSG_SUCCESS, tag: {id: tag.id, name: tag_name}} : {status: STATUS_FAIL, msg: "Fail when create new tag with name (#{tag_name})."}
+      msg = tag.save ? { status: STATUS_OK, message: MSG_SUCCESS, tag: { id: tag.id, name: tag_name } } : { status: STATUS_FAIL, msg: "Fail when create new tag with name (#{tag_name})." }
     else
-      msg = {status: STATUS_FAIL, msg: "This tag is existed. Please choose an another name."}
+      msg = { status: STATUS_FAIL, msg: "This tag is existed. Please choose an another name." }
     end
     response_to_json msg
   end
@@ -87,6 +87,23 @@ class Admin::DishesController < Admin::AdminsController
     raise MyError::CreateFailError.new @dish.errors.messages unless @dish.update(dish_params)
     # upload_image_after_create_dish(params[:dish], @dish)
     redirect_to @dish
+  end
+
+  def import
+    @result = Dish.import(params[:file]) unless params[:file].blank?
+    import_page
+    render 'import_page', notice: 'Activity Data imported!'
+    #redirect_to import_page_admin_dishes_path, notice: 'Activity Data imported!'
+  end
+
+  def import_page
+    if @result.present?
+      @dishes = @result[:success]
+      @fails = @result[:fail]
+    else
+      @dishes = Dish.order("created_at").last(10)
+      @fails = []
+    end
   end
 
   private

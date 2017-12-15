@@ -270,6 +270,42 @@ class Admin::UsersController < Admin::AdminsController
     end
   end
 
+  def sap_page
+    sukiya = Restaurant.where("name like '%Sukiya%'").first
+    @restaurant_id = sukiya.blank? ? '' : sukiya.id
+  end
+
+  def post_sap_page
+    res_id = params[:dishes][:restaurant]
+    @log = {success: [], fail: []}
+    params[:dish].each do |k, v|
+      v["restaurant_id"] = res_id
+      v["sizeable"] = true
+      parent = Dish.find_by(name: v["name"])
+      v["parent"] = parent unless parent.blank?
+      vv = v
+      byebug
+      begin
+        Dish.create(quick_add_dish_params vv)
+        @log[:success].push("#{v["name"]} [#{v["size"]}]")
+      rescue => e
+        @log[:fail].push("#{v["name"]} [#{v["size"]}]")
+      end
+    end
+
+
+    params[:dish].each do |k, vv|
+      dish = Dish.where(name: vv["name"], size: vv["size"]).first
+      unless dish.blank?
+        dish.name = "#{dish.name} [#{dish.size}]"
+        dish.save
+      end
+    end
+
+    render 'quick_add_dish_result'
+
+  end
+
 
   private
   def user_params
@@ -281,5 +317,9 @@ class Admin::UsersController < Admin::AdminsController
 
   def admin_delete_himself? deleted_id
     session[:is_admin] && deleted_id == session[:user_id]
+  end
+
+  def quick_add_dish_params vv
+    vv.permit(:name, :price, :size, :restaurant_id, :sizeable, :parent)
   end
 end

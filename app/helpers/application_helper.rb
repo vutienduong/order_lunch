@@ -26,6 +26,10 @@ module ApplicationHelper
     Date.parse(str).to_date
   end
 
+  def datetime_to_date datetime
+    datetime.to_date
+  end
+
   def additional_info_for_current_date date
     if date.eql? Date.today
       'today'
@@ -42,13 +46,13 @@ module ApplicationHelper
 
   def response_to_json msg
     respond_to do |format|
-      format.json {render json: msg}
+      format.json { render json: msg }
     end
   end
 
 
   def show_price price
-    (price/1000).to_i.to_s + ',' + '000'
+    price.eql?(0) ? 0 : (price/1000).to_i.to_s + ',' + '000'
   end
 
   def show_price_integer price
@@ -59,7 +63,7 @@ module ApplicationHelper
     if dish.variants.blank?
       display_cost_as_thousand dish.price
     else
-      list_price = dish.variants.map {|v| {v.size => display_cost_as_thousand(v.price)}}
+      list_price = dish.variants.map { |v| { v.size => display_cost_as_thousand(v.price) } }
       list_price.prepend dish.size => display_cost_as_thousand(dish.price)
     end
   end
@@ -69,10 +73,14 @@ module ApplicationHelper
   end
 
   def build_note_for_custom_salad components
-    components.map {|k, v| "#{k}: #{v.map {|comp| DishedComponent.find_by(id: comp.first).name}.join(', ')} "}.join(". \n ")
+    components.map { |k, v| "#{k}: #{v.map { |comp| DishedComponent.find_by(id: comp.first).name }.join(', ')} " }.join(". \n ")
   end
 
   def generate_custom_salad_name name
     name = 'Custom Salad -' + name
+  end
+
+  def helper_cal_total_price dishes
+    dishes.inject(0) { |s, d| s += d.price }
   end
 end

@@ -1,7 +1,7 @@
 class MenusController < ApplicationController
   before_action :require_login
   def index
-    @menus = Menu.all
+    @menus = Menu.all.order(date: :desc)
   end
 
   def show

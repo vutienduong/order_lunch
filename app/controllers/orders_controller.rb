@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :require_login
 
   def show_personal_orders
-    @orders = Order.where(user_id: session[:user_id]).all
+    @orders = Order.where(user_id: session[:user_id]).order(date: :desc)
     render 'orders/personal_order'
   end
 
