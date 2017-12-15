@@ -11,6 +11,8 @@ default: &default
 
 development:
   <<: *default
+  #adapter: postgresql
+  #database: order_lunch_development
   database: db/development.sqlite3
 
 # Warning: The database defined as "test" will be erased and
@@ -22,4 +24,4 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: db/development.sqlite3

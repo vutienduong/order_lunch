@@ -25,5 +25,8 @@ module OrderLunch
     puts config.root
     config.autoload_paths += %W(#{config.root}/lib)
     config.exceptions_app = routes
+    config.generators do |g|
+      g.assets false
+    end
   end
 end

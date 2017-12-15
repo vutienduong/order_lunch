@@ -16,7 +16,7 @@
           <%= render 'layouts/left_menu' %>
         </div>
     <% end %>
-    <div class="col-md-10">
+    <div class="col-md-10 body-center-content">
       <% flash.each do |key, value| %>
           <%= content_tag(:div, value, class: "alert alert-#{key}") %>
       <% end %>
