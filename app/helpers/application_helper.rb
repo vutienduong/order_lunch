@@ -83,4 +83,13 @@ module ApplicationHelper
   def helper_cal_total_price dishes
     dishes.inject(0) { |s, d| s += d.price }
   end
+
+  def helper_dish_decorators dishes
+    show_dishes = dishes.compact
+    variants = show_dishes.map &:variants
+    variants.delete_if &:blank?
+    variants.flatten!
+    variants.each{|v| show_dishes.delete(v)}
+    show_dishes
+  end
 end

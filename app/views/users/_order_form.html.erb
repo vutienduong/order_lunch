@@ -53,8 +53,8 @@
           <% @r_tags.each do |r_id, r_tag| %>
               <% r_tag.each do |tag| %>
                   <div id=<%= tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}" %> class="restaurant-tabcontent" style="display: none">
-                    <% tag[1].each do |d| %>
-                        <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d[0]} %>
+                    <% (helper_dish_decorators(tag[1].flatten)).each do |d| %>
+                        <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
                     <% end %>
                   </div>
               <% end %>
