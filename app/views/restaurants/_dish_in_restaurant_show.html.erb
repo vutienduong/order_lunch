@@ -1,4 +1,4 @@
-<div class="row media" style="border: 1px solid darkgray; border-radius: 5px;">
+<div class="row media" style="border: 1px solid darkgray; border-radius: 5px; margin:10px">
   <div class="media-left">
     <%= render partial: 'layouts/components/image_tag_inline', locals: {restaurant: d, image: d.image, size: [100, 100], object: 'dish', options: {alt: "Image", img_size: 'thumb'}} %>
   </div>
@@ -6,7 +6,7 @@
     <p><strong><%= link_to d.name, dish_path(d) %></strong></p>
     <% prices = display_price d %>
     <% if prices.kind_of?(Array) %>
-        <div>Price: <strong><%= (prices.map {|p| p.values.first.to_s}).join(" / ")%> </strong>
+        <div style="margin-right: 10px">Price: <strong><%= (prices.map {|p| p.values.first.to_s}).join(" / ")%> </strong>
           <p><a href="#" data-toggle=<%="#dish-id-#{d.id}"%> onclick="showDetailPrices()">Details</a></p>
           <table class="table table-bordered" id=<%="dish-id-#{d.id}"%> style="display:none">
             <tr><th>Size</th><th>Price</th></tr>

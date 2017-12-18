@@ -4,6 +4,8 @@ module ApplicationHelper
   STATUS_FAIL = 'fail'.freeze
   MSG_SUCCESS = 'Success!'.freeze
   MAX_TAG_OPTION_NUMBER = 15
+  NUMBER_OF_MENU_PER_PAGE = 15
+  NUMBER_OF_ORDER_PER_PAGE = 10
 
 
   def display_cost_as_thousand(cost)
