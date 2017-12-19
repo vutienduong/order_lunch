@@ -176,8 +176,8 @@ function addDishToday2(dish) {
         dish_obj["name"] = generateFullNameForSize(dish_parent.find(".each-dish-name").text(), selected_size.find(":selected").data("size"))
     }
     else {
-        dish_obj["id"] = dish_parent.data("id")
-        dish_price = dish_parent.find(".each-dish-price").text();
+        dish_obj["id"] = dish_parent.data("id");
+        dish_price = dish_parent.find(".each-dish-price").data("price");
         dish_obj["name"] = dish_parent.find(".each-dish-name").text();
     }
 
@@ -214,7 +214,7 @@ function addDishToday2(dish) {
             dish_obj["image_url"] = dish_parent.find(".each-dish-img").attr("src")
 
             tmpl.find(".each-dish-name").text(dish_obj["name"])
-            tmpl.find(".each-dish-price").text(dish_price)
+            tmpl.find(".each-dish-price").text(convertRawPriceToShowForm(dish_price))
             tmpl.find(".btn btn-warning glyphicon glyphicon-remove").attr("id", "remove_btn_today_order_" + dish_obj["id"])
 
             tmpl.find("#today-order-template").attr({
@@ -230,7 +230,8 @@ function addDishToday2(dish) {
 
             list.append(tmpl)
 
-            total_price_span.text(new_total)
+            total_price_span.text(new_total);
+
             $("#total_price_today").change()
         }
     }).fail(function (jqXHR, textStatus) {
@@ -240,6 +241,10 @@ function addDishToday2(dish) {
     });
 }
 
+function convertRawPriceToShowForm(price)
+{
+  return parseInt(price/1000).toString() + ',000';
+}
 function generateFullNameForSize(name, size)
 {
   return name + "[ Size: " + size + " ]"

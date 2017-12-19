@@ -7,7 +7,7 @@
     <div class="media-body">
       <strong><%= link_to r.display_name, dish_path(r), class: "each-dish-name", data: {full_name: r.name} %></strong>
       <% if r.variants.blank? %>
-          <p class="each-dish-price"><%= show_price r.price %></p>
+          <p class="each-dish-price" data-price=<%= r.price %>><%= show_price r.price %></p>
       <% else %>
           <div class="each-dish-sizeable-price"><%= (r.variants.compact << r).map{|re| "#{re.size}: #{show_price re.price}"}.join('          ,            ') %></div>
           <p> <select class="each-dish-price">
