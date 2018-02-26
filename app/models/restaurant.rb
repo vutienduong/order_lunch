@@ -20,4 +20,8 @@ class Restaurant < ActiveRecord::Base
     variants.each{|v| show_dishes.delete(v)}
     show_dishes
   end
+
+  def test_res_method
+    puts 'This is test Restaurant'
+  end
 end
