@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-md-4">
-    <%= select_tag 'dummy', options_from_collection_for_select(@restaurants, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, size: @display_size, id: "new-menu-all-restaurants" %>
+    <%= select_tag 'dummy', options_from_collection_for_select(@restaurants, 'id', 'name'), prompt: "---Select Restaurant---", multiple: true, size: @display_size, id: 'new_menu_all_restaurants' %>
   </div>
   <div class="col-md-2">
-    <div class="row">
+    <div class="row" id="restaurant-group-btn">
       <a class="btn btn-default" id="new-menu-push">ADD</a>
     </div>
     <div class="row">
@@ -13,9 +13,4 @@
   <div class="col-md-4">
     <%= f.collection_select(:restaurant_ids, @menu.restaurants, :id, :name, {}, multiple: true) %>
   </div>
-</div>
-
-
-<div class="row">
-  <p><%= f.submit %></p>
 </div>

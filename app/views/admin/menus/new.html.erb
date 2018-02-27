@@ -1,17 +1,23 @@
 <h1>New Menu</h1>
 
 <%= form_for @menu, url: admin_menus_path do |f| %>
-    <div class="container">
-      <p><%= f.label :date %></p>
-      <p id="menu_date"><%= f.date_select :date, selected: Date.today %></p> <br>
+  <div class="container">
+    <p><%= f.label :date %></p>
+    <p id="menu_date"><%= f.date_field :date, value: @date ? @date : Date.today %></p>
+    <% if @restaurants.present? %>
+      <%= render partial: 'menus/select_restaurants_form', locals: { f: f } %>
+    <% end %>
+    <% if @providers.present? %>
+      <%= render partial: 'menus/select_providers_form', locals: { f: f } %>
+    <% end %>
+    <%= render partial: 'menus/submit_button', locals: { f: f } %>
 
-      <%= render partial: 'menus/select_restaurants_form', locals: {f: f} %>
-
-    </div>
+  </div>
 <% end %>
 
 <script>
-    $(function () {
-        NewMenuForm();
-    });
+  $(function () {
+    NewMenuForm();
+    NewMenuProvidersForm();
+  });
 </script>

@@ -1,7 +1,10 @@
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><a href="#">Quick Create Dish (Sukiya)</a></li>
   <li><%= link_to 'Import Dish (CSV)', import_page_admin_dishes_path %></li>
-  <li><a href="#">Create Notice</a></li>
+  <li><%= link_to 'Quick add dishes', admin_quick_add_with_type_path %></li>
+  <li><%= link_to 'Set month menu', admin_set_month_menu_path %></li>
+  <li><%= link_to 'Add providers for month', admin_add_provider_for_month_path %></li>
+  <li><%= link_to 'Create default provider menu for each day', admin_default_provider_menu_day_path %></li>
 </ul>
 <div>
   <%= form_for(:dishes, url: sap_page_admin_users_path) do |f| %>

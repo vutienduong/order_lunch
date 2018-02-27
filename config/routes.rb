@@ -82,6 +82,37 @@ Rails.application.routes.draw do
   resources :notices, only: [:index, :show]
 
   namespace :admin do
+    get 'select_dish_for_provider/:id' => 'providers#select_dish_for_provider',
+        as: :select_dish_for_provider
+
+    post 'select_dish_for_provider' => 'providers#confirm_dish_for_provider',
+        as: :confirm_dish_for_provider
+
+    get 'quick_add_dishes' => 'providers#quick_add_dishes', as: :quick_add_dishes
+
+    post 'quick_add_dishes' => 'providers#save_quick_add_dishes'
+
+    get 'quick_add_with_type' => 'providers#quick_add_with_type', as: :quick_add_with_type
+
+    post 'quick_add_with_type' => 'providers#save_quick_add_with_type'
+
+    get 'set_menu_for_month' => 'providers#set_menu_for_month', as: :set_month_menu
+
+    post 'select_date_to_set' => 'providers#select_date_to_set', as: :select_date_to_set
+
+    get 'add_provider_for_month' => 'providers#add_provider_for_month', as: :add_provider_for_month
+
+    post 'add_provider_for_month' => 'providers#post_add_provider_for_month'
+
+    get 'default_provider_menu_day' =>
+        'providers#default_provider_menu_day'
+
+    post 'default_provider_menu_day' =>
+        'providers#post_default_provider_menu_day'
+
+    post 'confirm_add_dish_for_provider_daily' =>
+        'providers#confirm_add_dish_for_provider_daily'
+
     resources :menus
     resources :users do
       collection do

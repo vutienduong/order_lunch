@@ -4,7 +4,7 @@ class Dish < ActiveRecord::Base
   attr_reader :image_logo_remote_url
   validates :name, presence: true, uniqueness: { scope: :restaurant, message: 'each restaurant doesn\'t have two dishes which are same named' }
 
-  validates_numericality_of :price, greater_than_or_equal_to: 1000
+  validates_numericality_of :price
 
   validates_presence_of :restaurant
 
@@ -21,6 +21,9 @@ class Dish < ActiveRecord::Base
   has_many :dished_components, through: :dish_component_associations
 
   has_and_belongs_to_many :tags
+
+  has_many :daily_restaurants, through: :provider_dish_mappings
+  has_many :provider_dish_mappings
 
   has_attached_file :image_logo, styles: {
       thumb: '100x100>',

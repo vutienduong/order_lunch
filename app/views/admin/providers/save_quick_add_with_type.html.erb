@@ -1,1 +1,20 @@
-<%= @dishes.map &:name %>
+<div class="col-md-6">
+  <h2>Results</h2>
+  <h3>Restaurant:  <%= @restaurant.name %></h3>
+  <br>
+  <table class="table table-bordered">
+    <tr>
+      <th>Group type</th>
+      <th>Dish name</th>
+      <th>Result</th>
+    </tr>
+    <% @create_dish_result.each do |result| %>
+      <tr>
+        <td><%= result[:group_name] %></td>
+        <td><%= result[:name] %></td>
+        <td><%= result[:save] %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to 'Back to SAP page', sap_page_admin_users_path %>
+</div>

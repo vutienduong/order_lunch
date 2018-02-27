@@ -94,4 +94,17 @@ module ApplicationHelper
     variants.each{|v| show_dishes.delete(v)}
     show_dishes
   end
+
+  def message_from_status(status)
+    case status
+      when Admin::ProvidersController::NO_MENU_STT
+        'Add provider'
+      when Admin::ProvidersController::NEED_TO_SET_PROVIDER_STT,
+          Admin::ProvidersController::PENDING_STT
+        'Add dishes'
+      else
+        ''
+    end
+  end
+
 end

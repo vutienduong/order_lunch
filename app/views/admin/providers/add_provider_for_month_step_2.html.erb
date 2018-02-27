@@ -1,0 +1,54 @@
+<h4>Step 2: Add provider</h4>
+
+<% if @error.present? %>
+  <h4 style="color: red"><%= @error %></h4>
+  <%= link_to 'Back', admin_add_provider_for_month_path, class: "btn btn-default" %>
+<% end %>
+
+<% if @result.present? %>
+  <div class="grant-border">
+    <h4>Results</h4>
+    <p><strong>Create successfully(<%= @result[:success].count %>):</strong></p>
+    <% @result[:success].each do |success| %>
+      <p><%= success %></p>
+    <% end %>
+
+    <p style="color: red"><strong>Create fail(<%= @result[:fail].count %>):</strong></p>
+    <% @result[:fail].each do |fail| %>
+      <p><%= fail %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @provider_names.present? %>
+  <div class="grant-border">
+    <%= form_for :provider, url: admin_add_provider_for_month_path do |f| %>
+      <div class="grant-border">
+        <p style="font-style: italic; color: coral ">Hint: Each dish is on a separating line</p>
+      </div>
+      <div class="form-group">
+        <%= f.hidden_field :step, value: '2' %>
+      </div>
+
+      <% @provider_names.each_with_index do |provider, idx| %>
+        <div class="grant-border">
+          <%= f.label provider[:name] %>
+
+          <div class="form-group">
+            <%= f.label 'Name' %>
+            <input name="provider[dishes][<%= idx %>][name]" value="<%= provider[:name] %>"/>
+          </div>
+
+          <div class="form-group">
+            <%= f.label 'Dishes' %>
+            <textarea name="provider[dishes][<%= idx %>][dishes]" cols="30" rows="15"><%= provider[:dishes].join("\r\n") %></textarea>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.submit 'Next', class: 'btn btn-default' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
