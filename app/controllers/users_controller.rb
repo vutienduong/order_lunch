@@ -80,7 +80,7 @@ class UsersController < ApplicationController
     r_tags = {}
     menu.restaurants.each do |restaurant|
       temp_tag = {}
-      restaurant.dishes.group_by(&:tags).each do |tag, dish|
+      restaurant.by_date(@select_date).dishes.group_by(&:tags).each do |tag, dish|
         name = tag.first
         temp_tag[name] = [] unless temp_tag[name]
         temp_tag[name].push dish

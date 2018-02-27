@@ -14,9 +14,9 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <% @menu.restaurants.each do |r| %>
-                <li>
-                  <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>); hiddenOtherTags('<%="tag_tab_link_#{r.id}" %>');"><%= r.name %></a>
-                </li>
+              <li>
+                <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>); hiddenOtherTags('<%="tag_tab_link_#{r.id}" %>');"><%= r.name %></a>
+              </li>
             <% end %>
           </ul>
         </div>
@@ -28,11 +28,11 @@
           </button>
           <ul class="dropdown-menu" role="menu">
             <% @r_tags.each do |r_id, r_tag| %>
-                <% r_tag.each do |tag| %>
-                    <li>
-                      <a href="#" id=<%= "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}" %> onclick="showDishesForRetaurant(event, <%= "tag_tab_#{show_id_included_blank(r_id, tag[0])}" %>)"><%= tag[0].blank? ? 'Other' : tag[0].name %></a>
-                    </li>
-                <% end %>
+              <% r_tag.each do |tag| %>
+                <li>
+                  <a href="#" id=<%= "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}" %> onclick="showDishesForRetaurant(event, <%= "tag_tab_#{show_id_included_blank(r_id, tag[0])}" %>)"><%= tag[0].blank? ? 'Other' : tag[0].name %></a>
+                </li>
+              <% end %>
             <% end %>
           </ul>
         </div>
@@ -40,24 +40,24 @@
 
         <div class="row show-all-dishes" style="margin:5px">
           <% @menu.restaurants.each do |r| %>
-              <div id=<%= 'restaurant_tab_'+ r.id.to_s %> class="restaurant-tabcontent">
-                <% r.dish_decorators.each do |d| %>
-                    <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
-                <% end %>
-              </div>
+            <div id=<%= 'restaurant_tab_' + r.id.to_s %> class="restaurant-tabcontent">
+              <% r.by_date(@select_date).dish_decorators.each do |d| %>
+                <%= render partial: 'dishes/media_style/dish_media_style', locals: { r: d } %>
+              <% end %>
+            </div>
           <% end %>
         </div>
 
 
         <div class="row show-all-dishes" style="margin:5px">
           <% @r_tags.each do |r_id, r_tag| %>
-              <% r_tag.each do |tag| %>
-                  <div id=<%= tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}" %> class="restaurant-tabcontent" style="display: none">
-                    <% (helper_dish_decorators(tag[1].flatten)).each do |d| %>
-                        <%= render partial: 'dishes/media_style/dish_media_style', locals: {r: d} %>
-                    <% end %>
-                  </div>
-              <% end %>
+            <% r_tag.each do |tag| %>
+              <div id=<%= tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}" %> class="restaurant-tabcontent" style="display: none">
+                <% (helper_dish_decorators(tag[1].flatten)).each do |d| %>
+                  <%= render partial: 'dishes/media_style/dish_media_style', locals: { r: d } %>
+                <% end %>
+              </div>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -65,9 +65,9 @@
       <div id="all_orders" class="tabcontent" style="border: 2px">
         <h2>All orders <%= Date.today() %></h2>
         <% if defined? @all_orders %>
-            <%= render partial: 'users/components/today_all_order_details' %>
+          <%= render partial: 'users/components/today_all_order_details' %>
         <% else %>
-            <h3> No permission</h3>
+          <h3> No permission</h3>
         <% end %>
       </div>
 
@@ -86,9 +86,9 @@
 
         <div id="today-my-order-content">
           <% unless @today_order.blank? %>
-              <% @today_order.dishes.each do |r| %>
-                  <%= render partial: 'dishes/media_style/today_dish_media_style', locals: {r: r} %>
-              <% end %>
+            <% @today_order.dishes.each do |r| %>
+              <%= render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r } %>
+            <% end %>
           <% end %>
         </div>
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171212230416) do
+ActiveRecord::Schema.define(version: 20180205160358) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -23,6 +23,14 @@ ActiveRecord::Schema.define(version: 20171212230416) do
   end
 
   add_index "comments", ["author_id"], name: "index_comments_on_author_id"
+
+  create_table "daily_restaurants", force: :cascade do |t|
+    t.integer  "restaurant_id"
+    t.integer  "dish_id"
+    t.date     "date"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
 
   create_table "dish_component_associations", force: :cascade do |t|
     t.datetime "created_at",          null: false
@@ -36,6 +44,11 @@ ActiveRecord::Schema.define(version: 20171212230416) do
     t.integer  "order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "dish_restaurant_associations", force: :cascade do |t|
+    t.integer "dish_id"
+    t.integer "restaurant_id"
   end
 
   create_table "dished_components", force: :cascade do |t|
@@ -60,6 +73,7 @@ ActiveRecord::Schema.define(version: 20171212230416) do
     t.integer  "tags_id"
     t.string   "size"
     t.integer  "parent_id"
+    t.text     "group_name"
   end
 
   add_index "dishes", ["parent_id"], name: "index_dishes_on_parent_id"
@@ -134,6 +148,11 @@ ActiveRecord::Schema.define(version: 20171212230416) do
     t.datetime "image_updated_at"
   end
 
+  create_table "provider_dish_mappings", force: :cascade do |t|
+    t.integer "daily_restaurant_id"
+    t.integer "dish_id"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.string   "name"
     t.text     "address"
@@ -147,6 +166,7 @@ ActiveRecord::Schema.define(version: 20171212230416) do
     t.datetime "image_logo_updated_at"
     t.string   "ref_link"
     t.text     "description"
+    t.boolean  "is_provider"
   end
 
   create_table "salad_components", force: :cascade do |t|

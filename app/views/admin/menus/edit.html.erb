@@ -3,11 +3,14 @@
     <div class="container">
       <p><%=@menu.date %></p>
       <%= render partial: 'menus/select_restaurants_form', locals: {f: f} %>
+      <%= render partial: 'menus/select_providers_form', locals: {f: f} %>
+      <%= render partial: 'menus/submit_button', locals: {f: f} %>
     </div>
 <% end %>
 
 <script>
     $(function(){
         NewMenuForm();
+        NewMenuProvidersForm();
     });
 </script>

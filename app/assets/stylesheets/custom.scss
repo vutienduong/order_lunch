@@ -194,7 +194,7 @@ tr#highlight-current-user-order {
   //background: transparent;
 }
 
-#menu_restaurant_ids, #new-menu-all-restaurants {
+#menu_restaurant_ids, #menu_provider_ids, #new_menu_all_restaurants, #new_menu_all_providers {
   width: 228px;
   height: auto;
 }
@@ -351,3 +351,46 @@ input:focus {
 .body-center-content{
   padding: 40px;
 }
+
+.padding-20{
+  padding: 20px;
+}
+
+.margin-bot-40{
+  margin-bottom: 40px;
+}
+
+.margin-bot-20{
+  margin-bottom: 20px;
+}
+
+.background-soft-color{
+  background-color: #f2dede;
+}
+
+.background-med-color{
+  background-color: #c0a16b;
+}
+
+.rest_day_stt{
+  background-color: #d43f3a;
+  color: #f2dede;
+}
+
+.can_not_set_stt{
+  background-color: #8c8c8c;
+  color: #f2dede;
+}
+
+.already_set_stt{
+  background-color: #31708f;
+}
+
+.pending_stt{
+  background-color: #5cb85c;
+}
+
+.need_provider_stt{
+  background-color: #255625;
+}
+

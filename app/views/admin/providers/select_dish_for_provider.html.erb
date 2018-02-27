@@ -5,4 +5,4 @@
   <input type="hidden" name="provider[daily_restaurant_id]" id="provider_daily_restaurant_id" value=<%= @daily_restaurant.id %> />
   <%= f.collection_check_boxes(:dish_ids, @dishes, :id, :name) %>
   <p><%= f.submit %></p>
-<%= end %>
+<% end %>

@@ -1,0 +1,6 @@
+<% result.each do |prov| %>
+  <div class="grant-border">
+    <h4><%= prov.first %></h4>
+    <%= render partial: 'shared/creating_result', locals: {result: prov.last} %>
+  </div>
+<% end %>

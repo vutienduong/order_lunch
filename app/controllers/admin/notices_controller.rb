@@ -1,5 +1,6 @@
 class Admin::NoticesController < Admin::AdminsController
   include MyError
+  NEWLINE_PATENT = '&#13;&#10;'
 
   def show
     @notice = Notice.last
