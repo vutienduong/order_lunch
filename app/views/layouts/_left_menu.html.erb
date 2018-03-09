@@ -7,6 +7,7 @@
   <% if is_admin? %>
       <%= link_to 'MANAGE LUNCH TODAY', manage_company_admin_users_path, class: "btn btn-default" %>
       <%= link_to 'MANAGE LUNCH ALL DAYS', manage_all_days_admin_users_path, class: "btn btn-default" %>
+      <%= link_to 'Un-ordered user today', retrieve_unordered_user_admin_users_path, class: "btn btn-warning" %>
   <% end %>
   <button role="separator" class="divider"></button>
   <%= link_to 'All orders today', get_all_orders_today_users_path, class: "btn btn-info" %>
@@ -20,6 +21,11 @@
 
   <button role="separator" class="divider"></button>
   <%= link_to "Feedbacks", comments_path, class: "btn btn-info" %>
+
+  <button role="separator" class="divider"></button>
+  <% if is_admin? %>
+      <%= link_to 'SAP Page', sap_page_admin_users_path, class: "btn btn-black" %>
+  <% end %>
 </div>
 
 

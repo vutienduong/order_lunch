@@ -1,0 +1,63 @@
+<%= flash[:notice] %>
+<% unless  @dishes.blank?%>
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Restaurant_id</th>
+    <th>Name</th>
+    <th>Sizeable</th>
+    <th>Price</th>
+    <th>Size</th>
+    <th>Tag</th>
+    <th>Create at</th>
+    <th>Update at</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @dishes.each do |dish| %>
+      <tr>
+        <td><%= dish.restaurant_id %></td>
+        <td><%= dish.name %></td>
+        <td><%= dish.sizeable %></td>
+        <td><%= dish.price %></td>
+        <td><%= dish.size %></td>
+        <td><%= dish.tags&.first&.name %></td>
+        <td><%= dish.created_at %></td>
+        <td><%= dish.updated_at %></td>
+        <td><%= link_to 'Delete', admin_dish_path(dish),
+            method: :delete,
+            data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<% unless  @fails.blank?%>
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Fail Message</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @fails.each do |err|  %>
+  <tr>
+    <td><%= err.first %></td>
+  </tr>
+  <% end  %>
+  </tbody>
+</table>
+    <% end %>
+
+<div style="border: solid 1px gray; padding: 20px">
+  <h4>Import that data! </h4>
+  <%= form_tag import_admin_dishes_path, multipart: true do %>
+      <%= file_field_tag :file %>
+      <div class="form-group" style="padding: 20px">
+        <%= submit_tag 'Import CSV' %>
+      </div>
+  <% end %>
+</div>

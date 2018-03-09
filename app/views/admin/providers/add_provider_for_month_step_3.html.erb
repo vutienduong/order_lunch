@@ -1,0 +1,5 @@
+<h4>Step 3: Add provider</h4>
+<% if @result %>
+  <%= render partial: 'shared/group_creating_result', locals: { result: @result } %>
+  <%= link_to 'Back to SAP', sap_page_admin_users_path, class:'btn btn-primary' %>
+<% end %>

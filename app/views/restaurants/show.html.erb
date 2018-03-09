@@ -7,7 +7,7 @@
     <% end %>
 
     <div class="panel panel-default">
-      <div class="row media panel-heading">
+      <div class="row media panel-heading" id="restaurant-show-details">
         <div class="media-body">
           <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
           <p>Address: <%= @restaurant.address %></p>
@@ -26,11 +26,11 @@
         <% end %>
       </div>
       <div class="panel panel-body">
-        <% @restaurant.dishes.each do |d| %>
+        <% @restaurant.dish_decorators.each do |d| %>
             <%= render partial: 'dish_in_restaurant_show', locals: {d: d} %>
         <% end %>
       </div>
-      <div class="row">
+      <div>
         <%= link_to "All Restaurants", restaurants_path, class: "btn btn-default" %>
       </div>
     </div>

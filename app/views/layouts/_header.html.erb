@@ -4,6 +4,7 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <% if logged_in? %>
+            <li><%= link_to "NEWs", new_update_path %></li>
             <li><%= link_to "Home", order_user_path(current_user) %></li>
             <li><%= link_to "How to use", help_path %></li>
             <li class="dropdown">

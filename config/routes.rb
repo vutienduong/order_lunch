@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get '/404', to: 'errors#not_found'
   get '/500', to: 'errors#internal_server_error'
   get '/help', to: 'users#help'
+  get '/new_update', to: 'users#new_update'
   #get 'not_visible', to: 'home#not_visible'
 
   resources :users, only: [:show, :index, :edit, :update] do
@@ -66,7 +67,52 @@ Rails.application.routes.draw do
 
   resources :comments, only: [:new, :index, :create, :show]
 
+  resources :tags
+  resources :orders do
+    collection do
+      get 'order_custom_salad'
+      post 'order_custom_salad', to: 'orders#create_custom_salad'
+      get 'confirm_create_same_combo'
+      post 'check_custom_salad_name'
+      post 'add_dish_to_order'
+      post 'create_custom_salad_with_name'
+    end
+  end
+
+  resources :notices, only: [:index, :show]
+
   namespace :admin do
+    get 'select_dish_for_provider/:id' => 'providers#select_dish_for_provider',
+        as: :select_dish_for_provider
+
+    post 'select_dish_for_provider' => 'providers#confirm_dish_for_provider',
+        as: :confirm_dish_for_provider
+
+    get 'quick_add_dishes' => 'providers#quick_add_dishes', as: :quick_add_dishes
+
+    post 'quick_add_dishes' => 'providers#save_quick_add_dishes'
+
+    get 'quick_add_with_type' => 'providers#quick_add_with_type', as: :quick_add_with_type
+
+    post 'quick_add_with_type' => 'providers#save_quick_add_with_type'
+
+    get 'set_menu_for_month' => 'providers#set_menu_for_month', as: :set_month_menu
+
+    post 'select_date_to_set' => 'providers#select_date_to_set', as: :select_date_to_set
+
+    get 'add_provider_for_month' => 'providers#add_provider_for_month', as: :add_provider_for_month
+
+    post 'add_provider_for_month' => 'providers#post_add_provider_for_month'
+
+    get 'default_provider_menu_day' =>
+        'providers#default_provider_menu_day'
+
+    post 'default_provider_menu_day' =>
+        'providers#post_default_provider_menu_day'
+
+    post 'confirm_add_dish_for_provider_daily' =>
+        'providers#confirm_add_dish_for_provider_daily'
+
     resources :menus
     resources :users do
       collection do
@@ -79,9 +125,19 @@ Rails.application.routes.draw do
         get 'scrap_data'
         get 'ping_slack'
         get 'add_initial_user'
+        get 'retrieve_unordered_user'
+        get 'export_orders_to_csv'
+        get 'sap_page'
+        post 'sap_page', to: 'users#post_sap_page'
       end
     end
-    resources :dishes
+    resources :dishes do
+      collection do
+        post 'new_tag'
+        get 'import_page'
+        post 'import'
+      end
+    end
     resources :restaurants do
       member do
         get 'show_image'
@@ -98,6 +154,7 @@ Rails.application.routes.draw do
     end
     resources :pictures
     resources :comments
+    resources :notices
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

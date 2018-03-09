@@ -1,0 +1,11 @@
+<% unless notice.blank? %>
+    <div class="panel panel-default">
+      <div class="panel-body" style="white-space: pre-wrap;">
+        <%= notice&.content %>
+      </div>
+    </div>
+<% end %>
+
+<% if is_admin? %>
+    <%= render partial: 'layouts/components/amend_button_group', locals: { _edit_link: notice.blank? ? '#' : edit_admin_notice_path(notice), _new_link: { name: 'New Notice', url: new_admin_notice_path }, _delete_link: '#' } %>
+<% end %>

@@ -1,0 +1,9 @@
+<td class=<%= stt[:status] %> data-status=<%= stt[:status] %> data-date=<%= stt[:date] %>>
+  <div>
+    <%= "#{stt[:date].day} (#{Date::DAYNAMES[stt[:date].wday]})" %>
+  </div>
+
+  <div>
+    <%= message_from_status stt[:status] %>
+  </div>
+</td>

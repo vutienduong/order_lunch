@@ -1,0 +1,132 @@
+<div class="col-md-10">
+  <h2>Quick add dishes with type</h2>
+  <div class="row grant-border margin-bot-40 background-soft-color" id="guide_path">
+    <p>
+      1. Fill type of group dishes you want to store,
+      for conveniently adding dishes to menu
+    </p>
+
+    <p>
+      2. Fill names of dishes line by line
+    </p>
+
+    <p>For example:</p>
+
+    <div class="row margin-bot-20">
+      <a class="btn btn-default" id="toggle_btn">
+        Show
+      </a>
+    </div>
+    <div class="row background-med-color" id="example" style="display: none">
+      <table class="table table-hover">
+        <tr>
+          <th>Type</th>
+          <th>List of dishes</th>
+        </tr>
+
+        <tr>
+          <td>
+            <input type="text" value="Monday_group" disabled/>
+          </td>
+          <td>
+        <textarea rows="6" cols="30" disabled>
+        Ca com kho to
+        Thit heo nuong
+        Canh chua ca loc
+          ....
+        </textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <input type="text" value="Tuesday_group" disabled/>
+          </td>
+          <td>
+        <textarea rows="6" cols="30" disabled>
+        Thit luoc
+        Dau hu chien
+        Canh bi do
+          ....
+        </textarea>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="row grant-border" id="form_path">
+    <div class="row">
+      <div class="padding-20">
+        <%= form_for :dishes do |f| %>
+          <div class="form-group row">
+            <%= f.label :restaurant_id %>
+            <%= f.collection_select(:restaurant_id, @restaurants, :id, :name, {}) %>
+          </div>
+
+          <div class="row">
+            <a id="add_type_button" class="btn btn-primary">
+              Add More Type...
+            </a>
+          </div>
+
+          <div class="row">
+            <table class="table table-bordered" id="dishes_table">
+              <tr>
+                <th>Type</th>
+                <th>List of dishes</th>
+              </tr>
+
+              <tr>
+                <td><input type="text" name="dishes[dish_types][]"/></td>
+                <td>
+          <textarea cols="30" name="dishes[dish_names][]" onkeyup="AutoGrowTextArea(this)">
+        </textarea></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="row">
+            <%= f.submit %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function AutoGrowTextArea(textField) {
+    if (textField.clientHeight < textField.scrollHeight) {
+      textField.style.height = textField.scrollHeight + "px";
+      if (textField.clientHeight < textField.scrollHeight) {
+        textField.style.height =
+            (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+      }
+    }
+  }
+
+  $(function () {
+    $('#add_type_button').click(function () {
+      new_row = $.parseHTML('<tr>' +
+          '<td><input type="text" name="dishes[dish_types][]"/></td>' +
+          '<td><textarea cols="30" onkeyup="AutoGrowTextArea(this)" name="dishes[dish_names][]"></textarea></td>' +
+          '</tr>')
+      $("#dishes_table").append(new_row)
+      return false;
+    });
+
+    $('#toggle_btn').click(function () {
+      text = $(this).text()
+      text = text.replace(/\s+/g, '');
+
+      if (text == 'Show') {
+        $(this).text('Hide')
+      } else {
+        $(this).text('Show')
+      }
+
+      $('#example').toggle();
+    })
+  })
+</script>

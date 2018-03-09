@@ -1,9 +1,15 @@
 class Admin::OrdersController < Admin::AdminsController
   def edit
+    _get_dishes_of_menu_by_date(Date.today, params[:id])
     @order = Order.find(params[:id])
   end
 
   def update
+    raise MyError::NonExistRecordError unless @order = Order.find_by(id: params[:id])
+    @order.dishes.destroy_all
+    @order.update create_order_params
+    raise MyError::UpdateFailError.new @order.errors.messages unless @order.save
+    redirect_to get_all_orders_today_users_path
   end
 
   def show
@@ -22,6 +28,7 @@ class Admin::OrdersController < Admin::AdminsController
     #end
 
     raise MyError::CreateFailError.new @order.errors.messages unless @order.save
+    redirect_to get_all_orders_today_users_path
   end
 
   def new
@@ -65,8 +72,16 @@ class Admin::OrdersController < Admin::AdminsController
     #params[:order][:date] = Date.civil(params[:orders]['date(1i)'].to_i, params[:orders]['date(2i)'].to_i, params[:orders]['date(3i)'].to_i)
   end
 
-  def _get_dishes_of_menu_by_date(date)
-    @order = Order.new
+  def _get_dishes_of_menu_by_date(date, order_id = nil)
+    if order_id
+      @order = Order.find_by id: order_id
+      raise MyError::NonExistRecordError unless @order
+      @total_price = @order.dishes.map(&:price).inject(0) {|s, e| s=s+e}
+    else
+      @order = Order.new
+      @total_price =  0
+    end
+
     m = Menu.find_by_date(date)
     if m
       @restaurants = m.restaurants

@@ -2,8 +2,11 @@ class Admin::UsersController < Admin::AdminsController
 
   include Scraper
   include SlackNotification
+  include CSVExport
+
   WEBHOOK_URL = 'https://hooks.slack.com/services/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'.freeze
   require 'swap_word'
+  require 'csv'
 
   def index
     @users = User.all
@@ -61,18 +64,51 @@ class Admin::UsersController < Admin::AdminsController
   end
 
   def manage_all
-    @order = Order.new #dummy, TODO: remove it
-    @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
+    @order = Order.new
+    #@date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
+    @date = params[:order][:date]
     manage_company(@date)
-    render plain: 'manage_all_days'
+    render 'manage_all_days'
   end
 
 
   def manage_company(fetch_date = Date.today)
     @menu = Menu.find_by_date(fetch_date)
-    @today_orders = Order.where("DATE(date)=?", fetch_date)
+    return if @menu.blank?
 
-    today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
+    @today_orders = Order.where("DATE(date)=?", fetch_date)
+    thuankieu_comboes = []
+
+    thuankieu_str = 'Thuận Kiều'
+    thuankieu_res = Restaurant.where("name like ?", "%#{thuankieu_str}%").first
+    thuankieu_id = thuankieu_res.id
+
+    if @menu.restaurant_ids.include? thuankieu_id
+      extra_tag = Tag.where("name like ?", "Thuận Kiều - canh, cơm thêm%").first
+      if extra_tag
+        extra_tag_id = extra_tag.id
+        today_all_ordered_dishes = @today_orders.map do |t|
+          parts = t.dishes.partition {|d| d.restaurant.id == thuankieu_id && d.tag_ids.exclude?(extra_tag_id)}
+
+          thuankieu_combo = parts[0]
+          normal_dishes = parts[1]
+
+          combo_ids = thuankieu_combo.map(&:id)
+
+          temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '), restaurant: thuankieu_res, price: thuankieu_combo.inject(0) {|s, e| s += e.price})
+          if thuankieu_comboes.include? combo_ids
+            temp_dish.id = -1 * thuankieu_comboes.index(combo_ids) - 1
+          else
+            thuankieu_comboes.push combo_ids
+            temp_dish.id = -1 * thuankieu_comboes.length
+          end
+          normal_dishes.push(temp_dish)
+        end
+      end
+    else
+      today_all_ordered_dishes = @today_orders.map {|t| t.dishes}
+    end
+
     today_all_ordered_dishes = today_all_ordered_dishes.flatten
 
     counted_dishes = Hash.new(0).tap {|h| today_all_ordered_dishes.each {|dish| h[dish] += 1}}
@@ -220,6 +256,56 @@ class Admin::UsersController < Admin::AdminsController
     end
   end
 
+  def retrieve_unordered_user
+    ordered_users = Order.where('DATE(date)=?', Date.today).map(&:user)
+    @unordered_users = User.all - ordered_users
+  end
+
+  def export_orders_to_csv
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data all_orders_to_csv, filename: 'order_report_csv.csv', type: 'application/csv'
+      end
+    end
+  end
+
+  def sap_page
+    sukiya = Restaurant.where("name like '%Sukiya%'").first
+    @restaurant_id = sukiya.blank? ? '' : sukiya.id
+  end
+
+  def post_sap_page
+    res_id = params[:dishes][:restaurant]
+    @log = {success: [], fail: []}
+    params[:dish].each do |k, v|
+      v["restaurant_id"] = res_id
+      v["sizeable"] = true
+      parent = Dish.find_by(name: v["name"])
+      v["parent"] = parent unless parent.blank?
+      vv = v
+      byebug
+      begin
+        Dish.create(quick_add_dish_params vv)
+        @log[:success].push("#{v["name"]} [#{v["size"]}]")
+      rescue => e
+        @log[:fail].push("#{v["name"]} [#{v["size"]}]")
+      end
+    end
+
+
+    params[:dish].each do |k, vv|
+      dish = Dish.where(name: vv["name"], size: vv["size"]).first
+      unless dish.blank?
+        dish.name = "#{dish.name} [#{dish.size}]"
+        dish.save
+      end
+    end
+
+    render 'quick_add_dish_result'
+
+  end
+
 
   private
   def user_params
@@ -231,5 +317,9 @@ class Admin::UsersController < Admin::AdminsController
 
   def admin_delete_himself? deleted_id
     session[:is_admin] && deleted_id == session[:user_id]
+  end
+
+  def quick_add_dish_params vv
+    vv.permit(:name, :price, :size, :restaurant_id, :sizeable, :parent)
   end
 end

@@ -1,0 +1,4 @@
+<h4>This month does not have month provider.</h4>
+<h4>Go to create providers?</h4>
+<%= link_to 'Back to grant provider page', admin_default_provider_menu_day_path, class:'btn btn-default' %>
+<%= link_to 'Go next', admin_add_provider_for_month_path(provider: {year: @date[:year], step: '1'}, date: {month: @date[:month]}), method: 'post',  class:'btn btn-primary' %>

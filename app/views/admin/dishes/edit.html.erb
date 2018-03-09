@@ -19,6 +19,8 @@
         <p><%= f.file_field :image_logo %></p>
       </div>
 
+      <%= render partial: 'dishes/tag_select', locals: {f: f} %>
+
       <p><%= f.submit %></p>
   <% end %>
 </div>

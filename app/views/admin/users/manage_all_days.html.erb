@@ -1,6 +1,6 @@
 <h1><%= @date %></h1>
 <%= form_for @order, url: manage_all_days_admin_users_path do |f| %>
-    <%= f.date_select :date, selected: Date.today%>
+    <%= f.date_field :date, value: @date ? @date : Date.today%>
     <%= f.submit 'See' %>
 <% end %>
-<%= render partial: 'admin/users/manage_order' %>
+<%= render partial: @menu.blank? ? 'menus/request_menu' : 'admin/users/manage_order' %>

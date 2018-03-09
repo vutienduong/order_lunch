@@ -1,15 +1,34 @@
-  <div class="row media">
-    <div class="media-left">
-      <%= render partial: 'layouts/components/image_tag_inline', locals: {restaurant: d, image: d.image, size: [100, 100], object: 'dish', options: {alt: "Image", img_size: 'thumb'}} %>
-    </div>
-    <div class="media-body">
-      <p><strong><%= link_to d.name, dish_path(d) %></strong>(<%= display_cost_as_thousand(d.price) %>)</p>
-      <p class="item-long-content"><%= d.description %></p>
-    </div>
-
-    <% if params[:select_dish] %>
-        <div class="media-right">
-          <%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id}, class: "btn btn-primary" %>
-        </div>
-    <% end %>
+<div class="row media" style="border: 1px solid darkgray; border-radius: 5px; margin:10px">
+  <div class="media-left">
+    <%= render partial: 'layouts/components/image_tag_inline', locals: {restaurant: d, image: d.image, size: [100, 100], object: 'dish', options: {alt: "Image", img_size: 'thumb'}} %>
   </div>
+  <div class="media-body">
+    <p><strong><%= link_to d.name, dish_path(d) %></strong></p>
+    <% prices = display_price d %>
+    <% if prices.kind_of?(Array) %>
+        <div style="margin-right: 10px">Price: <strong><%= (prices.map {|p| p.values.first.to_s}).join(" / ")%> </strong>
+          <p><a href="#" data-toggle=<%="#dish-id-#{d.id}"%> onclick="showDetailPrices()">Details</a></p>
+          <table class="table table-bordered" id=<%="dish-id-#{d.id}"%> style="display:none">
+            <tr><th>Size</th><th>Price</th></tr>
+            <% prices.each do |e| %>
+                <tr>
+                  <td><%= e.keys.first.to_s %></td>
+                  <td><strong><%= e.values.first.to_s %></strong></td>
+                </tr>
+            <% end %>
+          </table>
+        </div>
+    <% else %>
+        <p>Price: <strong><%= prices %></strong></p>
+    <% end %>
+
+    <p><%= d.tags.map(&:name).join(', ') %></p>
+    <p class="item-long-content"><%= d.description %></p>
+  </div>
+
+  <% if params[:select_dish] %>
+      <div class="media-right">
+        <%= link_to "Add", {controller: 'users', action: 'add_dish_to_order_no_ajax', dish_id: d.id}, class: "btn btn-primary" %>
+      </div>
+  <% end %>
+</div>

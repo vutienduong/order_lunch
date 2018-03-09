@@ -1,11 +1,10 @@
 var NewMenuForm = function () {
 
-    leftList = $("#new-menu-all-restaurants");
+    leftList = $("#new_menu_all_restaurants");
     rightList = $("#menu_restaurant_ids");
 
     addBtn = $("#new-menu-push");
     removeBtn = $("#new-menu-pop");
-    submitBtn =
 
     addBtn.click(function () {
         console.log("push");
@@ -46,8 +45,57 @@ var NewMenuForm = function () {
         })
     });
 
-    $("input[name=commit]").click(function(){
-        $("#menu_restaurant_ids option").prop("selected", true);
-        //$("#menu_restaurant_ids").val("12", "13");
+    $("input[name=commit]").click(function () {
+      $("#menu_restaurant_ids option").prop("selected", true);
+      $("#menu_provider_ids option").prop("selected", true);
     });
+};
+
+
+var NewMenuProvidersForm = function () {
+
+  leftList = $("#new_menu_all_providers");
+  rightList = $("#menu_provider_ids");
+
+  addBtn = $("#new-menu-provider-push");
+  removeBtn = $("#new-menu-provider-pop");
+
+  addBtn.click(function () {
+    console.log("push");
+
+    rightList.attr("multiple", "multiple");
+    all_chosen_values = [];
+
+    rightList.find("option").each(function () {
+      all_chosen_values.push($(this).val());
+    });
+
+    console.log(all_chosen_values.unique());
+    all_chosen_values = all_chosen_values.unique();
+
+    leftList.find("option").each(function () {
+      if ($(this).is(':selected')) {
+        if ($(this).val() == "") {
+          return;
+        }
+
+        if (!all_chosen_values.contains($(this).val())) {
+          rightList.append($('<option>', {
+            value: $(this).val(),
+            text: $(this).text()
+          }));
+          console.log($(this).text(), $(this).val(), "dfkjhds");
+        }
+      }
+    });
+  });
+
+  removeBtn.click(function () {
+    console.log("pop");
+    rightList.find("option").each(function () {
+      if ($(this).is(':selected')) {
+        $(this).remove();
+      }
+    })
+  });
 };

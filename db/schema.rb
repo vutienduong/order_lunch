@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121051010) do
+ActiveRecord::Schema.define(version: 20180205160358) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -24,11 +24,36 @@ ActiveRecord::Schema.define(version: 20171121051010) do
 
   add_index "comments", ["author_id"], name: "index_comments_on_author_id"
 
+  create_table "daily_restaurants", force: :cascade do |t|
+    t.integer  "restaurant_id"
+    t.integer  "dish_id"
+    t.date     "date"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "dish_component_associations", force: :cascade do |t|
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.integer  "dish_id"
+    t.integer  "dished_component_id"
+  end
+
   create_table "dish_orders", force: :cascade do |t|
     t.integer  "dish_id"
     t.integer  "order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "dish_restaurant_associations", force: :cascade do |t|
+    t.integer "dish_id"
+    t.integer "restaurant_id"
+  end
+
+  create_table "dished_components", force: :cascade do |t|
+    t.string "name"
+    t.string "category"
   end
 
   create_table "dishes", force: :cascade do |t|
@@ -45,9 +70,21 @@ ActiveRecord::Schema.define(version: 20171121051010) do
     t.datetime "image_logo_updated_at"
     t.boolean  "sizeable"
     t.boolean  "componentable"
+    t.integer  "tags_id"
+    t.string   "size"
+    t.integer  "parent_id"
+    t.text     "group_name"
   end
 
+  add_index "dishes", ["parent_id"], name: "index_dishes_on_parent_id"
   add_index "dishes", ["restaurant_id"], name: "index_dishes_on_restaurant_id"
+  add_index "dishes", ["tags_id"], name: "index_dishes_on_tags_id"
+
+  create_table "dishes_tags", force: :cascade do |t|
+    t.integer "tags_id"
+    t.integer "dish_id"
+    t.integer "tag_id"
+  end
 
   create_table "foods", force: :cascade do |t|
     t.text     "title"
@@ -70,6 +107,15 @@ ActiveRecord::Schema.define(version: 20171121051010) do
     t.datetime "updated_at", null: false
     t.date     "date"
   end
+
+  create_table "notices", force: :cascade do |t|
+    t.text     "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "author_id"
+  end
+
+  add_index "notices", ["author_id"], name: "index_notices_on_author_id"
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id"
@@ -102,6 +148,11 @@ ActiveRecord::Schema.define(version: 20171121051010) do
     t.datetime "image_updated_at"
   end
 
+  create_table "provider_dish_mappings", force: :cascade do |t|
+    t.integer "daily_restaurant_id"
+    t.integer "dish_id"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.string   "name"
     t.text     "address"
@@ -115,6 +166,7 @@ ActiveRecord::Schema.define(version: 20171121051010) do
     t.datetime "image_logo_updated_at"
     t.string   "ref_link"
     t.text     "description"
+    t.boolean  "is_provider"
   end
 
   create_table "salad_components", force: :cascade do |t|
@@ -136,6 +188,13 @@ ActiveRecord::Schema.define(version: 20171121051010) do
   end
 
   add_index "sized_prices", ["dish_id"], name: "index_sized_prices_on_dish_id"
+
+  create_table "tags", force: :cascade do |t|
+    t.string  "name"
+    t.integer "dishes_id"
+  end
+
+  add_index "tags", ["dishes_id"], name: "index_tags_on_dishes_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

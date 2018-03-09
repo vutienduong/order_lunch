@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-4">
+    <%= select_tag 'dummy', options_from_collection_for_select(@providers, 'id', 'name'), multiple: true, size: @display_size, id: 'new_menu_all_providers' %>
+  </div>
+  <div class="col-md-2">
+    <div class="row" id="provider-group-btn">
+      <a class="btn btn-default" id="new-menu-provider-push">ADD</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-default" id="new-menu-provider-pop">REMOVE</a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <%= collection_select(:menu, :provider_ids, @menu.restaurants, :id, :name, {}, multiple: true) %>
+  </div>
+</div>

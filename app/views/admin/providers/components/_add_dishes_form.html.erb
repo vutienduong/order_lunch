@@ -1,0 +1,39 @@
+<h1>Hello select</h1>
+<h2>Select dishes for provider <%= @restaurant.name %> on date <%= @daily_restaurant.date %></h2>
+
+
+<%= form_for('provider', url: admin_confirm_add_dish_for_provider_daily_path, method: :post) do |f| %>
+  <div class="row">
+    <div class="col-md-4" id="available_dishes">
+      <div class="row" id="select_group_name">
+        <%= select_tag 'group_names', options_from_collection_for_select(@first_dishes, 'id', 'name'), size: 10, id: 'select_tag_group_name', multiple: true %>
+      </div>
+      <div id="display_text"></div>
+
+      <div class="row" id="group_dishes">
+
+      </div>
+    </div>
+
+    <div class="col-md-4" id="selected_dishes">
+
+    </div>
+  </div>
+
+  <input type="hidden" name="provider[daily_restaurant_id]" id="provider_daily_restaurant_id" value=<%= @daily_restaurant.id %> />
+  <p><%= f.submit %></p>
+<% end %>
+
+<script>
+  $(function () {
+    $("#select_tag_group_name")
+        .change(function () {
+          var str = "";
+          $("select option:selected").each(function () {
+            str += $(this).text() + " ";
+          });
+          $("#display_text").text(str);
+        })
+
+  })
+</script>

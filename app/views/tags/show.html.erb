@@ -1,0 +1,16 @@
+<h1>[Tag] <%= @tag.name %> </h1>
+<table class="table table-striped">
+  <tr>
+    <th>Dish name</th>
+    <th>Restaurant</th>
+    <th>Price</th>
+  </tr>
+  <% @tag.dishes.each do |d| %>
+      <tr>
+        <td><%= d.name %></td>
+        <td><%= d.restaurant.name %></td>
+        <td><%= show_price d.price %></td>
+      </tr>
+  <% end %>
+</table>
+<%= link_to 'All tags', tags_path %>

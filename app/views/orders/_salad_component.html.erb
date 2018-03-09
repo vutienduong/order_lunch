@@ -1,0 +1,19 @@
+<div class="salad-item">
+  <div class="image">
+    <img src="/image_logos/thumb/missing.png" alt=""/>
+  </div>
+  <div class="description">
+    <span><%= item.name %></span>
+    <span><%= component_group %></span>
+  </div>
+
+  <div class="quantity">
+    <button class="plus-btn" type="button" name="button">
+      <img src="/image_logos/plus.svg" alt=""/>
+    </button>
+    <input type="text" name="quant[<%= component_group %>][<%= item.id %>]" value="0">
+    <button class="minus-btn" type="button" name="button">
+      <img src="/image_logos/minus.svg" alt=""/>
+    </button>
+  </div>
+</div>

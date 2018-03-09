@@ -1,23 +1,27 @@
 <h1>New Restaurant</h1>
 <%= form_for @restaurant, url: admin_restaurants_path do |f| %>
 
-    <p><%= f.label :name %></p>
-    <p><%= f.text_field :name%></p>
+  <p><%= f.label :name %></p>
+  <p><%= f.text_field :name %></p>
 
-    <p><%= f.label :address %></p>
-    <p><%= f.text_field :address%></p>
+  <p><%= f.label :address %></p>
+  <p><%= f.text_field :address %></p>
 
-    <p><%= f.label :ref_link %></p>
-    <p><%= f.text_field :ref_link%></p>
+  <p><%= f.label :ref_link %></p>
+  <p><%= f.text_field :ref_link %></p>
 
-    <p><%=f.label :phone %></p>
-    <p><%=f.text_field :phone %></p>
+  <p><%= f.label :phone %></p>
+  <p><%= f.text_field :phone %></p>
 
-    <p><%=f.label :description %></p>
-    <p><%=f.text_area :description %></p>
+  <p><%= f.label :description %></p>
+  <p><%= f.text_area :description %></p>
 
-    <p><%= f.label :image_logo %></p>
-    <p><%= f.file_field :image_logo%></p>
+  <p><%= f.label :is_provider %> </p>
+  <p><%= f.check_box :is_provider %></p>
 
-    <p><%= f.submit %></p>
+
+  <p><%= f.label :image_logo %></p>
+  <p><%= f.file_field :image_logo %></p>
+
+  <p><%= f.submit %></p>
 <% end %>

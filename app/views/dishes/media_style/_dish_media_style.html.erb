@@ -1,15 +1,25 @@
 <div class="dish-media-wrap">
   <div class="media" data-id="<%= r.id %>">
     <div class="media-left">
-      <%= render partial: 'layouts/components/image_tag_inline', locals:{image: r.image, restaurant: r, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img", img_size: 'thumb'}} %>
+      <%= render partial: 'layouts/components/image_tag_inline', locals: {image: r.image, restaurant: r, size: [120, 120], object: 'dish', options: {class_name: "each-dish-img", img_size: 'thumb'}} %>
 
     </div>
     <div class="media-body">
-      <strong><%= link_to r.name, dish_path(r), class: "each-dish-name" %></strong>
-      <p class="each-dish-price"><%= r.price %></p>
+      <strong><%= link_to r.display_name, dish_path(r), class: "each-dish-name", data: {full_name: r.name} %></strong>
+      <% if r.variants.blank? %>
+          <p class="each-dish-price" data-price=<%= r.price %>><%= show_price r.price %></p>
+      <% else %>
+          <div class="each-dish-sizeable-price"><%= (r.variants.compact << r).map{|re| "#{re.size}: #{show_price re.price}"}.join('          ,            ') %></div>
+          <p> <select class="each-dish-price">
+            <option value="">Select size</option>
+            <% (r.variants.compact << r).each do |re| %>
+                <option value=<%= re.id %> data-price=<%= re.price %> data-size=<%= re.size %>> <%="#{re.size}: #{show_price re.price}" %> </option>
+            <% end %>
+          </select></p>
+      <% end %>
     </div>
     <div class="media-right">
-      <a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= r.price %>" onclick="addDishToday2(this)"></a>
+      <a class="btn btn-default glyphicon glyphicon-plus" data-price="<%= show_price_integer r.price %>" onclick="addDishToday2(this)"></a>
     </div>
   </div>
 </div>

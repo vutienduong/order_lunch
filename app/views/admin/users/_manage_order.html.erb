@@ -5,11 +5,13 @@
   <ul class="dropdown-menu" aria-labelledby="export-button-group">
     <li><%= link_to 'Export Orders Today', export_pdf_admin_orders_path(format: :pdf)%></li>
     <li><%= link_to 'Export Manage Page', export_manage_pdf_admin_users_path(format: :pdf)%></li>
+    <li><%= link_to 'Export Orders to CSV', export_orders_to_csv_admin_users_path(format: :csv) %></li>
   </ul>
+
 </div>
 
 <h2>List of orders</h2>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <tr>
     <th>Order ID</th>
     <th>Username</th>
@@ -32,7 +34,7 @@
 </table><br><br>
 
 <h2>List of dishes</h2>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
   <tr>
     <th>Dish</th>
     <th>Restaurant</th>
@@ -53,7 +55,7 @@
 <br><br>
 
 <h2>List of costs</h2>
-<table class="table">
+<table class="table table-hover table-bordered">
   <tr>
     <th>Restaurant</th>
     <th>Phone</th>
