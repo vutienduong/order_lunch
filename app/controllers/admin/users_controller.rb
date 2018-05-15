@@ -284,7 +284,6 @@ class Admin::UsersController < Admin::AdminsController
       parent = Dish.find_by(name: v["name"])
       v["parent"] = parent unless parent.blank?
       vv = v
-      byebug
       begin
         Dish.create(quick_add_dish_params vv)
         @log[:success].push("#{v["name"]} [#{v["size"]}]")
