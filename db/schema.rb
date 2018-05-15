@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171130015214) do
+ActiveRecord::Schema.define(version: 20171122071743) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
