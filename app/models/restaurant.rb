@@ -9,7 +9,7 @@ class Restaurant < ActiveRecord::Base
       medium: '300x300>'
   }
 
-  scope :restaurants, -> { where("is_provider = 'f' or is_provider is NULL") }
+  scope :restaurants, -> { where("is_provider = 0 or is_provider is NULL") }
   scope :providers, -> { where(is_provider: true) }
   scope :by_date, lambda { |date|
     if is_provider?
