@@ -19,6 +19,9 @@ class Admin::MenusController < Admin::AdminsController
 
     @menu = Menu.new(_menu_params)
     raise MyError::CreateFailError.new @menu.errors.messages unless @menu.save
+
+    redirect_to menu_path(@menu)
+    return #TODO: currently we temporarily do not support creating provider
     if provider_ids.blank?
       redirect_to menu_path(@menu)
     else
@@ -60,6 +63,18 @@ class Admin::MenusController < Admin::AdminsController
   def destroy
     @menu = Menu.find(params[:id])
     @menu.destroy
+    redirect_to menus_path
+  end
+
+  def lock
+    @menu = Menu.find(params[:id])
+    @menu.lock!(Time.current)
+    redirect_to menus_path
+  end
+
+  def open
+    @menu = Menu.find(params[:id])
+    @menu.open!
     redirect_to menus_path
   end
 

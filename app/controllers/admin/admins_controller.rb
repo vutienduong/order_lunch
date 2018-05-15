@@ -3,6 +3,7 @@ class Admin::AdminsController < ApplicationController
 
   def require_admin
     unless current_user.admin?
+      flash[:error] = 'Unauthorized access.'
       redirect_to root_path
     end
   end

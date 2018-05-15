@@ -41,10 +41,18 @@ class UsersController < ApplicationController
   def order
     select_date = select_date_params[:select_date]
     select_date = select_date ? Date.parse(select_date) : Date.today
+
     @menu = Menu.where('DATE(date)=?', select_date).first
     @select_date = select_date
 
     return if @menu.blank?
+    if select_date < Date.today ||
+        (select_date == Date.today && @menu.is_lock? && Time.current > @menu.locked_at)
+      @locked = true
+      @locked_time = @menu.locked_at
+      return
+    end
+
     #render 'menus/request_menu'
 
     @today_order = find_order_by_user_id_and_date session[:user_id], select_date

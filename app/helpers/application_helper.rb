@@ -9,7 +9,7 @@ module ApplicationHelper
 
 
   def display_cost_as_thousand(cost)
-    "#{(cost/1000).to_i} k VND"
+    "#{(cost/1000).to_i},000"
   end
 
   def date_format(date)

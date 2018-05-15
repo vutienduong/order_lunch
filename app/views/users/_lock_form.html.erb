@@ -1,0 +1,10 @@
+<% if is_admin? %>
+  <div id="lock" class="grant-border">
+    <p><strong>Last lock at <%= @menu.locked_at || 'not yet' %></strong></p>
+    <% if @menu.is_lock? %>
+      <%= link_to 'RE-OPEN ORDER', open_admin_menu_path(@menu), class: 'btn btn-primary' %>
+    <% else %>
+      <%= link_to 'LOCK ORDER', lock_admin_menu_path(@menu), class: 'btn btn-warning' %>
+    <% end %>
+  </div>
+<% end %>
