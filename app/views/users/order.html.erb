@@ -1,4 +1,5 @@
-<h2>Order lunch for <span id="date-select-date"><%= @select_date %></span> ( <%= additional_info_for_current_date @select_date %> )</h2>
+<h2>Order lunch for <span id="date-select-date"><%= @select_date %></span>
+  ( <%= additional_info_for_current_date @select_date %> )</h2>
 <div class="row" style="position: relative">
   <div class="col-md-2">
     <%= link_to 'Previous day', order_user_path(select_date: @select_date - 1), class: 'btn btn-default' %>
@@ -12,29 +13,27 @@
           <span class="glyphicon glyphicon-calendar"></span>
         </span>
       </div>
-      <%= link_to 'Search', order_user_path(current_user), class:"btn btn-default", id:"order-search-date", style:"display: table; margin-left: auto; margin-right: auto;" %>
-  </div>
+      <%= link_to 'Search', order_user_path(current_user), class: "btn btn-default", id: "order-search-date", style: "display: table; margin-left: auto; margin-right: auto;" %>
+    </div>
   </div>
   <script type="text/javascript">
-      $(function () {
-          $('#datetimepicker1').datetimepicker({
-          });
+    $(function () {
+      $('#datetimepicker1').datetimepicker({});
 
-          $('#order-search-date').click(function(evt) {
-              var date = $('#datetimepicker1').data().date
-              if(typeof date !== 'undefined'){
-                  d = new Date(date)
-                  dest_date = d.getFullYear().toString() + '-' +(d.getMonth()+1).toString() + '-' + d.getDate().toString()
-                  new_url = $(evt.currentTarget).attr('href')+ '?select_date=' + dest_date
-                  window.location.href = new_url;
-              }
-              else
-              {
-                  alert("Please select date")
-              }
-              return false;
-          });
+      $('#order-search-date').click(function (evt) {
+        var date = $('#datetimepicker1').data().date
+        if (typeof date !== 'undefined') {
+          d = new Date(date)
+          dest_date = d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString()
+          new_url = $(evt.currentTarget).attr('href') + '?select_date=' + dest_date
+          window.location.href = new_url;
+        }
+        else {
+          alert("Please select date")
+        }
+        return false;
       });
+    });
   </script>
 
   <div class="col-md-2">
@@ -42,8 +41,13 @@
   </div>
 </div>
 
-<% if @menu.blank? %>
-    <%= render partial: 'menus/request_menu' %>
+<% if @locked %>
+  <%= render 'users/lock_notify' %>
+  <% if is_admin? %>
+    <%= render 'users/lock_form' %>
+  <% end %>
+<% elsif @menu.blank? %>
+  <%= render partial: 'menus/request_menu' %>
 <% else %>
-    <%= render partial: 'order_form' %>
+  <%= render partial: 'order_form' %>
 <% end %>
