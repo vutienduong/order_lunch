@@ -57,4 +57,19 @@ class Restaurant < ActiveRecord::Base
     DailyRestaurant.where('DATE(date)=?', date)
         .where(restaurant_id: id).first
   end
+
+  def load_dishes(date = nil)
+    return [] if date.blank?
+    if is_provider?
+      parse_date = date.is_a?(Date) ? date : Date.parse(date)
+      return [] unless parse_date.is_a?(Date)
+      daily_restaurants.find_by(date: parse_date)&.dishes
+    else
+      dishes
+    end
+  end
+
+  def provider
+    Provider.find(id)
+  end
 end
