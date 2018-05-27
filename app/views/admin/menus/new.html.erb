@@ -7,7 +7,7 @@
     <% if @restaurants.present? %>
       <%= render partial: 'menus/select_restaurants_form', locals: { f: f } %>
     <% end %>
-    <% if @providers.present? %>
+    <% if @providers.present? && !@hide_provider %>
       <%= render partial: 'menus/select_providers_form', locals: { f: f } %>
     <% end %>
     <%= render partial: 'menus/submit_button', locals: { f: f } %>

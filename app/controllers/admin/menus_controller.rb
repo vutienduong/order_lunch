@@ -1,4 +1,5 @@
 class Admin::MenusController < Admin::AdminsController
+  before_action :hide_provider, only: [:new, :edit]
   def new
     @restaurants = Restaurant.restaurants if params[:provider].blank?
     @providers = Restaurant.providers if params[:restaurant].blank?
@@ -19,6 +20,9 @@ class Admin::MenusController < Admin::AdminsController
 
     @menu = Menu.new(_menu_params)
     raise MyError::CreateFailError.new @menu.errors.messages unless @menu.save
+
+    redirect_to menu_path(@menu)
+    return #TODO: currently we temporarily do not support creating provider
     if provider_ids.blank?
       redirect_to menu_path(@menu)
     else
@@ -44,6 +48,7 @@ class Admin::MenusController < Admin::AdminsController
   def edit
     @menu = Menu.find(params[:id])
     @restaurants = Restaurant.all
+    @providers = Restaurant.providers
     len = @restaurants.length
     @display_size = len < 20 ? len : 20
   end
@@ -63,9 +68,25 @@ class Admin::MenusController < Admin::AdminsController
     redirect_to menus_path
   end
 
+  def lock
+    @menu = Menu.find(params[:id])
+    @menu.lock!(Time.current)
+    redirect_to menus_path
+  end
+
+  def open
+    @menu = Menu.find(params[:id])
+    @menu.open!
+    redirect_to menus_path
+  end
+
   private
   def menu_params
     params.require(:menu)
         .permit(:date, restaurant_ids: [], provider_ids: [])
+  end
+
+  def hide_provider
+    @hide_provider = true
   end
 end

@@ -9,7 +9,7 @@ class Restaurant < ActiveRecord::Base
       medium: '300x300>'
   }
 
-  scope :restaurants, -> { where("is_provider = 'f' or is_provider is NULL") }
+  scope :restaurants, -> { where("is_provider = '#{Rails.env.production? ? 0 : 'f'}' or is_provider is NULL") }
   scope :providers, -> { where(is_provider: true) }
   scope :by_date, lambda { |date|
     if is_provider?
@@ -20,7 +20,7 @@ class Restaurant < ActiveRecord::Base
   }
 
   # Validate the attached image is image/jpg, image/png, etc
-  validates_attachment_content_type :image_logo, content_type: %r{/\Aimage\/.*\Z/}
+  #validates_attachment_content_type :image_logo, content_type: %r{/\Aimage\/.*\Z/}
 
   def dish_decorators
     show_dishes = dishes.compact
@@ -56,5 +56,20 @@ class Restaurant < ActiveRecord::Base
   def provider_by_date(date)
     DailyRestaurant.where('DATE(date)=?', date)
         .where(restaurant_id: id).first
+  end
+
+  def load_dishes(date = nil)
+    return [] if date.blank?
+    if is_provider?
+      parse_date = date.is_a?(Date) ? date : Date.parse(date)
+      return [] unless parse_date.is_a?(Date)
+      daily_restaurants.find_by(date: parse_date)&.dishes
+    else
+      dishes
+    end
+  end
+
+  def provider
+    Provider.find(id)
   end
 end

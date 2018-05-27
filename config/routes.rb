@@ -113,7 +113,12 @@ Rails.application.routes.draw do
     post 'confirm_add_dish_for_provider_daily' =>
         'providers#confirm_add_dish_for_provider_daily'
 
-    resources :menus
+    resources :menus do
+      member do
+        get 'lock'
+        get 'open'
+      end
+    end
     resources :users do
       collection do
         get 'manage'
@@ -155,6 +160,8 @@ Rails.application.routes.draw do
     resources :pictures
     resources :comments
     resources :notices
+    resources :ol_settings do
+    end
   end
 
   # The priority is based upon orders of creation: first created -> highest priority.

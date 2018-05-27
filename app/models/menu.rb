@@ -7,5 +7,13 @@ class Menu < ActiveRecord::Base
   accepts_nested_attributes_for :restaurants
 
   attr_accessor :provider_ids
+
+  def lock!(time)
+    update(is_lock: true, locked_at: time)
+  end
+
+  def open!
+    update(is_lock: false)
+  end
 end
 
