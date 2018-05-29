@@ -1,7 +1,7 @@
 class Admin::MenusController < Admin::AdminsController
   before_action :hide_provider, only: [:new, :edit]
   def new
-    @restaurants = Restaurant.restaurants if params[:provider].blank?
+    @restaurants = Restaurant.all if params[:provider].blank?
     @providers = Restaurant.providers if params[:restaurant].blank?
     len = @restaurants.blank? ? @providers.length : @restaurants.length
     @display_size = len < 20 ? len : 20
