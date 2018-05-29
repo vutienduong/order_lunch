@@ -119,6 +119,7 @@ Rails.application.routes.draw do
         get 'open'
       end
     end
+
     resources :users do
       collection do
         get 'manage'
@@ -136,6 +137,7 @@ Rails.application.routes.draw do
         post 'sap_page', to: 'users#post_sap_page'
       end
     end
+
     resources :dishes do
       collection do
         post 'new_tag'
@@ -143,6 +145,7 @@ Rails.application.routes.draw do
         post 'import'
       end
     end
+
     resources :restaurants do
       member do
         get 'show_image'
@@ -151,6 +154,19 @@ Rails.application.routes.draw do
         get 'scrap_dish'
       end
     end
+
+    resources :new_providers do
+      member do
+        get 'add_dishes'
+      end
+
+      collection do
+        get 'group_add_dishes'
+        post 'group_add_dishes', to: 'new_providers#post_group_add_dishes'
+        post 'get_dishes_of_date'
+      end
+    end
+
     resources :orders do
       collection do
         post 'ajax_get_dishes_by_date'

@@ -1,0 +1,22 @@
+<% if @error.present?  %>
+  <div class="error-message-area">
+    <%= @error %>
+  </div>
+<% elsif @result.present? %>
+  <div class="success-message-area">
+    <p>SUCCESS:</p>
+    <ul>
+      <% @result[:success].each do |success| %>
+      <li><%= success.name %></li>
+      <% end  %>
+    </ul>
+
+    <p>---------------------------------------</p>
+    <p>FAIL:</p>
+    <ul>
+      <% @result[:fail].each do |fail| %>
+        <li><%= fail.name %></li>
+      <% end  %>
+    </ul>
+  </div>
+<% end %>

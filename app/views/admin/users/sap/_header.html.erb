@@ -23,5 +23,9 @@
     <li class=<%= 'active' if current_path_is? admin_default_provider_menu_day_path %>>
       <%= link_to 'Create default day-provider menu', admin_default_provider_menu_day_path %>
     </li>
+
+    <li class=<%= 'active' if current_path_is? group_add_dishes_admin_new_providers_path %>>
+      <%= link_to '[New] Provider - Add dishes', group_add_dishes_admin_new_providers_path %>
+    </li>
   </ul>
 </div>
