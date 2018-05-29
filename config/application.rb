@@ -24,6 +24,8 @@ module OrderLunch
     config.active_record.raise_in_transactional_callbacks = true
     puts config.root
     config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
     config.exceptions_app = routes
     config.generators do |g|
       g.assets false

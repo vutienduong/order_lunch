@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount OrderLunchAPI => '/api'
+
   get 'sessions/new'
 
   root 'welcomes#index'
