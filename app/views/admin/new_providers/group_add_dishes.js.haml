@@ -1,0 +1,27 @@
+:javascript
+  function AutoGrowTextArea(textField)
+  {
+    if (textField.clientHeight < textField.scrollHeight)
+    {
+      textField.style.height = textField.scrollHeight + "px";
+      if (textField.clientHeight < textField.scrollHeight)
+      {
+        textField.style.height =
+          (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+      }
+    }
+  }
+
+  $(function () {
+    console.log('load it?')
+    $("#selected_date").change(function (){
+      var date = $(this).val();
+      var provider_id = $("#provider_provider").val();
+      $.ajax({
+        method: 'POST',
+        url: '/admin/new_providers/get_dishes_of_date',
+        data: {date: date, provider_id: provider_id},
+        dataType: 'json'
+      });
+    })
+  })

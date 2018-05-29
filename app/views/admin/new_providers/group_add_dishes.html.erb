@@ -1,0 +1,106 @@
+<%= render partial: 'admin/users/sap/header' %>
+
+<div class="row">
+  <div class="col-md-8">
+    <h4>[Provider] Add dishes</h4>
+    <%= form_for 'provider' do |f| %>
+      <div class="grant-border">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <%= f.label :provider %>
+              <%= f.select :provider, options_from_collection_for_select(@providers, 'id', 'name'), size: 10, class: "form-control" %>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group">
+              <%= f.label :date %>
+              <%= render partial: 'shared/datepicker', locals: { datepicker_id: 'selected_date', datepicker_name: 'provider[select_date]' } %>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <button id="check_btn">Check</button>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div class="grant-border" id="existed_dishes" style="display:none;">
+      </div>
+      <br>
+
+      <div class="grant-border">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <%= f.label :dish_names %>
+              <%= f.text_area :dish_names, { onkeyup: "AutoGrowTextArea(this)", class: "form-control" } %>
+            </div>
+          </div>
+
+          <div class="col-md-1"><!--divider-->
+          </div>
+
+          <div class="col-md-5">
+            <div class="form-group">
+              <%= f.label :dish_prices %>
+              <%= f.text_area :dish_prices, { onkeyup: "AutoGrowTextArea(this)", class: "form-control" } %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="post-result" style="display: none;">
+      </div>
+
+      <p><%= f.submit %></p>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  function AutoGrowTextArea(textField) {
+    if (textField.clientHeight < textField.scrollHeight) {
+      textField.style.height = textField.scrollHeight + "px";
+      if (textField.clientHeight < textField.scrollHeight) {
+        textField.style.height =
+            (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+      }
+    }
+  }
+
+  $(function () {
+    $('#selected_date').datetimepicker({});
+    $("#selected_date input").change(function () {
+      var date = $(this).val();
+      var provider_id = $("#provider_provider").val();
+      $.ajax({
+        method: 'POST',
+        url: '/admin/new_providers/get_dishes_of_date',
+        data: {date: date, provider_id: provider_id},
+        dataType: 'json'
+      });
+    })
+
+    $("#provider_provider").change(function () {
+      console.log('inside provider change');
+      $("#existed_dishes").empty();
+      $("#existed_dishes").hide();
+      $("#selected_date input").val("");
+    });
+
+    $("#check_btn").click(function(e){
+      e.preventDefault();
+      var date = $('#selected_date input').val();
+      var provider_id = $("#provider_provider").val();
+      $.ajax({
+        method: 'POST',
+        url: '/admin/new_providers/get_dishes_of_date',
+        data: {date: date, provider_id: provider_id}
+      });
+    });
+  })
+
+</script>
