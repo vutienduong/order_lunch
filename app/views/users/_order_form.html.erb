@@ -86,7 +86,7 @@
 
         <div id="today-my-order-content">
           <% unless @today_order.blank? %>
-            <% @today_order.load_dishes(@select_date).each do |r| %>
+            <% @today_order.dishes.each do |r| %>
               <%= render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r } %>
             <% end %>
           <% end %>

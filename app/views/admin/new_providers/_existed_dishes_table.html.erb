@@ -1,0 +1,26 @@
+<% if @dishes.present? %>
+  <table class="table table-bordered">
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>Price</th>
+    </tr>
+
+    <% count = 0 %>
+    <% @dishes.each do |dish| %>
+      <tr>
+        <td> <%= count += 1 %> </td>
+        <td> <%= dish.name %> </td>
+        <td> <%= dish.price %> </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+
+<% if @error.present? %>
+  <p class="error-message"> <%= @error %></p>
+<% end %>
+
+<% if @no_daily_restaurant.present? %>
+  <p class="error-message"> No restaurant menu of this provider for this date. </p>
+<% end %>

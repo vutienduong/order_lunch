@@ -414,3 +414,24 @@ input:focus {
 .red{
   color: red;
 }
+
+.error-message{
+  color: red;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.error-message-area{
+  color: red;
+  background-color: #e4b9c0;
+}
+
+.success-message-area{
+  color: darkgreen;
+  background-color: #67b168;
+}
+
+.error-message-area,.success-message-area{
+  border-radius: 5px;
+  margin: 5px;
+}
