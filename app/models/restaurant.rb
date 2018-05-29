@@ -21,6 +21,7 @@ class Restaurant < ActiveRecord::Base
 
   # Validate the attached image is image/jpg, image/png, etc
   #validates_attachment_content_type :image_logo, content_type: %r{/\Aimage\/.*\Z/}
+  validates_attachment_content_type :image_logo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
 
   def dish_decorators
     show_dishes = dishes.compact
