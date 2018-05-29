@@ -8,7 +8,7 @@ class ConvertDataService
     end
 
     result = []
-    arr1.each_with_index do |i, v|
+    arr1.each_with_index do |v, i|
       result << { key1 => v, key2 => arr2[i] }
     end
 

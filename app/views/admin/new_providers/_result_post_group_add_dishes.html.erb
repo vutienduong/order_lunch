@@ -1,9 +1,9 @@
-<% if @error.present?  %>
-  <div class="error-message-area">
-    <%= @error %>
+<% if @result[:error].present?  %>
+  <div class="error-message-area grant-border">
+    <%= @result[:error] %>
   </div>
-<% elsif @result.present? %>
-  <div class="success-message-area">
+<% else %>
+  <div class="success-message-area grant-border">
     <p>SUCCESS:</p>
     <ul>
       <% @result[:success].each do |success| %>
