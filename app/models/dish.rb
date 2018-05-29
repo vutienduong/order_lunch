@@ -32,7 +32,10 @@ class Dish < ActiveRecord::Base
   }
 
   # Validate the attached image is image/jpg, image/png, etc
-  validates_attachment_content_type :image_logo, :content_type => /\Aimage\/.*\Z/
+  # validates_attachment_content_type :image_logo, :content_type => /\Aimage\/.*\Z/
+
+  # TODO: we temporary do not validate image type, should
+  do_not_validate_attachment_file_type :image_logo
 
   def image_logo_remote_url=(url_value)
     self.image_logo = URI.parse(url_value)
