@@ -3,6 +3,7 @@ class Menu < ActiveRecord::Base
   validates :date, presence: true, uniqueness: true
 
   has_many :menu_restaurants
+  has_many :menu_histories
   has_many :restaurants, through: :menu_restaurants
   accepts_nested_attributes_for :restaurants
 

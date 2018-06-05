@@ -5,4 +5,5 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :password_digest, presence: true, length: {minimum: 1}
   has_many :orders, dependent: :destroy
+  has_one :personal_setting
 end
