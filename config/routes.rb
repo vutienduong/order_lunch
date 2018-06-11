@@ -120,6 +120,10 @@ Rails.application.routes.draw do
         get 'lock'
         get 'open'
       end
+
+      collection do
+        post 'lock_option'
+      end
     end
 
     resources :users do

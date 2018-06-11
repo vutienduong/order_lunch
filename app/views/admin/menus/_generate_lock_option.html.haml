@@ -1,0 +1,12 @@
+%h4
+  Lock table
+%table
+  %tr
+    %th id
+    %th name
+  - @options.each do |option|
+    %tr
+      %td
+        = option[:id]
+      %td
+        = option[:name]

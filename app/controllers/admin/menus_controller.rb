@@ -80,6 +80,13 @@ class Admin::MenusController < Admin::AdminsController
     redirect_to menus_path
   end
 
+  def lock_option
+    @options = convert_lock_option(params[:lock_options])
+    respond_to do |format|
+      format.js { render 'generate_lock_option' }
+    end
+  end
+
   private
   def menu_params
     params.require(:menu)
@@ -88,5 +95,17 @@ class Admin::MenusController < Admin::AdminsController
 
   def hide_provider
     @hide_provider = true
+  end
+
+  def convert_lock_option(options)
+    convert_options = []
+    options.each do |option|
+      convert_options << {
+        no: option[0],
+        id: option[1][:id],
+        name: option[1][:name]
+      }
+    end
+    convert_options
   end
 end
