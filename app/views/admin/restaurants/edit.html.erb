@@ -9,10 +9,27 @@
         <%= f.label :address %>
         <%= f.text_field :address, class: "form-control" %>
       </div>
+
+      <div class="form-group">
+        <%= f.label :ref_link %>
+        <%= f.text_field :ref_link, class: "form-control" %>
+      </div>
+
       <div class="form-group">
         <%= f.label :phone %>
         <%= f.text_field :phone, class: "form-control" %>
       </div>
+
+      <div class="form-group">
+        <%= f.label :description %>
+        <%= f.text_area :description, class: "form-control" %>
+      </div>
+
+    <div class="form-group">
+      <%= f.label :is_provider %>
+      <%= f.check_box :is_provider, {class: "form-control"} %>
+    </div>
+
       <div class="form-group">
         <p><%= f.label 'Image Logo' %></p>
         <p><%= f.file_field :image_logo %></p>

@@ -1,4 +1,5 @@
 class ErrorsController < ApplicationController
+  before_action :require_login
   def not_found
     render file: Rails.root.join('public', '404'), formats: [:html], status: 404, layout: false
   end

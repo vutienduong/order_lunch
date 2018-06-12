@@ -1,0 +1,73 @@
+<%= render partial: 'admin/users/sap/header' %>
+<%= render partial: 'admin/users/sap/explanation/explain_sap_page' %>
+<div>
+  <h4>Quick add food for a restaurant</h4>
+  <%= form_for(:dishes, url: sap_page_admin_users_path) do |f| %>
+      <div class="form-group">
+        <%= f.label :restaurant, class: "col-sm-2 control-label" %>
+        <div class="col-sm-5">
+          <%= f.text_field :restaurant, class: "form-control", value: @restaurant_id %>
+        </div>
+      </div>
+
+      <table id="add_dishes" class="table table-bordered">
+        <tr>
+          <th>Order No.</th>
+          <th>Dish Name</th>
+          <th>Price</th>
+          <th>Size</th>
+        </tr>
+
+        <tr data-idx="1">
+          <td>1</td>
+          <td><input type="text" name="dish[1][name]"/></td>
+          <td><input type="text" name="dish[1][price]"/></td>
+          <td><input type="text" name="dish[1][size]"/></td>
+        </tr>
+
+
+      </table>
+      <p><%= f.submit %></p>
+  <% end %>
+
+
+  <button class="btn btn-primary" id="new_dish_btn">New dish</button>
+
+  </tr>
+</div>
+
+
+<script>
+    $(function () {
+        $("#new_dish_btn").click(function () {
+            last_row = $($("#add_dishes tr").get(-1))
+
+            if (last_row.data("idx") !== undefined) {
+                new_custom_row_id = last_row.data("idx") + 1
+            }
+            else {
+                new_custom_row_id = 1
+            }
+            new_row = $("<tr></tr>").data({idx: new_custom_row_id})
+                .append($("<td>" + new_custom_row_id + "</td>"))
+                .append($("<td></td>")
+                    .append($("<input>").attr({
+                        type: "text",
+                        name: "dish[" + new_custom_row_id + "][name]",
+                    })))
+                .append($("<td></td>")
+                    .append($("<input>").attr({
+                        type: "text",
+                        name: "dish[" + new_custom_row_id + "][price]",
+                    })))
+                .append($("<td></td>")
+                    .append($("<input>").attr({
+                        type: "text",
+                        name: "dish[" + new_custom_row_id + "][size]",
+                    })));
+            //new_row.insertBefore(".last-child")
+            $("#add_dishes").append(new_row)
+            return false;
+        })
+    });
+</script>

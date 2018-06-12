@@ -1,0 +1,17 @@
+<div>
+  <div class="success">
+    <p style="font-weight: bold">Success(
+      <%= result[:success].count %>)</p>
+    <% result[:success].each do |success| %>
+      <p><%= success %></p>
+    <% end %>
+  </div>
+
+  <div class="failure" style="color: red">
+    <p style="font-weight: bold">Fail(
+      <%= result[:fail].count %>)</p>
+    <% result[:fail].each do |fail| %>
+      <p><%= fail %></p>
+    <% end %>
+  </div>
+</div>

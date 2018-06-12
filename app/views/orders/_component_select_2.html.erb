@@ -1,0 +1,6 @@
+<div class="select-salad-item-title">
+  Select <%= component_group %>
+</div>
+<% components.each do |b| %>
+    <%= h render partial: 'salad_component', locals: {component_group: component_group, item: b} %>
+<% end %>

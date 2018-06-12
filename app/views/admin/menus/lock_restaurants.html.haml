@@ -1,0 +1,18 @@
+%h4
+  Menu of #{@menu.date}
+= form_for 'lock_time' do |f|
+  %table.table.table-bordered
+    %tr
+      %th Id
+      %th Name
+      %th Locked at
+    - @menu.restaurants.each do |restaurant|
+      %tr
+        %td
+          = restaurant.id.to_s
+        %td
+          = restaurant.name
+        %td
+          = f.datetime_select("[#{restaurant.id.to_s}]", default: Time.now)
+  = f.submit
+

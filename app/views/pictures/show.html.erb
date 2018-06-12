@@ -1,0 +1,11 @@
+<h3>Picture details</h3>
+<br>
+<h4>Name: <%= @picture.name %></h4>
+<div>
+  <%= image_tag @picture.image.url(:medium) %>
+</div>
+<% if is_admin? %>
+    <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_picture_path(@picture), _delete_link: admin_picture_path(@picture)} %>
+<% end %>
+<br>
+<%= link_to 'Back to library', pictures_path %>

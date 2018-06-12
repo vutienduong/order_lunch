@@ -1,0 +1,126 @@
+<div class="container-fluid">
+  <div class="build-salad-top row">
+    <div class="col-md-4 salad-left-banner">
+      <h1>SALAD STATION</h1>
+      <h2>BE THE CHEF TODAY</h2>
+      <h3>Build your own salad!</h3>
+    </div>
+    <div class="col-md-5">
+      <h2>2 base + 6 toppings + 1 add on + 1 dressing</h2>
+    </div>
+
+    <div class="col-md-3">
+      <h3 class="custom-salad-price">75000</h3>
+    </div>
+  </div>
+
+
+  <%= form_for(@dish, url: order_custom_salad_orders_path) do |f| %>
+      <input type="hidden" name="session_user_id" id="session_user_id" value=<%= session[:user_id] %> />
+      <div class="build-salad-body">
+        <div class="salad-custom-info row">
+          <div class="salad-custom-name-and-price col-md-5">
+            <div class="form-group">
+              <%= f.label :name, class: "col-sm-2 control-label" %>
+              <div class="col-sm-10">
+                <%= f.text_field :name, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :price, class: "col-sm-2 control-label" %>
+              <div class="col-sm-10">
+                <%= f.text_field :price, class: "form-control", value: "75000" %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="salad-custom-choose-component">
+          <div class="choose-your-base row salad-component-group">
+            <%= render partial: 'component_select_2', locals: {components: @components["base"], component_group: 'base'} %>
+          </div>
+          <div class="choose-your-dressing row salad-component-group">
+            <%= render partial: 'component_select_2', locals: {components: @components["dressing"], component_group: 'dressing'} %>
+          </div>
+          <div class="choose-your-toppings row salad-component-group">
+            <%= render partial: 'component_select_2', locals: {components: @components["topping"], component_group: 'topping'} %>
+          </div>
+
+
+          <div class="add-on-prime-items row salad-component-group">
+            <%= render partial: 'component_select_2', locals: {components: @components["add_on - prime items (meat & seafood)"], component_group: 'add_on_prime'} %>
+          </div>
+          <div class="add-on-extra-items row salad-component-group">
+            <%= render partial: 'component_select_2', locals: {components: @components["add_on - extra items (cheese & nuts & bread)"], component_group: 'add_on_extra'} %>
+          </div>
+        </div>
+        <p><%= f.submit %></p>
+      </div>
+  <% end %>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $($(':submit')[4]).click(function (e) {
+            datastring = $("#new_dish").serialize();
+            user_id = $('#session_user_id').val();
+            $.ajax({
+                method: 'POST',
+                url: '/orders/order_custom_salad',
+                data: datastring,
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.hasOwnProperty("status") && response["status"] == "ok") {
+                    alert(response["message"])
+                    var value = '@Request.RequestContext.HttpContext.Session["user_id"]';
+                    window.location.replace("/users/"+ user_id +"/order");
+                } else {
+                    e.preventDefault();
+                    if (response["fail_type"] == 'SAME_COMBO') {
+                        choose = confirm(response["message"])
+                        if (choose) {
+                            createNewCustomSaladWithSameCombo(response["data"]["dish"], response["data"]["new_name"], user_id)
+                        }
+                        window.location.replace("/users/"+ user_id +"/order");
+                    }
+                    else {
+                        alert(response["message"])
+                    }
+                }
+            }).fail(function (jqXHR, textStatus) {
+                e.preventDefault();
+                console.log("Request failed: " + textStatus)
+                alert('Fail to check salad name, something went wrong');
+            });
+            return false;
+        });
+
+        function createNewCustomSaladWithSameCombo(dish, new_name, user_id) {
+            $.ajax({
+                method: 'POST',
+                url: '/orders/create_custom_salad_with_name',
+                data: {dish: dish, new_name: new_name},
+                dataType: 'json'
+            }).done(function (response) {
+                if (response.hasOwnProperty("status") && response["status"] == "ok") {
+                    alert("Create new custom salad " + new_name + "successful")
+                }
+                else{
+                    alert('Fail to create new custom salad with same combo: '+ response['message']);
+                }
+            }).fail(function (jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus)
+                alert('Fail to create new custom salad with same combo. Some thing went wrong');
+            }).always(function(){
+                window.location.replace("/users/"+ user_id +"/order");
+            });
+        };
+
+        function redirectTo(path ){
+            window.location.replace(path);
+        }
+
+    });
+</script>

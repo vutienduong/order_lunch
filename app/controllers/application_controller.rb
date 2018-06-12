@@ -1,6 +1,6 @@
-#require File.join(Rails.root, 'lib/error/error_handler.rb')
+# require File.join(Rails.root, 'lib/error/error_handler.rb')
 
-#Dir[Rails.root.join('lib/error/*.rb')].each {|file| require file }
+# Dir[Rails.root.join('lib/error/*.rb')].each {|file| require file }
 
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   include SessionsHelper
   include MyError::ErrorHandler
 
-  def current_user
-    super || User.new
-  end
+  # def current_user
+  #   super || User.new
+  # end
 end

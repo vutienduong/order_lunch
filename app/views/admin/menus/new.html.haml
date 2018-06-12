@@ -1,0 +1,54 @@
+%h1 New Menu
+
+= form_for @menu, url: admin_menus_path do |f|
+  .container
+    %p
+      = f.label :date
+    %p
+      = f.date_field :date, value: @date ? @date : Date.today
+    - if @restaurants.present?
+      = render partial: 'menus/select_restaurants_form', locals: { f: f }
+
+    - if @providers.present? && !@hide_provider
+      = render partial: 'menus/select_providers_form', locals: { f: f }
+
+    %button#add-lock-time
+      Add lock time
+
+    #lock-time-table
+
+    = render partial: 'menus/submit_button', locals: { f: f }
+
+
+:javascript
+  $(function () {
+    NewMenuForm();
+    NewMenuProvidersForm();
+
+    $('#add-lock-time').click(function(e){
+      e.preventDefault();
+      var options = [];
+      var selected_options = $('#menu_restaurant_ids').find('option');
+      var selected_date = $('#menu_date').val();
+      if(selected_options.length == 0){
+        $('#lock-time-table').html("#{j render 'no_option_selected'}")
+        return false;
+      }
+
+      if(!selected_date){
+        $('#lock-time-table').html("#{j render partial: 'no_option_selected', locals: {msg: 'no date selected'}}");
+      }
+
+      if(selected_options.length == 0){
+
+      for(var i = 0; i< selected_options.length; i++){
+        var temp = {name: $(selected_options[i]).text(),
+        id: $(selected_options[i]).val()};
+        options.push(temp);
+      }
+
+      $.post("#{lock_option_admin_menus_path}", {lock_options: options});
+      console.log(options);
+      $('#lock-time-table').html("#{j render 'lock_time_table' }")
+    });
+  })

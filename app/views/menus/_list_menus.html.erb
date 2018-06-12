@@ -1,4 +1,4 @@
-<h1>Manage Menus</h1>
+<h1> All Menus </h1>
 <div>
   <% if is_admin? %>
       <div><%= link_to 'New Menu', new_admin_menu_path, class: "btn btn-primary" %></div>
@@ -8,25 +8,28 @@
       <th>Date</th>
       <th>Restaurants</th>
       <% if is_admin? %>
-          <th>Actions</th>
+          <th colspan="2">Actions</th>
       <% end %>
     </tr>
     <% @menus.each do |menu| %>
         <tr>
           <td><%= menu.date %></td>
           <td>
-            <%= menu.restaurants.map(&:name).join(" , ") %>
+            <%= link_to menu.restaurants.map(&:name).join(" , "), menu_path(menu) %>
           </td>
 
           <% if is_admin? %>
               <td><%= link_to 'Edit', edit_admin_menu_path(menu) %></td>
               <td><%= link_to 'Delete', admin_menu_path(menu),
-                              method: :delete,
-                              data: {confirm: 'Are you sure?'} %> </td>
+                  method: :delete,
+                  data: { confirm: 'Are you sure?' } %> </td>
           <% end %>
         </tr>
     <% end %>
   </table>
+
+  <%= render partial: 'support/pagination_footer', locals: {href_path: 'menus_path'} %>
+
 </div>
 
 

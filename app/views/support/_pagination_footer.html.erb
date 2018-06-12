@@ -1,0 +1,25 @@
+<% if @page <= @num_of_pages %>
+    <% @list_of_page = [@page-2, 1].max .. [@page+2, @num_of_pages].min %>
+    <div>
+      <ul class="pagination">
+        <!-- Prev -->
+        <% if @page==1 %>
+            <li class="disabled"><a>&laquo</a></li>
+        <% else %>
+            <li><%= link_to '&laquo;'.html_safe, eval("#{href_path}(page: @page-1)") %></li>
+        <% end %>
+
+        <!-- Main pages -->
+        <% @list_of_page.each do |p| %>
+            <li <%= 'class=active' if p == @page %>><%= link_to p.to_s, eval("#{href_path}(page: p)") %></li>
+        <% end %>
+
+        <!-- Next -->
+        <% if @page==@num_of_pages %>
+            <li class="disabled"><a>&raquo</a></li>
+        <% else %>
+            <li><%= link_to '&raquo;'.html_safe, eval("#{href_path}(page: @page+1)") %></li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>

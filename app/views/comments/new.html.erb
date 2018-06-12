@@ -1,0 +1,13 @@
+<h3> New feedback</h3>
+<%= form_for @comment, url: comments_path do |f| %>
+    <div class="form-group">
+      <p><%= f.label :title %></p>
+      <p><%= f.text_field :title, class: "form-control", placeholder: "title" %></p> <br>
+    </div>
+    <div class="form-group">
+      <p><%= f.label :content %></p>
+      <p><%= f.text_area :content, class: "form-control", placeholder: "content", rows: "3" %></p><br>
+    </div>
+
+    <p><%= f.submit "Post", class: "btn btn-default" %></p>
+<% end %>

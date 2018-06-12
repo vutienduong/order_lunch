@@ -10,7 +10,7 @@ Rails.application.configure do
   config.eager_load = false
 
   # Show full error reports and disable caching.
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
@@ -20,7 +20,8 @@ Rails.application.configure do
   config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
-  config.active_record.migration_error = :page_load
+  #config.active_record.migration_error = :page_load
+  config.active_record.migration_error = false
 
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
@@ -38,4 +39,15 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # config.paperclip_defaults = {
+  #     storage: :s3,
+  #     url: "s3-us-east-2.amazonaws.com",
+  #     s3_credentials: {
+  #         bucket: 'order-lunch-dev',
+  #         access_key_id: 'AKIAIAE364NXJQAAYY7A',
+  #         secret_access_key: '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',
+  #         s3_region: 'us-east-2'
+  #     }
+  # }
 end

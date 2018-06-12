@@ -1,4 +1,11 @@
 module SessionsHelper
+  def require_login
+    unless logged_in?
+      flash[:danger] = 'Need to login to see this page'
+      render 'sessions/new'
+    end
+  end
+
   def log_in(user)
     session[:user_id] = user.id
     session[:is_admin] = User.find(user.id).admin?
@@ -9,7 +16,7 @@ module SessionsHelper
   end
 
   def logged_in?
-    !current_user.nil?
+    !current_user.blank?
   end
 
   def is_admin?
@@ -17,7 +24,7 @@ module SessionsHelper
   end
 
   def log_out
-    session.delete([:user_id, :today_order, :today_order_id])
+    [:user_id, :today_order, :today_order_id, :is_admin].each {|x| session.delete x}
     @current_user = nil
   end
 

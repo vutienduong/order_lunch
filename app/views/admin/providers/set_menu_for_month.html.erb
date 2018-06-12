@@ -1,0 +1,65 @@
+<%= render partial: 'admin/users/sap/header' %>
+<%= render partial: 'admin/users/sap/explanation/explain_set_menu_for_month' %>
+<div class="row" id="select_date">
+  <h3> Select a date to inspect </h3>
+  <div class="" id="which_date">
+    <%= form_for :date, url: admin_select_date_to_set_path do |f| %>
+      <%= f.date_field :date, value: @select_date ? @select_date : Date.today %>
+      <input type="submit" class="btn btn-default" text="Go" \>
+    <% end %>
+  </div>
+</div>
+
+<% if @select_date.present? %>
+<div class="row padding-20" id="current_status">
+  <h3>Status of menus</h3>
+  <table class="table table-hover" id="status_table">
+    <tr>
+      <% @status.each_with_index do |stt, idx| %>
+        <% if idx % 7 == 0 and idx / 7 > 0 %>
+          </tr>
+          <tr>
+        <% end %>
+
+        <%= render partial: 'admin/providers/components/status_td', locals: {stt: stt} %>
+      <% end %>
+      </tr>
+      </table>
+</div>
+  <% end %>
+
+<% if @current_stt.present? and @current_stt == Admin::ProvidersController::PENDING_STT %>
+  <div class="row padding-20" id="select_menu">
+    <%= render partial: 'admin/providers/components/add_dishes_form' %>
+  </div>
+<% end %>
+
+<script>
+  $(function () {
+    $('#status_table td').click(function () {
+      go_next = confirm('Go to this date?')
+      if(!go_next){
+        return false
+      }
+
+      select_date = $(this).data('date')
+      status = $(this).data('status')
+      //debugger
+      if(is_no_menu(status)){
+        window.location.href = '<%= new_admin_menu_path%>' + '?select_date=' + select_date + '&provider=true'
+      }else if(is_pending(status)){
+        window.location.href = '<%= admin_set_month_menu_path %>' + '?select_date=' + select_date
+      }else{
+        return false
+      }
+    })
+  })
+
+    function is_no_menu(status){
+      return status == '<%= Admin::ProvidersController::NO_MENU_STT%>'
+    }
+
+    function is_pending(status){
+    return status == '<%= Admin::ProvidersController::PENDING_STT%>'
+    }
+</script>

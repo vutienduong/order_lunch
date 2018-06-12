@@ -2,9 +2,9 @@ module MyError
   module ErrorHandler
     def self.included(clazz)
       clazz.class_eval do
-        #
+
         # rescue_from ::StandardError do |e|
-        #   respond(:standard_error, 500, e.to_s)
+        #   custom_respond(:standard_error, 500, e.to_s)
         # end
 
         rescue_from ::ActiveRecord::RecordNotFound do |e|
@@ -20,7 +20,7 @@ module MyError
     private
 
     def respond(_error, _status, _message)
-      render file: Rails.root.join('public', _status.to_s), formats: [:html], status: _status, layout: false
+      render file: Rails.root.join('public', _status.to_s), formats: [:html], status: status, layout: false
     end
 
     def custom_respond(_error, _status, _message)

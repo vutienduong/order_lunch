@@ -66,7 +66,7 @@ var NewDishForm = (function () {
         dish_ids = [];
         for (var i = 0; i<dish_list.length; i++)
         {
-            dish_ids.push(parseInt(dish_list.children().first().text()))
+            dish_ids.push(parseInt($(dish_list[i].children[0]).text()))
         }
         $("input[name^=\"order[dishes]\"]").val(dish_ids);
         $("input[name^=\"order[total_price]\"]").val(parseInt($("#order-new-total-price").text()));

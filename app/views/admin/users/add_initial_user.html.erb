@@ -1,0 +1,12 @@
+<p>Success:</p>
+<% @success.each do |s| %>
+<p><%= s %></p>
+<% end %>
+
+<br>
+<p>Fail:</p>
+<% @fail.each do |s| %>
+    <p><%= s %></p>
+<% end %>
+
+<%= link_to 'home page', root_path %>

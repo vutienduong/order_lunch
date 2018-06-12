@@ -1,5 +1,6 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'bootstrap-datetimepicker';
 
 body {
   padding-top: 60px;
@@ -138,15 +139,26 @@ tr#highlight-current-user-order {
 
 .today-dish-right {
   background-color: bisque;
+  min-height: 100px;
 }
 
 .order-restaurant-show {
   background-color: lavender;
 }
 
+.dish-show-wrap, .dish-media-wrap, .salad-left-banner, .build-salad-body, .grant-border {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+}
+
+.build-salad-body{
+  margin: 10px;
+}
+
 .dish-media-wrap {
   background-color: khaki;
   margin-bottom: 20px;
+  min-height: 100px;
 }
 
 // pagination test
@@ -182,7 +194,244 @@ tr#highlight-current-user-order {
   //background: transparent;
 }
 
-#menu_restaurant_ids, #new-menu-all-restaurants{
+#menu_restaurant_ids, #menu_provider_ids, #new_menu_all_restaurants, #new_menu_all_providers {
   width: 228px;
   height: auto;
+}
+
+td, th {
+  word-wrap: break-word;
+  max-width: 350px;
+}
+
+div.show-all-dishes {
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+div#restaurant-show-details {
+  margin: inherit;
+}
+
+.custom-salad-price {
+  color: #2b542c;
+  font-weight: 500;
+}
+
+.center{
+  width: 120px;
+}
+
+ul {
+  list-style-type: none;
+  //columns: 2;
+  //-webkit-columns: 2;
+  //-moz-columns: 2;
+}
+
+.wrap-group-salad-component{
+  column-count: 2;
+}
+
+.build-salad-body{
+  padding: 40px;
+}
+
+.grant-border{
+  padding: 20px;
+}
+
+// shopping cart
+.salad-component-group {
+  width: 567px;
+  margin: 80px auto;
+  background: #FFFFFF;
+  box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+  border-radius: 6px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-bottom: 10px;
+}
+
+
+.select-salad-item-title {
+  height: 60px;
+  border-bottom: 1px solid #E1E8EE;
+  padding: 20px 30px;
+  color: #5E6977;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.salad-item {
+  padding: 20px 30px;
+  height: 120px;
+  display: flex;
+}
+
+.salad-item:nth-child(3) {
+  border-top:  1px solid #E1E8EE;
+  border-bottom:  1px solid #E1E8EE;
+}
+
+.buttons {
+  position: relative;
+  padding-top: 30px;
+  margin-right: 60px;
+}
+
+.image {
+  margin-right: 50px;
+}
+
+.description {
+  padding-top: 10px;
+  margin-right: 60px;
+  width: 115px;
+}
+
+.description span {
+  display: block;
+  font-size: 14px;
+  color: #43484D;
+  font-weight: 400;
+}
+
+.description span:first-child {
+  margin-bottom: 5px;
+}
+.description span:last-child {
+  font-weight: 300;
+  margin-top: 8px;
+  color: #86939E;
+}
+
+.quantity {
+  padding-top: 20px;
+  margin-right: 60px;
+}
+.quantity input {
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+  width: 32px;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+}
+
+button[class*=-btn] {
+  width: 30px;
+  height: 30px;
+  background-color: #E1E8EE;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.minus-btn img {
+  margin-bottom: 3px;
+}
+.plus-btn img {
+  margin-top: 2px;
+}
+
+button:focus,
+input:focus {
+  outline:0;
+}
+
+.btn-black{
+  color: white;
+  background-color: dimgray;
+}
+
+.body-center-content{
+  padding: 40px;
+}
+
+.padding-20{
+  padding: 20px;
+}
+
+.margin-bot-40{
+  margin-bottom: 40px;
+}
+
+.margin-bot-20{
+  margin-bottom: 20px;
+}
+
+.background-soft-color{
+  background-color: #f2dede;
+}
+
+.background-med-color{
+  background-color: #c0a16b;
+}
+
+.rest_day_stt{
+  background-color: #d43f3a;
+  color: #f2dede;
+}
+
+.can_not_set_stt{
+  background-color: #8c8c8c;
+  color: #f2dede;
+}
+
+.already_set_stt{
+  background-color: #31708f;
+}
+
+.pending_stt{
+  background-color: #5cb85c;
+}
+
+.need_provider_stt{
+  background-color: #255625;
+}
+
+.outstanding-header{
+  background-color: #c0a16b;
+}
+
+.example-font{
+  font-weight: bold;
+  color: #122b40;
+}
+
+.gray{
+  color: gray;
+}
+
+.green{
+  color: green;
+}
+
+.red{
+  color: red;
+}
+
+.error-message{
+  color: red;
+  font-weight: bolder;
+  font-size: larger;
+}
+
+.error-message-area{
+  color: red;
+  background-color: #e4b9c0;
+}
+
+.success-message-area{
+  color: darkgreen;
+  background-color: #67b168;
+}
+
+.error-message-area,.success-message-area{
+  border-radius: 5px;
+  margin: 5px;
 }

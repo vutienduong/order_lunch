@@ -1,4 +1,5 @@
 class FoodsController < ApplicationController
+  before_action :require_login
   def new
     @food = Food.new
   end
@@ -39,9 +40,9 @@ class FoodsController < ApplicationController
 
   def update
     @food = Food.find(params[:id])
-    #render params.inspect
+    # render params.inspect
 
-    #return
+    # return
     if @food.update(food_params)
       redirect_to @food
     else
@@ -54,6 +55,7 @@ class FoodsController < ApplicationController
   end
 
   private
+
   def food_params
     params.require(:food).permit(:title, :description, :creator, :date)
   end

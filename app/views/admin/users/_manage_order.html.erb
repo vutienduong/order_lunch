@@ -1,9 +1,22 @@
-<h1>List of orders</h1>
-<table class="table table-hover">
+<div class="dropdown ">
+  <button class="btn btn-default dropdown-toggle glyphicon glyphicon-export" type="button" id="export-button-group" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    Export(PDF)
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="export-button-group">
+    <li><%= link_to 'Export Orders Today', export_pdf_admin_orders_path(format: :pdf)%></li>
+    <li><%= link_to 'Export Manage Page', export_manage_pdf_admin_users_path(format: :pdf)%></li>
+    <li><%= link_to 'Export Orders to CSV', export_orders_to_csv_admin_users_path(format: :csv) %></li>
+  </ul>
+
+</div>
+
+<h2>List of orders</h2>
+<table class="table table-hover table-bordered">
   <tr>
     <th>Order ID</th>
     <th>Username</th>
     <th>Dishes</th>
+    <th>Note</th>
     <th>Total price</th>
   </tr>
   <% if @presenter.has_key? :today_order %>
@@ -13,14 +26,15 @@
             <td><%= link_to order.id, admin_order_path(order) %></td>
             <td><%= order.user.username %></td>
             <td><%= order.dishes.map(&:name).join(" , ") %></td>
+            <td><%= order.note %></td>
             <td><%= display_cost_as_thousand(order.dishes.inject(0) {|sum, e| sum + e.price}) %></td>
           </tr>
       <% end %>
   <% end %>
 </table><br><br>
 
-<h1>List of dishes</h1>
-<table class="table table-hover">
+<h2>List of dishes</h2>
+<table class="table table-hover table-bordered">
   <tr>
     <th>Dish</th>
     <th>Restaurant</th>
@@ -40,8 +54,8 @@
 </table>
 <br><br>
 
-<h1>List of costs</h1>
-<table class="table">
+<h2>List of costs</h2>
+<table class="table table-hover table-bordered">
   <tr>
     <th>Restaurant</th>
     <th>Phone</th>
@@ -81,3 +95,4 @@
       </tr>
   <% end %>
 </table>
+

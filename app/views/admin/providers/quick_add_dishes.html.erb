@@ -1,0 +1,31 @@
+<h2>Quick add dishes</h2>
+<p>Fill names of dishes line by line</p>
+<p>Example</p>
+
+<textarea rows="6" cols="30" disabled>Ca com kho to
+Thit heo nuong
+Canh chua ca loc
+  ....
+</textarea>
+
+<p>----------------------------------------------</p>
+<%= form_for :dishes do |f| %>
+  <p><%= f.collection_select(:restaurant_id, @restaurants, :id, :name, {})%></p>
+  <p><%= f.text_area :dish_names, {onkeyup: "AutoGrowTextArea(this)"}%></p>
+  <%= f.submit %>
+<% end %>
+
+<script>
+  function AutoGrowTextArea(textField)
+  {
+    if (textField.clientHeight < textField.scrollHeight)
+    {
+      textField.style.height = textField.scrollHeight + "px";
+      if (textField.clientHeight < textField.scrollHeight)
+      {
+        textField.style.height =
+            (textField.scrollHeight * 2 - textField.clientHeight) + "px";
+      }
+    }
+  }
+</script>

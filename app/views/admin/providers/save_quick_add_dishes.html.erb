@@ -1,0 +1,18 @@
+<div class="col-md-6">
+  <h2>Results</h2>
+  <h3>Restaurant:  <%= @restaurant.name %></h3>
+  <br>
+  <table class="table table-bordered">
+    <tr>
+      <th>Dish name</th>
+      <th>Result</th>
+    </tr>
+    <% @create_dish_result.each do |result| %>
+      <tr>
+        <td><%= result[:name] %></td>
+        <td><%= result[:save] %></td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to 'Add more', admin_quick_add_dishes_path %>
+</div>

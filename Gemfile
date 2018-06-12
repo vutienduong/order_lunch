@@ -21,13 +21,14 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+gem 'jquery-rails', '4.0.4'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+gem 'haml'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -77,7 +78,13 @@ gem 'pry'
 gem 'monban-generators'
 #gem 'momentjs-rails', '>= 2.9.0'
 #gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '4.0.4'
 gem 'seed_dump'
 gem 'paperclip'
 gem 'aws-sdk', '~> 2'
+gem 'wombat'
+gem 'simple_form'
+gem 'slack-notifier'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+gem 'grape'

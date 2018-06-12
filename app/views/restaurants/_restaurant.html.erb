@@ -3,7 +3,7 @@
   <div class="panel-title media">
     <div class="media-left">
       <a role="button" data-toggle="collapse" data-parent="#accordion" href=<%= "##{f.id}_collapse" %> aria-expanded="true" aria-controls="collapseOne" class="media-object">
-        <%= render partial: 'layouts/components/image_tag_inline', locals: {image: f.image, size: [40, 40], object: 'dish', options: {alt: f.name}} %>
+        <%= render partial: 'layouts/components/image_tag_inline', locals: {image: f.image, restaurant: f, size: [40, 40], object: 'dish', options: {alt: f.name, img_size: 'thumb'}} %>
       </a>
     </div>
     <div class="media-body">

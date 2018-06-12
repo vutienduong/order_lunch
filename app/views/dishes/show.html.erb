@@ -1,14 +1,60 @@
 <div class="row">
-  <p>DISH DETAIL</p>
-  <div class="col-md-4">
-    <%= render partial: 'layouts/components/image_tag_inline', locals:{image: @dish.image, size: [120, 120], object: 'dish', options: {alt: @dish.name}} %>
+  <div class="col-md-8">
+    <h1>DISH DETAILS</h1>
+    <div class="dish-show-wrap">
+      <div class="image-lg-wrap">
+        <%= render partial: 'layouts/components/image_tag_inline', locals: {image: @dish.image, restaurant: @dish, size: [120, 120], object: 'dish', options: {alt: @dish.name, img_size: 'medium'}} %>
+      </div>
 
-    <p class="text-uppercase"><%= @dish.name %></p>
-    <strong><%= @dish.price %></strong>
-    <p><%= link_to @dish.restaurant.name, restaurant_path(@dish.restaurant) %></p>
-    <p><%= @dish.description %></p>
-    <% if is_admin? %>
-        <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>
-    <% end %>
+      <table class="table table-bordered">
+        <tr>
+          <td>Name</td>
+          <td><%= @dish.name %></td>
+        </tr>
+
+        <tr>
+          <td>Tags</td>
+          <td><%= render partial: 'support/link', collection: @dish.tags, as: :tag, spacer_template: 'support/comma' %></td>
+        </tr>
+
+        <tr>
+          <td>Price</td>
+          <td>
+            <% if @dish.variants.blank? %>
+                <%= @dish.price %>
+            <% else %>
+                <table class="table table-bordered">
+                  <tr>
+                    <th>Size</th>
+                    <th>Price</th>
+                  </tr>
+                  <% (@dish.variants.compact << @dish).each do |v| %>
+                      <tr>
+                        <td><%= v.size %></td>
+                        <td><%= v.price %></td>
+                      </tr>
+                  <% end %>
+                </table>
+            <% end %>
+
+          </td>
+        </tr>
+
+        <tr>
+          <td>Restaurant</td>
+          <td><%= link_to @dish.restaurant.name, restaurant_path(@dish.restaurant) %></td>
+        </tr>
+
+        <tr>
+          <td>Description:</td>
+          <td><%= @dish.description %></td>
+        </tr>
+
+      </table>
+      <% if is_admin? %>
+          <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_dish_path(@dish), _delete_link: admin_dish_path(@dish)} %>
+      <% end %>
+    </div>
   </div>
 </div>
+

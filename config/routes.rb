@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
+  mount OrderLunchAPI => '/api'
+
   get 'sessions/new'
 
-  root 'users#index'
+  root 'welcomes#index'
   resources :foods do
     collection do
       get 'export_pdf'
@@ -10,6 +12,8 @@ Rails.application.routes.draw do
 
   get '/404', to: 'errors#not_found'
   get '/500', to: 'errors#internal_server_error'
+  get '/help', to: 'users#help'
+  get '/new_update', to: 'users#new_update'
   #get 'not_visible', to: 'home#not_visible'
 
   resources :users, only: [:show, :index, :edit, :update] do
@@ -23,6 +27,8 @@ Rails.application.routes.draw do
       post 'edit_note'
       post 'save_order'
       post 'add_dish'
+      get 'change_password'
+      patch 'confirm_change_password'
     end
 
     collection do
@@ -51,6 +57,7 @@ Rails.application.routes.draw do
     end
   end
   resources :dishes, only: [:show, :index]
+  resources :pictures, only: [:show, :index, :new, :create]
 
   resources :managers do
     member do
@@ -60,8 +67,67 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :comments, only: [:new, :index, :create, :show]
+
+  resources :tags
+  resources :orders do
+    collection do
+      get 'order_custom_salad'
+      post 'order_custom_salad', to: 'orders#create_custom_salad'
+      get 'confirm_create_same_combo'
+      post 'check_custom_salad_name'
+      post 'add_dish_to_order'
+      post 'create_custom_salad_with_name'
+    end
+  end
+
+  resources :notices, only: [:index, :show]
+
   namespace :admin do
-    resources :menus
+    get 'select_dish_for_provider/:id' => 'providers#select_dish_for_provider',
+        as: :select_dish_for_provider
+
+    post 'select_dish_for_provider' => 'providers#confirm_dish_for_provider',
+        as: :confirm_dish_for_provider
+
+    get 'quick_add_dishes' => 'providers#quick_add_dishes', as: :quick_add_dishes
+
+    post 'quick_add_dishes' => 'providers#save_quick_add_dishes'
+
+    get 'quick_add_with_type' => 'providers#quick_add_with_type', as: :quick_add_with_type
+
+    post 'quick_add_with_type' => 'providers#save_quick_add_with_type'
+
+    get 'set_menu_for_month' => 'providers#set_menu_for_month', as: :set_month_menu
+
+    post 'select_date_to_set' => 'providers#select_date_to_set', as: :select_date_to_set
+
+    get 'add_provider_for_month' => 'providers#add_provider_for_month', as: :add_provider_for_month
+
+    post 'add_provider_for_month' => 'providers#post_add_provider_for_month'
+
+    get 'default_provider_menu_day' =>
+        'providers#default_provider_menu_day'
+
+    post 'default_provider_menu_day' =>
+        'providers#post_default_provider_menu_day'
+
+    post 'confirm_add_dish_for_provider_daily' =>
+        'providers#confirm_add_dish_for_provider_daily'
+
+    resources :menus do
+      member do
+        get 'lock'
+        get 'open'
+        get 'lock_restaurants'
+        post 'lock_restaurants' => 'menus#post_lock_restaurants'
+      end
+
+      collection do
+        post 'lock_option'
+      end
+    end
+
     resources :users do
       collection do
         get 'manage'
@@ -69,19 +135,56 @@ Rails.application.routes.draw do
         get 'manage_all_days'
         get 'get_manage'
         post 'manage_all_days', to: 'users#manage_all'
-
+        get 'export_manage_pdf'
+        get 'scrap_data'
+        get 'ping_slack'
+        get 'add_initial_user'
+        get 'retrieve_unordered_user'
+        get 'export_orders_to_csv'
+        get 'sap_page'
+        post 'sap_page', to: 'users#post_sap_page'
       end
     end
-    resources :dishes
+
+    resources :dishes do
+      collection do
+        post 'new_tag'
+        get 'import_page'
+        post 'import'
+      end
+    end
+
     resources :restaurants do
       member do
         get 'show_image'
       end
+      collection do
+        get 'scrap_dish'
+      end
     end
+
+    resources :new_providers do
+      member do
+        get 'add_dishes'
+      end
+
+      collection do
+        get 'group_add_dishes'
+        post 'group_add_dishes', to: 'new_providers#post_group_add_dishes'
+        post 'get_dishes_of_date'
+      end
+    end
+
     resources :orders do
       collection do
         post 'ajax_get_dishes_by_date'
+        get 'export_pdf'
       end
+    end
+    resources :pictures
+    resources :comments
+    resources :notices
+    resources :ol_settings do
     end
   end
 

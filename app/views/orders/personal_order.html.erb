@@ -1,14 +1,19 @@
+<h1>My Order History</h1>
 <table class="table table-hover table-stripped">
   <tr>
     <th>Date</th>
     <th>Dishes</th>
     <th>Note</th>
+    <th>Price</th>
   </tr>
   <% @orders.each do |order| %>
-  <tr>
-    <td><%= order.date %></td>
-    <td><%= order.dishes.map(&:name).join(" + ") %></td>
+  <tr <%= "style=background-color:#d0e9c6" if order.date.to_date.eql? Date.today %>>
+    <% included_dishes =  order.dishes %>
+    <td><%= datetime_to_date order.date %></td>
+    <td><%= included_dishes.map(&:name).join(" + ") %></td>
     <td><%= order.note %></td>
+    <td><%= show_price helper_cal_total_price(included_dishes) %></td>
   </tr>
   <% end %>
 </table>
+<%= render partial: 'support/pagination_footer', locals: {href_path: 'orders_show_personal_orders_path'} %>
