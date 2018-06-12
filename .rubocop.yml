@@ -1,7 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.3
   Exclude:
-    - "db/schema.rb"
+    - db/*.rb
     - "vendor/**/*"
     - "bin/*"
     - "node_modules/**/*"
@@ -34,7 +34,7 @@ Layout/IndentHash:
 Layout/SpaceBeforeFirstArg:
   Enabled: false
 
-Style/PredicateName:
+Naming/PredicateName:
   Enabled: false # Doesn't understand `has_secure_token`, though there's promising discussion here: https://github.com/bbatsov/rubocop/issues/1741
 
 Style/Next:
@@ -86,7 +86,7 @@ Metrics/MethodLength:
 Metrics/ClassLength:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Layout/AlignArray:
