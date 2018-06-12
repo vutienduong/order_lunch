@@ -1,6 +1,15 @@
 <h1><%= @date %></h1>
-<%= form_for @order, url: manage_all_days_admin_users_path do |f| %>
-    <%= f.date_field :date, value: @date ? @date : Date.today%>
-    <%= f.submit 'See' %>
-<% end %>
+
+<div class="row">
+  <%= form_for @order, url: manage_all_days_admin_users_path, html: {class: "form-group col-md-3"} do |f| %>
+    <div class="input-group">
+      <%= f.date_field :date, value: @date ? @date : Date.today, class: "form-control" %>
+      <span class="input-group-btn">
+        <%= f.submit 'See', class: "btn btn-primary" %>
+      </span>
+    </div>
+
+  <% end %>
+</div>
+
 <%= render partial: @menu.blank? ? 'menus/request_menu' : 'admin/users/manage_order' %>

@@ -1,19 +1,31 @@
 <h1>New User</h1>
-<%= form_for @user, url: admin_users_path do |f| %>
-    <p><%= f.label :username %></p>
-    <p><%= f.text_field :username %></p> <br>
 
-    <p><%= f.label :email %></p>
-    <p><%= f.text_field :email %></p><br>
+<%= form_for @user, url: admin_users_path,
+  html: {class: "col-md-8 col-xs-12"} do |f| %>
+  <div class="form-group">
+    <%= f.label :username %>
+    <%= f.text_field :username, class: "form-control", placeholder: "Enter username" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.text_field :email, class: "form-control", placeholder: "Enter email" %>
+  </div>
 
-    <p><%= f.label :slack_name %></p>
-    <p><%= f.text_field :slack_name %></p>
+  <div class="form-group">
+    <%= f.label :password %>
+    <%= f.text_field :password, class: "form-control", placeholder: "Enter password" %>
+  </div>
 
-    <p><%= f.label :password %></p>
-    <p><%= f.text_field :password %></p><br>
+  <div class="form-group">
+    <%= f.label :slack_name %>
+    <%= f.text_field :slack_name, class: "form-control", placeholder: "Enter slack name"  %>
+  </div>
 
-    <p><%= f.check_box(:admin, {}, 1, 0) %>
-      <%= f.label "Is admin?" %></p>
+  <div class="form-group">
+    <%= f.label :admin do %>
+      <%= f.check_box(:admin, {}, 1, 0) %> Is admin?
+    <% end %>
+  </div>
 
-    <p><%= f.submit %></p>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
