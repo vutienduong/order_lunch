@@ -9,20 +9,20 @@ class Admin::DishesController < Admin::AdminsController
 
   def create
     sizes = params[:dish_size]
-    sizes.delete_if { |k, v| v.blank? }
+    sizes.delete_if { |_k, v| v.blank? }
 
     if sizes.blank?
       @dish = Dish.new(dish_params)
-      raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
+      raise MyError::CreateFailError, @dish.errors.messages unless @dish.save
     else
       all_sizes = {}
       %w[s m l].each do |s_idx|
         all_sizes[s_idx] = sizes[s_idx] if sizes[s_idx]
         sizes.except!(s_idx)
       end
-      #sizes.delete_if {|k, v| v.blank?}
+      # sizes.delete_if {|k, v| v.blank?}
 
-      until sizes.blank? do
+      until sizes.blank?
         temp = sizes.first[0]
         if temp.include? 'cn'
           cv = temp.tr('n', 'v')
@@ -43,7 +43,7 @@ class Admin::DishesController < Admin::AdminsController
         @dish = Dish.new(new_params)
         @dish.name = "#{@dish.name} [#{@dish.size}]"
         @dish.parent = parent_dish
-        raise MyError::CreateFailError.new @dish.errors.messages unless @dish.save
+        raise MyError::CreateFailError, @dish.errors.messages unless @dish.save
         parent_dish ||= @dish
       end
     end
@@ -56,7 +56,7 @@ class Admin::DishesController < Admin::AdminsController
 
   def show
     @dish = Dish.find_by(id: params.permit(:id)[:id])
-    raise MyError::NonExistRecordError.new 'Dish is not exist' unless @dish
+    raise MyError::NonExistRecordError, 'Dish is not exist' unless @dish
     @tags = Tag.all
   end
 
@@ -84,16 +84,16 @@ class Admin::DishesController < Admin::AdminsController
 
   def update
     @dish = Dish.find(params[:id])
-    raise MyError::CreateFailError.new @dish.errors.messages unless @dish.update(dish_params)
+    raise MyError::CreateFailError, @dish.errors.messages unless @dish.update(dish_params)
     # upload_image_after_create_dish(params[:dish], @dish)
     redirect_to @dish
   end
 
   def import
-    @result = Dish.import(params[:file]) unless params[:file].blank?
+    @result = Dish.import(params[:file]) if params[:file].present?
     import_page
     render 'import_page', notice: 'Activity Data imported!'
-    #redirect_to import_page_admin_dishes_path, notice: 'Activity Data imported!'
+    # redirect_to import_page_admin_dishes_path, notice: 'Activity Data imported!'
   end
 
   def import_page
@@ -107,18 +107,19 @@ class Admin::DishesController < Admin::AdminsController
   end
 
   private
+
   def dish_params
     # unless params[:dish][:image_url].blank?
     #   params[:dish][:image] = params[:dish][:image_url].tempfile.read
     # end
 
-    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo, :sizeable, :tag_ids => [])
+    params.require(:dish).permit(:name, :price, :description, :restaurant_id, :image_logo, :sizeable, tag_ids: [])
   end
 
   def upload_image_after_create_dish(params_dish, dish)
     require Rails.root.join('app/services/upload_image')
     uploaded_io = params_dish[:image_url]
-    unless uploaded_io.blank?
+    if uploaded_io.present?
       file_name = Pathname('').join('dishes', "#{params_dish[:restaurant_id]}_#{dish.id}_#{uploaded_io.original_filename}")
       OLUploadImage.upload(file_name, uploaded_io)
       @dish.update_attributes(image_url: file_name)

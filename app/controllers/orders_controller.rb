@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     @orders = Order.where(user_id: session[:user_id]).order(date: :desc)
                   .limit(NUMBER_OF_ORDER_PER_PAGE)
                   .offset((@page - 1) * NUMBER_OF_ORDER_PER_PAGE)
-    @num_of_pages = (Order.where(user_id: session[:user_id]).order(date: :desc).count/NUMBER_OF_MENU_PER_PAGE.to_f).ceil
+    @num_of_pages = (Order.where(user_id: session[:user_id]).order(date: :desc).count / NUMBER_OF_MENU_PER_PAGE.to_f).ceil
     render 'orders/personal_order'
   end
 
@@ -23,21 +23,21 @@ class OrdersController < ApplicationController
 
   def create_custom_salad
     new_name = generate_custom_salad_name(params[:dish][:name])
-    unless Dish.find_by(name: new_name).blank?
+    if Dish.find_by(name: new_name).present?
       msg = { status: STATUS_FAIL, fail_type: 'EXISTED_NAME', message: 'Name of dish has been existed, please choose another name' }
       response_to_json msg
       return
     end
 
-    components = params[:quant].each_with_object({}) { |k, h| h[k.first] = k.last.select { |s, h| !h.eql? "0" } }
+    components = params[:quant].each_with_object({}) { |k, h| h[k.first] = k.last.reject { |_s, h| h.eql? "0" } }
 
-    #component_ids = params[:component_ids].map {|k, v| v}.flatten
+    # component_ids = params[:component_ids].map {|k, v| v}.flatten
 
     component_id_with_quants = components.values
 
-    #component_ids = components.map{|k,v|v.keys }.flatten
+    # component_ids = components.map{|k,v|v.keys }.flatten
 
-    components_ids = component_id_with_quants.select { |d| !d.blank? } # remove {} if one component group has been not chosen
+    components_ids = component_id_with_quants.reject(&:blank?) # remove {} if one component group has been not chosen
     component_ids = components_ids.map { |k| k.map { |dk| Array.new(dk.last.to_i) { dk.first } } }.flatten
     component_ids = component_ids.map(&:to_i).sort
 
@@ -74,18 +74,18 @@ class OrdersController < ApplicationController
       response_to_json msg
       return
 
-      #@dish = d
-      #render 'create_custom_salad_success'
+      # @dish = d
+      # render 'create_custom_salad_success'
     else
       # if existed, redirect to confirm page
-      #redirect_to confirm_create_same_combo_orders_path
+      # redirect_to confirm_create_same_combo_orders_path
 
       existed_salad = existed_combo.first.first.first
       msg = { status: STATUS_FAIL, fail_type: 'SAME_COMBO', message: "Components of this salad is same as [#{existed_salad.name}]. Do you still want to create new salad custom dish with new name [OK], or use existed salad custom combo? [Cancel]", data: { dish: existed_salad, new_name: new_name } }
 
       response_to_json msg
-      #@dish = existed_combo
-      #render 'confirm_create_same_combo'
+      # @dish = existed_combo
+      # render 'confirm_create_same_combo'
     end
   end
 
@@ -109,6 +109,7 @@ class OrdersController < ApplicationController
   end
 
   private
+
   def custom_salad_params
     params.require(:dish).permit(:name, :price)
   end

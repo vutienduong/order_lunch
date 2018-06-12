@@ -30,6 +30,7 @@ class Admin::NoticesController < Admin::AdminsController
   end
 
   private
+
   def notice_params
     params.require(:notice).permit(:content)
   end

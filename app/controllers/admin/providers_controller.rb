@@ -100,14 +100,13 @@ class Admin::ProvidersController < Admin::AdminsController
       dish_names = dish_names.split(SPLIT_PATTERN)
       temp_result = dish_names.map do |dish_name|
         dish = Dish.new(name: dish_name,
-            price: 0,
-            restaurant: restaurant,
-            group_name: group_name
-        )
+                        price: 0,
+                        restaurant: restaurant,
+                        group_name: group_name)
 
         { save: dish.save ? SUCCESS : FAIL,
-            name: dish_name,
-            group: group_name }
+          name: dish_name,
+          group: group_name }
       end
 
       results |= temp_result
@@ -156,8 +155,7 @@ class Admin::ProvidersController < Admin::AdminsController
     render 'admin/providers/set_menu_for_month'
   end
 
-  def add_provider_for_month
-  end
+  def add_provider_for_month; end
 
   def post_add_provider_for_month
     if params[:provider][:step] == '1'
@@ -220,8 +218,7 @@ class Admin::ProvidersController < Admin::AdminsController
     render 'add_provider_for_month_finish'
   end
 
-  def default_provider_menu_day
-  end
+  def default_provider_menu_day; end
 
   def post_default_provider_menu_day
     year = params[:provider][:year]
@@ -244,9 +241,7 @@ class Admin::ProvidersController < Admin::AdminsController
       wday_res = [mon_res, tue_res, wed_res, thu_res, fri_res]
 
       (date.at_beginning_of_month..date.at_end_of_month).each do |at_date|
-        if at_date.saturday? or at_date.sunday?
-          next
-        end
+        next if at_date.saturday? or at_date.sunday?
         idx = at_date.wday
         restaurant = wday_res[idx - 1]
         menu = Menu.new(date: at_date, restaurants: [restaurant])
@@ -264,6 +259,7 @@ class Admin::ProvidersController < Admin::AdminsController
   end
 
   private
+
   def get_menu_on(date)
     Menu.where('Date(date) = ?', date).first
   end
@@ -271,7 +267,7 @@ class Admin::ProvidersController < Admin::AdminsController
   def get_set_dish_status(date)
     return REST_DATE_STT if date.sunday? or date.saturday?
     return NO_MENU_STT if (menu = get_menu_on(date)).blank?
-    providers = menu.restaurants.select { |r| r.is_provider? }
+    providers = menu.restaurants.select(&:is_provider?)
     return CAN_NOT_SET_STT if providers.blank?
     daily_restaurant = providers.first.provider_by_date(date)
     if daily_restaurant.blank?

@@ -8,7 +8,7 @@ class MenusController < ApplicationController
     @menus = Menu.order(date: :desc)
                  .limit(NUMBER_OF_MENU_PER_PAGE)
                  .offset((@page - 1) * NUMBER_OF_MENU_PER_PAGE)
-    @num_of_pages = (Menu.count/NUMBER_OF_MENU_PER_PAGE.to_f).ceil
+    @num_of_pages = (Menu.count / NUMBER_OF_MENU_PER_PAGE.to_f).ceil
   end
 
   def show
@@ -21,8 +21,9 @@ class MenusController < ApplicationController
   end
 
   private
+
   def menu_params
-    params.require(:menu).permit(:date, :restaurant_ids => [])
+    params.require(:menu).permit(:date, restaurant_ids: [])
   end
 
   def page_param

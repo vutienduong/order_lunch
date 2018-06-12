@@ -37,9 +37,7 @@ class Admin::NewProvidersController < Admin::AdminsController
       @provider = Provider.find(params[:provider_id])
       @dishes = @provider.load_dishes(parse_date)
 
-      if @dishes.nil?
-        @no_daily_restaurant = true
-      end
+      @no_daily_restaurant = true if @dishes.nil?
     else
       @error = BLANK_DATE_ERROR
     end
