@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171122071743) do
+ActiveRecord::Schema.define(version: 20180605015854) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20171122071743) do
     t.string   "size"
     t.integer  "parent_id"
     t.text     "group_name"
+    t.integer  "once"
   end
 
   add_index "dishes", ["parent_id"], name: "index_dishes_on_parent_id"
@@ -95,11 +96,26 @@ ActiveRecord::Schema.define(version: 20171122071743) do
     t.datetime "updated_at",  null: false
   end
 
+  create_table "general_settings", force: :cascade do |t|
+    t.string "key"
+    t.string "value"
+  end
+
+  create_table "menu_histories", force: :cascade do |t|
+    t.integer  "menu_id"
+    t.integer  "actor_id"
+    t.datetime "datetime"
+    t.text     "content"
+  end
+
+  add_index "menu_histories", ["menu_id"], name: "index_menu_histories_on_menu_id"
+
   create_table "menu_restaurants", force: :cascade do |t|
     t.integer  "menu_id"
     t.integer  "restaurant_id"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.datetime "locked_at"
   end
 
   create_table "menus", force: :cascade do |t|
@@ -145,6 +161,14 @@ ActiveRecord::Schema.define(version: 20171122071743) do
 
   add_index "orders_dishes", ["dish_id"], name: "index_orders_dishes_on_dish_id"
   add_index "orders_dishes", ["order_id"], name: "index_orders_dishes_on_order_id"
+
+  create_table "personal_settings", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  add_index "personal_settings", ["user_id"], name: "index_personal_settings_on_user_id"
 
   create_table "pictures", force: :cascade do |t|
     t.string   "name"

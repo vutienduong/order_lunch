@@ -13,6 +13,11 @@ class MenusController < ApplicationController
 
   def show
     @menu = Menu.includes(:restaurants).find(params[:id])
+    menu_restaurants = MenuRestaurant.where(menu_id: params[:id])
+    @menu_restaurants = {}
+    menu_restaurants.each do |mr|
+      @menu_restaurants[mr.restaurant_id.to_s] = mr
+    end
   end
 
   private

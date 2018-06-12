@@ -1,5 +1,5 @@
 class Admin::MenusController < Admin::AdminsController
-  before_action :hide_provider, only: [:new, :edit]
+  before_action :hide_provider, only: %i[new edit]
   def new
     @restaurants = Restaurant.all if params[:provider].blank?
     @providers = Restaurant.providers if params[:restaurant].blank?
@@ -19,10 +19,10 @@ class Admin::MenusController < Admin::AdminsController
     _menu_params.delete(:provider_ids)
 
     @menu = Menu.new(_menu_params)
-    raise MyError::CreateFailError.new @menu.errors.messages unless @menu.save
+    raise MyError::CreateFailError, @menu.errors.messages unless @menu.save
 
     redirect_to menu_path(@menu)
-    return #TODO: currently we temporarily do not support creating provider
+    return # TODO: currently we temporarily do not support creating provider
     if provider_ids.blank?
       redirect_to menu_path(@menu)
     else
@@ -39,7 +39,7 @@ class Admin::MenusController < Admin::AdminsController
       if daily_restaurant_ids.count == 1
         redirect_to admin_select_dish_for_provider_path(daily_restaurant_ids.first)
       else
-        #TODO: refactor later, for case of more than one provider in a day
+        # TODO: refactor later, for case of more than one provider in a day
         redirect_to admin_select_dish_for_provider_path(daily_restaurant_ids.first)
       end
     end
@@ -55,12 +55,11 @@ class Admin::MenusController < Admin::AdminsController
 
   def update
     @menu = Menu.find(params[:id])
-    raise MyError::UpdateFailError.new @menu.errors.messages unless @menu.update(menu_params)
+    raise MyError::UpdateFailError, @menu.errors.messages unless @menu.update(menu_params)
     redirect_to menu_path(@menu)
   end
 
-  def request_menu
-  end
+  def request_menu; end
 
   def destroy
     @menu = Menu.find(params[:id])
@@ -87,7 +86,23 @@ class Admin::MenusController < Admin::AdminsController
     end
   end
 
+  def lock_restaurants
+    @menu = Menu.find(params[:id])
+  end
+
+  def post_lock_restaurants
+    lock_times = params[:lock_time]
+    lock_times.each do |lock_time|
+      parse_lock_time = ParseDateService.convert_array_to_time(lock_time[1])
+      mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
+      next if mr.blank?
+      mr.update(locked_at: parse_lock_time)
+    end
+    redirect_to menu_path(params[:id])
+  end
+
   private
+
   def menu_params
     params.require(:menu)
         .permit(:date, restaurant_ids: [], provider_ids: [])

@@ -119,6 +119,8 @@ Rails.application.routes.draw do
       member do
         get 'lock'
         get 'open'
+        get 'lock_restaurants'
+        post 'lock_restaurants' => 'menus#post_lock_restaurants'
       end
 
       collection do
