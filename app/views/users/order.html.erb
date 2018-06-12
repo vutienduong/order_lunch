@@ -1,43 +1,36 @@
-<h2>Order lunch for <span id="date-select-date"><%= @select_date %></span>
-  ( <%= additional_info_for_current_date @select_date %> )</h2>
+<h2>
+  Order lunch for <span id="date-select-date"><%= @select_date %></span>
+  ( <%= additional_info_for_current_date @select_date %> )
+</h2>
 <div class="row" style="position: relative">
   <div class="col-md-2">
-    <%= link_to 'Previous day', order_user_path(select_date: @select_date - 1), class: 'btn btn-default' %>
+    <%= link_to order_user_path(select_date: @select_date - 1), class: 'btn btn-default' do %>
+      <span class="glyphicon glyphicon-chevron-left"></span> Previous day
+    <% end %>
   </div>
-
   <div class='col-md-8 col-sm-8'>
     <div class="form-group">
       <div class='input-group date' id='datetimepicker1'>
         <input data-format="yyyy-MM-dd" type="text" class="form-control"/>
-        <span class="input-group-addon">
-          <span class="glyphicon glyphicon-calendar"></span>
-        </span>
+        <div class="input-group-btn">
+          <button type="button" id="btn-calender" class="btn btn-default" aria-label="Calendar">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </button>
+          <button type="button" class="btn btn-default" aria-label="Search">
+            <%= link_to order_user_path(current_user), id: "order-search-date", style: "display: table; margin-left: auto; margin-right: auto;" do %>
+              <span class="glyphicon glyphicon glyphicon-search"></span> Search
+            <% end %>
+          </button>
+        </div>
       </div>
-      <%= link_to 'Search', order_user_path(current_user), class: "btn btn-default", id: "order-search-date", style: "display: table; margin-left: auto; margin-right: auto;" %>
     </div>
   </div>
-  <script type="text/javascript">
-    $(function () {
-      $('#datetimepicker1').datetimepicker({});
-
-      $('#order-search-date').click(function (evt) {
-        var date = $('#datetimepicker1').data().date
-        if (typeof date !== 'undefined') {
-          d = new Date(date)
-          dest_date = d.getFullYear().toString() + '-' + (d.getMonth() + 1).toString() + '-' + d.getDate().toString()
-          new_url = $(evt.currentTarget).attr('href') + '?select_date=' + dest_date
-          window.location.href = new_url;
-        }
-        else {
-          alert("Please select date")
-        }
-        return false;
-      });
-    });
-  </script>
-
   <div class="col-md-2">
-    <%= link_to 'Next day', order_user_path(select_date: @select_date + 1), class: 'btn btn-default' %>
+    <%= link_to order_user_path(select_date: @select_date + 1), class: 'btn btn-default' do %>
+      Next day <span class="glyphicon glyphicon-chevron-right"></span>
+    <% end %>
   </div>
 </div>
 

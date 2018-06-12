@@ -3,14 +3,13 @@
   <%= link_to 'Add initial users', add_initial_user_admin_users_path, class: 'btn btn-warning', style: 'display: none' %>
   <span>      </span><%= link_to 'New User', new_admin_user_path, class: "btn btn-primary" %>
 <% end %>
+
 <table class="table table-hover table-striped table-bordered">
   <tr>
     <th>Username</th>
     <th>Email</th>
     <th>Is Admin?</th>
-    <% if session[:is_admin] %>
-      <th>Actions</th>
-    <% end %>
+    <th>Actions</th>
   </tr>
 
   <% @users.each do |user| %>
@@ -18,13 +17,13 @@
       <td><%= user.username %></td>
       <td><%= user.email %></td>
       <td><%= user.admin %></td>
-      <td>
-        <% if is_admin? %>
-          <%= render partial: 'layouts/components/amend_button_group', locals: { class_name: "no-right-top-align", _edit_link: edit_admin_user_path(user), _delete_link: admin_user_path(user), _new_link: { name: 'Details', url: admin_user_path(user) } } %>
-        <% else %>
+      <% if is_admin? %>
+        <td>
+          <%= render partial: 'layouts/components/amend_button_group', locals: {class_name: "no-right-top-align", _edit_link: edit_admin_user_path(user), _delete_link: admin_user_path(user), _new_link: {name: 'Details', url: admin_user_path(user)}} %>
+        </td>
+      <% else %>
         <td><%= link_to 'Details', user_path(user), class: "btn btn-default" %></td>
       <% end %>
-      </td>
     </tr>
   <% end %>
 </table>
