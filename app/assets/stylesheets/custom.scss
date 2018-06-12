@@ -435,3 +435,19 @@ input:focus {
   border-radius: 5px;
   margin: 5px;
 }
+
+#datetimepicker1 {
+  #btn-calender {
+    padding: 0;
+  }
+  .input-group-addon {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: inherit;
+    color: #555555;
+    text-align: center;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+}

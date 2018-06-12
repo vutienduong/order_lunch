@@ -20,3 +20,4 @@
 .ruby-gemset
 .idea/
 config/secrets.yml
+.byebug_history

@@ -153,14 +153,37 @@ ActiveRecord::Schema.define(version: 20180605015854) do
   add_index "orders", ["user_id"], name: "index_orders_on_user_id"
 
   create_table "orders_dishes", force: :cascade do |t|
-    t.integer  "order_id"
+    t.integer  "orders_id"
     t.integer  "dish_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "orders_dishes", ["dish_id"], name: "index_orders_dishes_on_dish_id"
-  add_index "orders_dishes", ["order_id"], name: "index_orders_dishes_on_order_id"
+  add_index "orders_dishes", ["orders_id"], name: "index_orders_dishes_on_orders_id"
+
+  create_table "personal_settings", force: :cascade do |t|
+    t.integer "user_id"
+    t.string  "key"
+    t.string  "value"
+  end
+
+  add_index "personal_settings", ["user_id"], name: "index_personal_settings_on_user_id"
+
+  create_table "pictures", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  create_table "provider_dish_mappings", force: :cascade do |t|
+    t.integer "daily_restaurant_id"
+    t.integer "dish_id"
+  end
 
   create_table "personal_settings", force: :cascade do |t|
     t.integer "user_id"
