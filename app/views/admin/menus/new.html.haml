@@ -12,9 +12,6 @@
     - if @providers.present? && !@hide_provider
       = render partial: 'menus/select_providers_form', locals: { f: f }
 
-    %button#add-lock-time
-      Add lock time
-
     #lock-time-table
 
     = render partial: 'menus/submit_button', locals: { f: f }
@@ -31,15 +28,14 @@
       var selected_options = $('#menu_restaurant_ids').find('option');
       var selected_date = $('#menu_date').val();
       if(selected_options.length == 0){
-        $('#lock-time-table').html("#{j render 'no_option_selected'}")
+        $('#lock-time-table').html("#{j render 'no_option_selected', locals: {msg: 'no restaurant selected'}}")
         return false;
       }
 
       if(!selected_date){
         $('#lock-time-table').html("#{j render partial: 'no_option_selected', locals: {msg: 'no date selected'}}");
+        return false;
       }
-
-      if(selected_options.length == 0){
 
       for(var i = 0; i< selected_options.length; i++){
         var temp = {name: $(selected_options[i]).text(),

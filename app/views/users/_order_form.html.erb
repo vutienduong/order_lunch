@@ -74,6 +74,31 @@
     </div>
 
     <div id="today-personal" class="col-md-4">
+
+      <div id="today-order-notify">
+        <h4>Restaurants today</h4>
+        <table class="table table-bordered">
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+
+          <% MenuRestaurant.where(menu_id: @menu.id).each_with_index do |mr, idx| %>
+            <tr>
+              <td><%= idx %></td>
+              <td><%= mr.restaurant.name %></td>
+              <% if mr.locked_at.blank? || mr.locked_at > Time.current %>
+                <td class='green'>Available</td>
+              <% else %>
+                <td class='red'>Locked</td>
+              <% end %>
+            </tr>
+
+          <% end %>
+        </table>
+      </div>
+
       <div id="today-my-order">
         <div id="today-my-order-title">
           <p>Your Order Today
