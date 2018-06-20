@@ -15,6 +15,5 @@
           Lock at #{to_date_in_time_zone(@menu_restaurants[r.id.to_s].locked_at)}
 %br
 
-= link_to 'Lock restaurants', lock_restaurants_admin_menu_path(@menu.id)
-%br
+= link_to 'Lock restaurants', lock_restaurants_admin_menu_path(@menu.id), class: 'btn btn-default'
 = link_to 'Back to menu manager page', menus_path, class: 'btn btn-primary'

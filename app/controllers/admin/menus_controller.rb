@@ -91,8 +91,10 @@ class Admin::MenusController < Admin::AdminsController
   end
 
   def post_lock_restaurants
+    # TODO : fix lock here
     lock_times = params[:lock_time]
     lock_times.each do |lock_time|
+      byebug
       parse_lock_time = ParseDateService.convert_array_to_time(lock_time[1])
       mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
       next if mr.blank?

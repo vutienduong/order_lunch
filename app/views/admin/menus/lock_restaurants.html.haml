@@ -13,6 +13,62 @@
         %td
           = restaurant.name
         %td
-          = f.datetime_select("[#{restaurant.id.to_s}]", default: Time.now)
+          #select-date-time
+            - mr = MenuRestaurant.find_by(restaurant_id: restaurant.id, menu_id: @menu.id)
+            - if mr&.locked_at.present?
+              .date-picker
+                = f.datetime_select("[#{restaurant.id.to_s}]", default: mr.locked_at)
+              = f.hidden_field("[#{restaurant.id.to_s}][hidden]", value: 'true')
+              %button.btn-close-lock Close lock
+            - else
+              .date-picker.display-none
+                = f.datetime_select("[#{restaurant.id.to_s}]", default: nil)
+              = f.hidden_field("[#{restaurant.id.to_s}][hidden]", value: 'false')
+              %button.btn-open-lock Open lock
   = f.submit
+
+:javascript
+  function toggleValue(val){
+    return val === 'true' ? 'false' : 'true'
+  }
+
+  $(function(){
+    $(".btn-open-lock").click(function(e){
+      e.preventDefault();
+      var ect = e.currentTarget;
+      var pr = $(ect.parentElement);
+
+      // toggle hidden value
+      var hi = pr.find("input[type='hidden']");
+      var tv = toggleValue(hi.val());
+      hi.val(tv);
+
+      // hide date-picker
+      pr.find(".date-picker").removeClass("display-none");
+
+      // change button to close
+      $(ect).attr("class", "btn-close-lock");
+      $(ect).text("Close lock");
+    });
+
+    $(".btn-close-lock").click(function(e){
+      e.preventDefault();
+      var ect = e.currentTarget;
+      var pr = $(ect.parentElement);
+
+      // toggle hidden value
+      var hi = pr.find("input[type='hidden']");
+      var tv = toggleValue(hi.val());
+      hi.val(tv);
+
+      // hide date-picker
+      pr.find(".date-picker").addClass("display-none");
+
+      // change button to open
+      $(ect).attr("class", "btn-open-lock");
+      $(ect).text("Open lock");
+
+      // TODO: bind event open to new button
+    });
+  });
 

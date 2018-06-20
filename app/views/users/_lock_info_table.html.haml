@@ -1,0 +1,18 @@
+#today-order-notify
+  %h4 Restaurants today
+  %table.table.table-bordered
+    %tr
+      %th No.
+      %th Name
+      %th Status
+    - MenuRestaurant.where(menu_id: menu.id).each_with_index do |mr, idx|
+      %tr
+        %td
+          = idx + 1
+        %td
+          = mr.restaurant.name
+        - if mr.locked_at.blank? || mr.locked_at > Time.current
+          %td.green Available
+        - else
+          %td.red Locked
+
