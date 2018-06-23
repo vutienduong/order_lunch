@@ -34,7 +34,7 @@ class Admin::MenusController < Admin::AdminsController
       # redirect to select dishes page
       daily_restaurant_ids =
         DailyRestaurant.where('DATE(date)=?', selected_date)
-                       .pluck(:id)
+        .pluck(:id)
 
       if daily_restaurant_ids.count == 1
         redirect_to admin_select_dish_for_provider_path(daily_restaurant_ids.first)
@@ -94,11 +94,16 @@ class Admin::MenusController < Admin::AdminsController
     # TODO : fix lock here
     lock_times = params[:lock_time]
     lock_times.each do |lock_time|
-      byebug
-      parse_lock_time = ParseDateService.convert_array_to_time(lock_time[1])
-      mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
-      next if mr.blank?
-      mr.update(locked_at: parse_lock_time)
+      if lock_time[1]["hidden"] == 'false'
+        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
+        next if mr.blank?
+        mr.update(locked_at: nil)
+      else
+        parse_lock_time = ParseDateService.convert_array_to_time(lock_time[1])
+        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
+        next if mr.blank?
+        mr.update(locked_at: parse_lock_time)
+      end
     end
     redirect_to menu_path(params[:id])
   end
@@ -107,7 +112,7 @@ class Admin::MenusController < Admin::AdminsController
 
   def menu_params
     params.require(:menu)
-        .permit(:date, restaurant_ids: [], provider_ids: [])
+      .permit(:date, restaurant_ids: [], provider_ids: [])
   end
 
   def hide_provider

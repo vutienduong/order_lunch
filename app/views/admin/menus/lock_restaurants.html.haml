@@ -32,43 +32,66 @@
     return val === 'true' ? 'false' : 'true'
   }
 
+  var open_lock = function(e){
+    // console.log('open lock', e);
+    e.preventDefault();
+
+    var ect = e.currentTarget;
+    var pr = $(ect.parentElement);
+
+    // toggle hidden value
+    var hi = pr.find("input[type='hidden']");
+    var tv = toggleValue(hi.val());
+    hi.val(tv);
+
+    // hide date-picker
+    pr.find(".date-picker").removeClass("display-none");
+
+    // change button to close
+    $(ect).attr("class", "btn-close-lock");
+    $(ect).text("Close lock");
+
+    //bind event
+    $(ect).on('click', function(e){
+      close_lock(e);
+    });
+  };
+
+  var close_lock = function(e){
+    // console.log('close lock', e);
+    e.preventDefault();
+
+    var ect = e.currentTarget;
+    var pr = $(ect.parentElement);
+
+    // toggle hidden value
+    var hi = pr.find("input[type='hidden']");
+    var tv = toggleValue(hi.val());
+    hi.val(tv);
+
+    // hide date-picker
+    pr.find(".date-picker").addClass("display-none");
+
+    // change button to open
+    $(ect).attr("class", "btn-open-lock");
+    $(ect).text("Open lock");
+
+    //bind event
+    $(ect).on('click', function(e){
+      open_lock(e);
+    });
+  };
+
   $(function(){
     $(".btn-open-lock").click(function(e){
-      e.preventDefault();
-      var ect = e.currentTarget;
-      var pr = $(ect.parentElement);
-
-      // toggle hidden value
-      var hi = pr.find("input[type='hidden']");
-      var tv = toggleValue(hi.val());
-      hi.val(tv);
-
-      // hide date-picker
-      pr.find(".date-picker").removeClass("display-none");
-
-      // change button to close
-      $(ect).attr("class", "btn-close-lock");
-      $(ect).text("Close lock");
-    });
+      // e.preventDefault();
+      open_lock(e);
+      }
+    );
 
     $(".btn-close-lock").click(function(e){
-      e.preventDefault();
-      var ect = e.currentTarget;
-      var pr = $(ect.parentElement);
-
-      // toggle hidden value
-      var hi = pr.find("input[type='hidden']");
-      var tv = toggleValue(hi.val());
-      hi.val(tv);
-
-      // hide date-picker
-      pr.find(".date-picker").addClass("display-none");
-
-      // change button to open
-      $(ect).attr("class", "btn-open-lock");
-      $(ect).text("Open lock");
-
-      // TODO: bind event open to new button
+      // e.preventDefault();
+      close_lock(e);
     });
   });
 
