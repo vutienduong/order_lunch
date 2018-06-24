@@ -1,0 +1,82 @@
+.tab
+  %button.tablinks{onclick: "openCity(event, 'all_dishes')"}
+    DISHES
+  %button.tablinks{onclick: "openCity(event, 'all_orders')"}
+    All orders
+
+.container-fluid
+  .row
+    .col-md-8.panel.panel-default
+      #all_dishes.tabcontent{style: "display:block;"}
+        .btn-group
+          %button#restautant-dropdown-button.btn.btn-primary.dropdown-toggle{type: "button", data: {toggle: 'dropdown'}}
+            All restaurants
+            %span.caret
+          %ul.dropdown-menu{role: 'menu'}
+            - @menu.restaurants.each do |r|
+              %li
+                %a.restaurant-tablinks{href: '#', onclick: "showDishesForRetaurant(event, restaurant_tab_#{r.id}); hiddenOtherTags(\"tag_tab_link_#{r.id}\");"}
+                  = r.name
+
+        .btn-group
+          %button.btn.btn-default.dropdown-toggle#tag-dropdown-button{type: 'button', data: {toggle: 'dropdown'}}
+            All tags
+            %span.caret
+          %ul.dropdown-menu{role: 'menu'}
+            - @r_tags.each do |r_id, r_tag|
+              - r_tag.each do |tag|
+                %li
+                  %a{id: "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}", href: "#", onclick: "showDishesForRetaurant(event, tag_tab_#{show_id_included_blank(r_id, tag[0])})"}
+                  = tag[0].blank? ? 'Other' : tag[0].name
+
+        .row{style:"height:10px"}
+        .row.show-all-dishes{style:"margin:5px"}
+          - @menu.restaurants.each do |r|
+            .restaurant-tabcontent{id: "restaurant_tab_#{r.id.to_s}"}
+              - r.by_date(@select_date).dish_decorators.each do |d|
+                = render partial: 'dishes/media_style/dish_media_style', locals: { r: d }
+
+        .row.show-all-dishes{style:"margin:5px"}
+          - @r_tags.each do |r_id, r_tag|
+            - r_tag.each do |tag|
+              .restaurant-tabcontent{id: tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}", style: "display: none" }
+                - (helper_dish_decorators(tag[1].flatten)).each do |d|
+                  = render partial: 'dishes/media_style/dish_media_style', locals: { r: d }
+
+      #all_orders.tabcontent{style: "border: 2px"}
+        %h2
+          = "All orders #{ Date.today() }"
+        - if defined? @all_orders
+          = render partial: 'users/components/today_all_order_details'
+        - else
+          %h3 No permission
+
+
+      #today-personal.col-md-4
+        = render partial: 'lock_info_table', locals: {menu: @menu}
+        #today-my-order
+          #today-my-order-title
+            %p
+              Your Order Today (id:
+              %hidden#today-my-order-user-id
+                = session[:user_id]
+              )
+
+          #today-my-order-content
+            - unless @today_order.blank?
+              - @today_order.dishes.each do |r|
+                = render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r }
+
+          = render partial: 'users/components/today_order_edit_note_form'
+
+          .row
+            %p
+              Total:
+              %strong
+                %span#total_price_today
+                  = show_price_integer @total_price
+            %h4#total-price-warning
+
+  = render partial: 'dishes/media_style/today_dish_template_media_style'
+= render partial: 'users/components/today_order_edit_note_modal'
+= render 'users/lock_form'
