@@ -91,18 +91,20 @@ class Admin::MenusController < Admin::AdminsController
   end
 
   def post_lock_restaurants
-    # TODO : fix lock here
     lock_times = params[:lock_time]
+    timezone_off = ParseDateService.convert_offset_to_time_zone(params[:lock_time][:client_time_zone])
+    params[:lock_time].delete(:client_time_zone)
     lock_times.each do |lock_time|
+      restaurant_id = lock_time[0]
       if lock_time[1]["hidden"] == 'false'
-        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
+        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: restaurant_id)
         next if mr.blank?
         mr.update(locked_at: nil)
       else
-        parse_lock_time = ParseDateService.convert_array_to_time(lock_time[1])
-        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: lock_time[0])
+        parse_lock_time = ParseDateService.convert_array_to_local_time(lock_time[1], timezone_off)
+        mr = MenuRestaurant.find_by(menu_id: params[:id], restaurant_id: restaurant_id)
         next if mr.blank?
-        mr.update(locked_at: parse_lock_time)
+        mr.update(locked_at: parse_lock_time.utc)
       end
     end
     redirect_to menu_path(params[:id])

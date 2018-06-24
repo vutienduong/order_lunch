@@ -13,7 +13,7 @@
             All restaurants
             %span.caret
           %ul.dropdown-menu{role: 'menu'}
-            - @menu.restaurants.each do |r|
+            - @available_restaurants.each do |r|
               %li
                 %a.restaurant-tablinks{href: '#', onclick: "showDishesForRetaurant(event, restaurant_tab_#{r.id}); hiddenOtherTags(\"tag_tab_link_#{r.id}\");"}
                   = r.name
@@ -31,7 +31,7 @@
 
         .row{style:"height:10px"}
         .row.show-all-dishes{style:"margin:5px"}
-          - @menu.restaurants.each do |r|
+          - @available_restaurants.each do |r|
             .restaurant-tabcontent{id: "restaurant_tab_#{r.id.to_s}"}
               - r.by_date(@select_date).dish_decorators.each do |d|
                 = render partial: 'dishes/media_style/dish_media_style', locals: { r: d }

@@ -52,7 +52,7 @@ class UsersController < ApplicationController
 
     # render 'menus/request_menu'
 
-    @today_order = find_order_by_user_id_and_date session[:user_id], select_date
+    @today_order = Orders::RetrieveService.find_order_by_user_id_and_date session[:user_id], select_date
 
     # session[:today_order] = @today_order.blank? ? nil : @today_order
     # session[:today_order_id] = session[:today_order].blank? ? nil : session[:today_order]['id']
@@ -62,12 +62,14 @@ class UsersController < ApplicationController
     # @dishes.flatten!
     # @tags = collect_follow_tags @dishes
 
-    @r_tags = collect_follow_tags_for_each_restaurant @menu
+    @r_tags = Menus::RetrieveService.new(@menu).collect_follow_tags_for_each_restaurant
 
     @total_price = @today_order.blank? ? 0 : @today_order.cal_total_price
 
     # all orders
     @all_orders = Order.where('DATE(date)=?', select_date)
+
+    @available_restaurants = @menu.available_restaurants(Time.current)
   end
 
   def collect_follow_tags(dishes)
@@ -78,20 +80,6 @@ class UsersController < ApplicationController
       tags[name].push dish
     end
     tags
-  end
-
-  def collect_follow_tags_for_each_restaurant(menu)
-    r_tags = {}
-    menu.restaurants.each do |restaurant|
-      temp_tag = {}
-      restaurant.by_date(@select_date).dishes.group_by(&:tags).each do |tag, dish|
-        name = tag.first
-        temp_tag[name] = [] unless temp_tag[name]
-        temp_tag[name].push dish
-      end
-      r_tags[restaurant.id.to_s] = temp_tag
-    end
-    r_tags
   end
 
   def get_all_orders_today
@@ -120,7 +108,7 @@ class UsersController < ApplicationController
 
     success_msg = { status: STATUS_OK, message: MSG_SUCCESS }
     fail_msg = { status: STATUS_FAIL }
-    @order = find_order_by_user_id_and_date user_id, date
+    @order = Orders::RetrieveService.find_order_by_user_id_and_date user_id, date
     if @order.blank?
       @order = Order.create!(user_id: user_id, date: date)
       @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
@@ -141,7 +129,7 @@ class UsersController < ApplicationController
 
   def remove_dish_from_order
     date = params[:select_date]
-    order = find_order_by_user_id_and_date current_user.id, date
+    order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     if order.present?
       @order_dishes = DishOrder.where('order_id = ? AND dish_id = ?',
                                       order.id,
@@ -163,9 +151,9 @@ class UsersController < ApplicationController
   def add_dish_to_order_no_ajax
     add_dish_to_order_params
     date = Date.today
-    order = find_order_by_user_id_and_date current_user.id, date
+    order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     if order_id.blank?
-      order = find_order_by_user_id_and_date(session[:user_id], date)
+      order = Orders::RetrieveService.find_order_by_user_id_and_date(session[:user_id], date)
       order_id = order.id if order.present?
     end
 
@@ -187,7 +175,7 @@ class UsersController < ApplicationController
 
   def edit_note
     date = params[:select_date]
-    order = find_order_by_user_id_and_date current_user.id, date
+    order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     msg = {}
     msg[:status] = order.blank? ? STATUS_FAIL : (order.update(edit_note_params) ? STATUS_OK : STATUS_FAIL)
 
@@ -199,7 +187,7 @@ class UsersController < ApplicationController
   def copy_order
     copy_info_params
     date = params[:copy_info][:select_date]
-    order = find_order_by_user_id_and_date current_user.id, date
+    order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     if order.blank?
       @order = Order.create user_id: current_user.id, date: date
       current_order_id = @order.id
@@ -303,10 +291,6 @@ class UsersController < ApplicationController
     user = User.find_by id: id
     raise MyError::NonExistRecordError unless user
     user
-  end
-
-  def find_order_by_user_id_and_date(user_id, date)
-    Order.where('DATE(date)=?', date).where('user_id = ?', user_id).first
   end
 
   def change_pass_params

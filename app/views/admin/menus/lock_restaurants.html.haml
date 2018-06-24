@@ -1,6 +1,6 @@
 %h4
   Menu of #{@menu.date}
-= form_for 'lock_time' do |f|
+= form_for 'lock_time', html: {id: 'lock-restaurant-form'} do |f|
   %table.table.table-bordered
     %tr
       %th Id
@@ -22,9 +22,10 @@
               %button.btn-close-lock Close lock
             - else
               .date-picker.display-none
-                = f.datetime_select("[#{restaurant.id.to_s}]", default: nil)
+                = f.datetime_select("[#{restaurant.id.to_s}]", default: Time.now)
               = f.hidden_field("[#{restaurant.id.to_s}][hidden]", value: 'false')
               %button.btn-open-lock Open lock
+  = f.hidden_field 'client_time_zone'
   = f.submit
 
 :javascript
@@ -32,15 +33,12 @@
     return val === 'true' ? 'false' : 'true'
   }
 
-  var open_lock = function(e){
-    // console.log('open lock', e);
-    e.preventDefault();
-
-    var ect = e.currentTarget;
+  var open_lock = function(ect){
     var pr = $(ect.parentElement);
 
     // toggle hidden value
     var hi = pr.find("input[type='hidden']");
+    console.log('current hidden value ', hi.val());
     var tv = toggleValue(hi.val());
     hi.val(tv);
 
@@ -50,22 +48,14 @@
     // change button to close
     $(ect).attr("class", "btn-close-lock");
     $(ect).text("Close lock");
-
-    //bind event
-    $(ect).on('click', function(e){
-      close_lock(e);
-    });
   };
 
-  var close_lock = function(e){
-    // console.log('close lock', e);
-    e.preventDefault();
-
-    var ect = e.currentTarget;
+  var close_lock = function(ect){
     var pr = $(ect.parentElement);
 
     // toggle hidden value
     var hi = pr.find("input[type='hidden']");
+    console.log('current hidden value ', hi.val());
     var tv = toggleValue(hi.val());
     hi.val(tv);
 
@@ -75,23 +65,34 @@
     // change button to open
     $(ect).attr("class", "btn-open-lock");
     $(ect).text("Open lock");
+  };
 
-    //bind event
-    $(ect).on('click', function(e){
-      open_lock(e);
-    });
+  var toggleLock = function(e){
+    e.preventDefault();
+    var ect = e.currentTarget;
+    if($(ect).attr('class').includes('btn-open-lock')){
+      open_lock(ect);
+    }
+    else
+    {
+      close_lock(ect);
+    }
   };
 
   $(function(){
+    console.log('current time zone', new Date().getTimezoneOffset());
     $(".btn-open-lock").click(function(e){
-      // e.preventDefault();
-      open_lock(e);
+      toggleLock(e);
       }
     );
 
     $(".btn-close-lock").click(function(e){
-      // e.preventDefault();
-      close_lock(e);
+      toggleLock(e);
+    });
+
+    $("#lock-restaurant-form input[type='submit']").click(function(e){
+      $("#lock_time_client_time_zone").val(new Date().getTimezoneOffset());
+      return true;
     });
   });
 

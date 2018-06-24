@@ -16,5 +16,16 @@ class Menu < ActiveRecord::Base
   def open!
     update(is_lock: false)
   end
+
+  def get_menu_restaurant_with(restaurant_id)
+    menu_restaurants.find_by(restaurant_id: restaurant_id)
+  end
+
+  def available_restaurants(compared_time)
+    @available_restaurants ||= restaurants.select do |restaurant|
+      locked_at = get_menu_restaurant_with(restaurant.id)&.locked_at
+      locked_at.blank? || locked_at >= compared_time
+    end
+  end
 end
 
