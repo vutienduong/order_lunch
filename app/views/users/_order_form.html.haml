@@ -26,8 +26,8 @@
             - @r_tags.each do |r_id, r_tag|
               - r_tag.each do |tag|
                 %li
-                  %a{id: "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}", href: "#", onclick: "showDishesForRetaurant(event, tag_tab_#{show_id_included_blank(r_id, tag[0])})"}
-                  = tag[0].blank? ? 'Other' : tag[0].name
+                  %a{id: "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}", href: "#", onclick: "showDishesForRetaurant(event, tag_tab_#{show_id_included_blank(r_id, tag[0])});"}
+                    = tag[0].blank? ? 'Other' : tag[0].name
 
         .row{style:"height:10px"}
         .row.show-all-dishes{style:"margin:5px"}
