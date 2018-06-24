@@ -108,14 +108,22 @@ class UsersController < ApplicationController
 
     success_msg = { status: STATUS_OK, message: MSG_SUCCESS }
     fail_msg = { status: STATUS_FAIL }
+
     @order = Orders::RetrieveService.find_order_by_user_id_and_date user_id, date
-    if @order.blank?
-      @order = Order.create!(user_id: user_id, date: date)
-      @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
+    menu = Menu.where('DATE(date)=?', date).first
+    dish = Dish.find_by(id: params[:dish][:dish_id])
+    restaurant_id = dish.restaurant&.id
+
+    if dish.blank?
+      msg = fail_msg
+      msg[:message] = "Dish is not existed. Please refresh page and try again."
+    elsif Orders::ValidationService.validate_add_dish?(Time.current, dish, menu)
+      @order = Order.create!(user_id: user_id, date: date) if @order.blank?
+      @order_dish = DishOrder.new(order_id: @order.id, dish_id: dish.id)
       msg = @order_dish.save ? success_msg : fail_msg
     else
-      @order_dish = DishOrder.new(order_id: @order.id, dish_id: params[:dish][:dish_id])
-      msg = @order_dish.save ? success_msg : fail_msg
+      msg = fail_msg
+      msg[:message] = "#{dish.restaurant.name} has locked. Please refresh page and try again."
     end
 
     # session[:today_order] = @order

@@ -46,6 +46,12 @@ class Dish < ActiveRecord::Base
     name.split(/\[[^\[]*\]/).last
   end
 
+  def provider_id_at_date(date)
+    dr = DailyRestaurant.where("DATE(date)=?", date).where(dish_id: id)
+    return nil if dr.blank?
+    dr.first.restaurant_id
+  end
+
   def self.import(file)
     result = { success: [], fail: [] }
     CSV.foreach(file.path, headers: true) do |row|
