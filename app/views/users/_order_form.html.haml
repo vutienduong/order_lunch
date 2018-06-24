@@ -52,30 +52,30 @@
           %h3 No permission
 
 
-      #today-personal.col-md-4
-        = render partial: 'lock_info_table', locals: {menu: @menu}
-        #today-my-order
-          #today-my-order-title
-            %p
-              Your Order Today (id:
-              %hidden#today-my-order-user-id
-                = session[:user_id]
-              )
+    #today-personal.col-md-4
+      = render partial: 'lock_info_table', locals: {menu: @menu}
+      #today-my-order
+        #today-my-order-title
+          %p
+            Your Order Today (id:
+            %hidden#today-my-order-user-id
+              = session[:user_id]
+            )
 
-          #today-my-order-content
-            - unless @today_order.blank?
-              - @today_order.dishes.each do |r|
-                = render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r }
+        #today-my-order-content
+          - unless @today_order.blank?
+            - @today_order.dishes.each do |r|
+              = render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r }
 
-          = render partial: 'users/components/today_order_edit_note_form'
+        = render partial: 'users/components/today_order_edit_note_form'
 
-          .row
-            %p
-              Total:
-              %strong
-                %span#total_price_today
-                  = show_price_integer @total_price
-            %h4#total-price-warning
+        .row
+          %p
+            Total:
+            %strong
+              %span#total_price_today
+                = show_price_integer @total_price
+          %h4#total-price-warning
 
   = render partial: 'dishes/media_style/today_dish_template_media_style'
 = render partial: 'users/components/today_order_edit_note_modal'
