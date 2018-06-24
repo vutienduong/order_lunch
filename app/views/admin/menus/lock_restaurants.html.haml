@@ -17,7 +17,7 @@
             - mr = MenuRestaurant.find_by(restaurant_id: restaurant.id, menu_id: @menu.id)
             - if mr&.locked_at.present?
               .date-picker
-                = f.datetime_select("[#{restaurant.id.to_s}]", default: mr.locked_at)
+                = f.datetime_select("[#{restaurant.id.to_s}]", default: mr.locked_at.in_time_zone('Hanoi'))
               = f.hidden_field("[#{restaurant.id.to_s}][hidden]", value: 'true')
               %button.btn-close-lock Close lock
             - else
