@@ -1,0 +1,18 @@
+<h1>Menu Details</h1>
+<h2><%= @menu.date %></h2>
+<h2>Restaurants</h2>
+
+<% @menu.restaurants.each do |r| %>
+    <div class="media">
+      <div class="media-left">
+      </div>
+      <div class="media-body">
+        <h4 class="media-title">
+          <%= link_to r.name, restaurant_path(r) %>
+        </h4>
+        <%= r.address %>
+      </div>
+    </div>
+<% end %>
+<br>
+<%= link_to 'Back to menu manager page', menus_path, class: 'btn btn-primary' %>

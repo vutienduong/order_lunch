@@ -1,0 +1,109 @@
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'all_dishes')">DISHES</button>
+  <button class="tablinks" onclick="openCity(event, 'all_orders')">All orders</button>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 panel panel-default">
+      <div id="all_dishes" class="tabcontent" style="display:block;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="restautant-dropdown-button">
+            All restaurants
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <% @menu.restaurants.each do |r| %>
+              <li>
+                <a href="#" class="restaurant-tablinks" onclick="showDishesForRetaurant(event, <%="restaurant_tab_#{r.id}" %>); hiddenOtherTags('<%="tag_tab_link_#{r.id}" %>');"><%= r.name %></a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="tag-dropdown-button">
+            All tags
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <% @r_tags.each do |r_id, r_tag| %>
+              <% r_tag.each do |tag| %>
+                <li>
+                  <a href="#" id=<%= "tag_tab_link_#{show_id_included_blank(r_id, tag[0])}" %> onclick="showDishesForRetaurant(event, <%= "tag_tab_#{show_id_included_blank(r_id, tag[0])}" %>)"><%= tag[0].blank? ? 'Other' : tag[0].name %></a>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+        <div class="row" style="height:10px"></div>
+
+        <div class="row show-all-dishes" style="margin:5px">
+          <% @menu.restaurants.each do |r| %>
+            <div id=<%= 'restaurant_tab_' + r.id.to_s %> class="restaurant-tabcontent">
+              <% r.by_date(@select_date).dish_decorators.each do |d| %>
+                <%= render partial: 'dishes/media_style/dish_media_style', locals: { r: d } %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+
+        <div class="row show-all-dishes" style="margin:5px">
+          <% @r_tags.each do |r_id, r_tag| %>
+            <% r_tag.each do |tag| %>
+              <div id=<%= tag[0].blank? ? "tag_tab_#{r_id}_nil" : "tag_tab_#{r_id}_#{tag[0].id.to_s}" %> class="restaurant-tabcontent" style="display: none">
+                <% (helper_dish_decorators(tag[1].flatten)).each do |d| %>
+                  <%= render partial: 'dishes/media_style/dish_media_style', locals: { r: d } %>
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div id="all_orders" class="tabcontent" style="border: 2px">
+        <h2>All orders <%= Date.today() %></h2>
+        <% if defined? @all_orders %>
+          <%= render partial: 'users/components/today_all_order_details' %>
+        <% else %>
+          <h3> No permission</h3>
+        <% end %>
+      </div>
+
+    </div>
+
+    <div id="today-personal" class="col-md-4">
+      <div id="today-my-order">
+        <div id="today-my-order-title">
+          <p>Your Order Today
+            (id:
+            <hidden id="today-my-order-user-id"><%= session[:user_id] %></hidden>
+            )
+          </p>
+        </div>
+
+
+        <div id="today-my-order-content">
+          <% unless @today_order.blank? %>
+            <% @today_order.dishes.each do |r| %>
+              <%= render partial: 'dishes/media_style/today_dish_media_style', locals: { r: r } %>
+            <% end %>
+          <% end %>
+        </div>
+
+        <%= render partial: 'users/components/today_order_edit_note_form' %>
+        <!-- for Note -->
+
+        <div class="row">
+          <p>Total: <strong><span id="total_price_today"><%= show_price_integer @total_price %></span></strong></p>
+          <h4 id="total-price-warning"></h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= render partial: 'dishes/media_style/today_dish_template_media_style' %>
+</div>
+<%= render partial: 'users/components/today_order_edit_note_modal' %>
+<%= render 'users/lock_form' %>
