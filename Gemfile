@@ -87,7 +87,11 @@ gem 'monban-generators'
 gem 'jquery-ui-rails', '4.0.4'
 gem 'seed_dump'
 gem 'paperclip'
-gem 'aws-sdk', '~> 2'
+
+gem 'aws-sdk', '~> 3'
+gem 'aws-sdk-s3', '~> 1'
+gem 'aws-sdk-ec2', '~> 1'
+
 gem 'wombat'
 gem 'simple_form'
 gem 'slack-notifier'
