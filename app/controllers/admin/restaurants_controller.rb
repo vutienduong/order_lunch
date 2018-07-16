@@ -73,8 +73,10 @@ class Admin::RestaurantsController < Admin::AdminsController
           @dishes = @dishes.map do |dish|
             if adish = Dish.where(name: dish['dish_name']).where(restaurant_id: @restaurant.id).first
               old_tags = adish.tags
-              new_tags = old_tags.include? tag_obj ? old_tags : old_tags.push(tag_obj)
-              adish.update tags: new_tags
+              unless old_tags.include? tag_obj
+                old_tags << tag_obj
+              end
+              #adish.update tags: new_tags
               adish.save
             else
               adish = Dish.create(
@@ -83,7 +85,7 @@ class Admin::RestaurantsController < Admin::AdminsController
                 description: dish['dish_desc'],
                 restaurant: @restaurant, tags: [tag_obj]
               )
-              adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+              #adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
               adish.save
             end
             adish
