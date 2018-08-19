@@ -1,13 +1,10 @@
+require 'open-uri'
 class Restaurant < ActiveRecord::Base
+  attr_reader :image_logo_remote_url
   validates :name, presence: true, uniqueness: true
   has_many :menu_restaurants
   has_many :menus, through: :menu_restaurants
   has_many :dishes
-  has_attached_file :image_logo, styles: {
-      thumb: '100x100>',
-      square: '200x200#',
-      medium: '300x300>'
-  }
 
   scope :restaurants, -> { where("is_provider = '#{Rails.env.production? ? 0 : 'f'}' or is_provider is NULL") }
   scope :providers, -> { where(is_provider: true) }
@@ -19,12 +16,22 @@ class Restaurant < ActiveRecord::Base
     end
   }
 
+  has_attached_file :image_logo, styles: {
+      thumb: '100x100>',
+      square: '200x200#',
+      medium: '300x300>'
+  }
+
   # Validate the attached image is image/jpg, image/png, etc
-  # validates_attachment_content_type :image_logo, content_type: %r{/\Aimage\/.*\Z/}
-  # validates_attachment_content_type :image_logo, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  validates_attachment_content_type :image_logo, content_type: /\Aimage\/.*\Z/
 
   # TODO: we temporary do not validate image type, should fix later
-  do_not_validate_attachment_file_type :image_logo
+  # do_not_validate_attachment_file_type :image_logo
+
+  def image_logo_remote_url=(url_value)
+    self.image_logo = URI.parse(url_value)
+    @image_logo_remote_url = url_value
+  end
 
   def dish_decorators
     show_dishes = dishes.compact

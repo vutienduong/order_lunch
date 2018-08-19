@@ -2,11 +2,13 @@ require 'open-uri'
 require 'csv'
 class Dish < ActiveRecord::Base
   attr_reader :image_logo_remote_url
-  validates :name, presence: true, uniqueness: { scope: :restaurant, message: 'each restaurant doesn\'t have two dishes which are same named' }
+  validates :name, presence: true, uniqueness: {
+    scope: :restaurant, message: 'each restaurant doesn\'t have two dishes which are same named'
+  }
 
-  validates_numericality_of :price
+  validates :price, numericality: true
 
-  validates_presence_of :restaurant
+  validates :restaurant, presence: true
 
   belongs_to :restaurant
 
@@ -32,10 +34,10 @@ class Dish < ActiveRecord::Base
   }
 
   # Validate the attached image is image/jpg, image/png, etc
-  # validates_attachment_content_type :image_logo, :content_type => /\Aimage\/.*\Z/
+  validates_attachment_content_type :image_logo, content_type: /\Aimage\/.*\Z/
 
   # TODO: we temporary do not validate image type, should
-  do_not_validate_attachment_file_type :image_logo
+  # do_not_validate_attachment_file_type :image_logo
 
   def image_logo_remote_url=(url_value)
     self.image_logo = URI.parse(url_value)
@@ -56,7 +58,7 @@ class Dish < ActiveRecord::Base
     result = { success: [], fail: [] }
     CSV.foreach(file.path, headers: true) do |row|
       attrs = row.to_hash
-      attrs["name"] = "#{attrs["name"]} [#{attrs["size"]}]" unless attrs["size"].blank?
+      attrs["name"] = "#{attrs['name']} [#{attrs['size']}]" if attrs["size"].present?
       tag_name = attrs.delete 'tags'
       img_url = attrs.delete 'image_url'
       parent = attrs.delete 'parent'
@@ -64,28 +66,25 @@ class Dish < ActiveRecord::Base
       begin
         adish = Dish.create attrs
 
-        unless tag_name.blank?
+        if tag_name.present?
           tag = Tag.find_by(name: tag_name) || Tag.create(name: tag_name)
           adish.tags = [tag]
         end
 
-        unless img_url.blank?
-          adish.image_logo_remote_url = img_url
-        end
+        adish.image_logo_remote_url = img_url if img_url.present?
 
-        if !parent.blank? && attrs["sizeable"]
+        if parent.present? && attrs["sizeable"]
           parent_dish = Dish.find_by name: parent
-          adish.parent = parent_dish unless parent_dish.blank?
+          adish.parent = parent_dish if parent_dish.present?
         end
 
         if adish.save
           result[:success].push adish
         else
-          result[:fail].push({ attrs['name'] => 'Can not add this' })
+          result[:fail].push(attrs['name'] => 'Can not add this')
         end
-
       rescue => e
-        result[:fail].push({ attrs['name'] => e })
+        result[:fail].push(attrs['name'] => e)
       end
     end
 
