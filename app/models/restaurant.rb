@@ -38,9 +38,8 @@ class Restaurant < ActiveRecord::Base
   def all_dishes(date)
     return dishes unless is_provider?
     DailyRestaurant
-        .where(restaurant_id: self.id)
-        .where(date: date)
-        .first.dishes
+        .find_by(restaurant_id: id, date: date)
+        .dishes
   end
 
   def test_res_method
@@ -50,7 +49,7 @@ class Restaurant < ActiveRecord::Base
   def by_date(date)
     if is_provider?
       drest = DailyRestaurant.where('DATE(date)=?', date)
-          .where(restaurant_id: id).first
+          .find_by(restaurant_id: id)
       drest.blank? ? self : drest
     else
       self
@@ -59,7 +58,7 @@ class Restaurant < ActiveRecord::Base
 
   def provider_by_date(date)
     DailyRestaurant.where('DATE(date)=?', date)
-        .where(restaurant_id: id).first
+        .find_by(restaurant_id: id)
   end
 
   def load_dishes(date = nil)

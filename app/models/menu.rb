@@ -28,4 +28,3 @@ class Menu < ActiveRecord::Base
     end
   end
 end
-

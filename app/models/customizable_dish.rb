@@ -1,5 +1,5 @@
 class CustomizableDish < Dish
   def price
-    75000
+    75_000
   end
 end

@@ -1,8 +1,8 @@
 class DishedComponent < ActiveRecord::Base
-  validates :name, presence: true, uniqueness: {scope: :category, message: 'each type can not have two components with same name'}
+  validates :name, presence: true, uniqueness: { scope: :category, message: 'each type can not have two components with same name' }
 
   has_many :dish_component_associations
-  has_many :dishes, -> {where(componentable: 1)}, through: :dish_component_associations
+  has_many :dishes, -> { where(componentable: 1) }, through: :dish_component_associations
 
   def self.create_salad_component
     components = {
