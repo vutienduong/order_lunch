@@ -195,6 +195,10 @@ class UsersController < ApplicationController
   def copy_order
     copy_info_params
     date = params[:copy_info][:select_date]
+    flash[:error] = 'Copy function temporarily close.'
+    redirect_to order_user_path(current_user, select_date: date)
+    return
+
     order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     if order.blank?
       @order = Order.create user_id: current_user.id, date: date
