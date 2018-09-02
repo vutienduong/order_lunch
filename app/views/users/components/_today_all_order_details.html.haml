@@ -1,0 +1,26 @@
+.row
+  %table.table.table-hover.table-striped
+    %tr
+      %th Order ID
+      %th User
+      %th Dishes
+      %th Totals
+      %th Note
+      %th Action
+
+    - @all_orders.each do |r|
+      %tr{ class: r.user_id == current_user.id ? "success" : "" }
+        %td
+          - if is_admin?
+            = link_to r.id, admin_order_path(r)
+          - else
+            = r.id
+        %td= r.user.username
+        %td= r.dishes.map(&:name).join(" + ")
+        %td.total-price-order
+          = show_price r.dishes.inject(0) {|sum, e| sum + e.price}
+        %td= r.note
+        - unless defined? _no_copy_button
+          %td
+            - if false && r.user_id == current_user.id
+              = link_to 'Copy', {controller: 'users', action: 'copy_order', id: session[:user_id], copy_info: {user_id: r.user.id, order_id: r.id, dish_ids: r.dishes.map(&:id), note: r.note, select_date: @select_date ? @select_date : select_date}}, class: "btn btn-primary glyphicon glyphicon-copy", onclick: "removeDishToday(this)"
