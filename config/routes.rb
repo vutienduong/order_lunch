@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       post 'add_dish'
       get 'change_password'
       patch 'confirm_change_password'
+      post 'copy_ajax'
+      post 'post_copy_ajax'
     end
 
     collection do
