@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+
+  order:
+    copy:
+      success: 'Copy successfully'
+
+  not_found: 'Not found'

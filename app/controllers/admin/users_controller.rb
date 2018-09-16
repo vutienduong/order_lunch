@@ -131,7 +131,7 @@ class Admin::UsersController < Admin::AdminsController
                    counted_dishes: counted_dishes,
                    all_costs: all_costs,
                    total_cost: total_cost,
-                   budget: @today_orders.length * 80_000 }
+                   budget: @today_orders.length * 85_000 }
   end
 
   def export_manage_pdf

@@ -1,0 +1,9 @@
+$('#copy-warning-modal').empty();
+$('#copy-warning-modal').html('<%= j(render "users/modals/copy_warning",
+                                     note: params[:copy_info][:note],
+                                     dish_ids: params[:copy_info][:dish_ids],
+                                     order_id: params[:copy_info][:order_id],
+                                     select_date: params[:copy_info][:select_date],
+                                     user_id: params[:copy_info][:user_id],
+                                     :formats => [:html]) %>');
+$('#copy-warning-modal').modal();

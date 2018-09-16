@@ -112,7 +112,7 @@ class UsersController < ApplicationController
     @order = Orders::RetrieveService.find_order_by_user_id_and_date user_id, date
     menu = Menu.where('DATE(date)=?', date).first
     dish = Dish.find_by(id: params[:dish][:dish_id])
-    restaurant_id = dish.restaurant&.id
+    # restaurant_id = dish.restaurant&.id
 
     if dish.blank?
       msg = fail_msg
@@ -195,6 +195,10 @@ class UsersController < ApplicationController
   def copy_order
     copy_info_params
     date = params[:copy_info][:select_date]
+    flash[:error] = 'Copy function temporarily close.'
+    redirect_to order_user_path(current_user, select_date: date)
+    return
+
     order = Orders::RetrieveService.find_order_by_user_id_and_date current_user.id, date
     if order.blank?
       @order = Order.create user_id: current_user.id, date: date
@@ -216,6 +220,44 @@ class UsersController < ApplicationController
     # update note
     # @order = Order.find(current_order_id)
     @order.update_attributes(note: params[:copy_info][:note]) if @order.present?
+    redirect_to order_user_path(current_user, select_date: date)
+  end
+
+  def copy_ajax
+    @copy_available = if params[:copy_info][:dish_ids].present?
+                        @menu = Menu.where('DATE(date)=?', params[:copy_info][:select_date]).first
+                        available_for_copy? params[:copy_info][:dish_ids], @menu
+                      else
+                        []
+                      end
+  end
+
+  def post_copy_ajax
+    date = params[:copy_info][:select_date]
+    @menu = Menu.where('DATE(date)=?', date).first
+    available_dishes = available_for_copy? params[:copy_info][:dish_ids].split(" "), @menu
+    @order = Orders::RetrieveService.find_order_by_user_id_and_date(current_user.id, date)
+
+    if @order.blank?
+      @order = Order.create user_id: current_user.id, date: date
+      current_order_id = @order.id
+    else
+      current_order_id = @order.id
+      DishOrder.where(order_id: current_order_id).destroy_all
+    end
+
+    # add all copied dishes follow copied user
+    available_dishes.each do |d|
+      if d.values.first.dig(:status, :valid)
+        dish_id = d.keys.first
+        dish_order = DishOrder.new(order_id: current_order_id, dish_id: dish_id)
+        dish_order.save
+      end
+    end
+
+    # update note
+    @order.update_attributes(note: params[:copy_info][:note]) if @order.present?
+    flash[:success] = I18n.t('order.copy.success')
     redirect_to order_user_path(current_user, select_date: date)
   end
 
@@ -307,5 +349,24 @@ class UsersController < ApplicationController
 
   def select_date_params
     params.permit(:select_date)
+  end
+
+  def available_for_copy?(dish_ids, menu)
+    dish_ids.map do |dish_id|
+      dish = Dish.find_by(id: dish_id)
+      if dish.nil?
+        { dish_id.to_s => { error: I18n.t('not_found') } }
+      else
+        menu_res = menu.menu_restaurants.find_by(restaurant_id: dish.restaurant_id)
+        if menu_res.locked_at.nil? || menu_res.locked_at >= Time.now.utc
+          { dish_id.to_s => { status: { valid: true, msg: 'can order' },
+                              info: { dish_name: dish.name } } }
+        else
+          { dish_id.to_s => { status: { valid: false,
+                                        msg: "Restaurant #{dish.restaurant.name} has locked" },
+                              info: { dish_name: dish.name } } }
+        end
+      end
+    end
   end
 end

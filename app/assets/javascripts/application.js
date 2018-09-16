@@ -185,9 +185,9 @@ function addDishToday2(dish) {
     current_total_price = parseInt(total_price_span.text())
     new_total = current_total_price + parseInt(dish_price)
     $("#total-price-warning").text("")
-    if (new_total > 80000) {
-        if (!confirm("Total price is larger than 80k. Do you want to continue?"))
-            return false;
+    if (new_total > 85000) {
+      alert("Total price cannot be larger than 85,000 VND. You cannot add this dish. Please adjust your order.")
+      return false;
     }
 
 
@@ -310,9 +310,9 @@ function showEditNoteResult(success) {
 
 checkTotalPrice = function () {
     console.log(parseInt($("#total_price_today").text()))
-    if (parseInt($("#total_price_today").text()) > 80000) {
+    if (parseInt($("#total_price_today").text()) > 85000) {
         $("#total_price_today").addClass("over-budget-highlight")
-        $("#total-price-warning").text("Note: TOTAL PRICES IS OVER QUOTA 80.000 VND !!!")
+        $("#total-price-warning").text("Note: TOTAL PRICES IS OVER QUOTA 85.000 VND !!!")
     }
     else {
         $("#total_price_today").removeClass("over-budget-highlight")
@@ -324,7 +324,7 @@ checkOrderOverBudget = function () {
     a = $(".total-price-order")
     for (var i = 0; i < a.length; i++) {
         b = $(a[i])
-        if (parseInt(b.text()) > 80000) {
+        if (parseInt(b.text()) > 85000) {
             b.attr("style", "color: red");
         }
     }

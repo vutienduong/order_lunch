@@ -1,0 +1,39 @@
+.modal-dialog{:role => 'document'}
+  .modal-content
+    .modal-header
+      %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} &times;
+      %h4.modal-title
+        WARNING
+    .modal-body
+      %table.table.table-striped.tablesorter
+        %thead
+          %tr
+            %th Dish ID
+            %th Name
+            %th Available to copy?
+            %th Info
+        %tbody
+          - @copy_available.each do |dish_status|
+            - dish_info = dish_status.values.first
+            %tr
+              %td= dish_status.keys.first
+              %td= dish_info.dig(:info, :dish_name)
+              - if dish_info.dig(:status, :valid)
+                %td.green= 'Available'
+              - else
+                %td.red= 'Locked'
+              %td= dish_info.dig(:status, :msg)
+
+      %p Only available dishes can be copied. All dishes you recorded previously will be destroyed. Do you want to continue?
+
+      = form_for 'copy_info', url: post_copy_ajax_user_path, method: :post do |f|
+        = f.hidden_field 'user_id', value: user_id
+        = f.hidden_field 'select_date', value: select_date
+        = f.hidden_field 'order_id', value: order_id
+        = f.hidden_field 'dish_ids', value: dish_ids
+        = f.hidden_field 'note', value: note
+
+        .modal-footer
+          %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+          = f.submit 'Continue', class: 'btn btn-primary'
