@@ -7,6 +7,8 @@ class AverageCostService
     count: "Error Calculating"
   }.with_indifferent_access]
 
+  ERROR_MSG = "Error Calculating".freeze
+
   def initialize(user_id, month = nil)
     @user_id = user_id
     @month = month

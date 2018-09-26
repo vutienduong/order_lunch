@@ -5,7 +5,7 @@
   - monthly_cost_avg_all = Formatter::Currency.to_default Order::MONTH_AVG_LIMIT
   - monthly_cost_sum = Formatter::Currency.to_default @avg_cost_on_month.first["sum"]
   - monthly_cost_sum_all = Formatter::Currency.to_default @total_allow_budget_for_month
-  - monthly_cost_remain_all = Formatter::Currency.to_default(@total_allow_budget_for_month - @avg_cost_on_month.first["sum"].to_i)
+  - monthly_cost_remain_all = Formatter::Currency.get_subtract_catch_exception(@total_allow_budget_for_month, @avg_cost_on_month.first["sum"].to_i)
   - df_cr_unit = Order::DF_CR_UNIT
 
   %h2
