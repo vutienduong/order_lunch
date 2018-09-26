@@ -70,6 +70,9 @@ class UsersController < ApplicationController
     @all_orders = Order.where('DATE(date)=?', select_date)
 
     @available_restaurants = @menu.available_restaurants(Time.current)
+    @avg_cost_on_month = AverageCostService.call(current_user.id)
+    num_day_of_month = ParseDateService.weekdays_in_month_given_a_date(Date.current)
+    @total_allow_budget_for_month = num_day_of_month * Order::MONTH_AVG_LIMIT
   end
 
   def collect_follow_tags(dishes)

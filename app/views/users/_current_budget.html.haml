@@ -1,0 +1,15 @@
+#current_budget
+  %p= "Budget progress of month #{Date.current.month}"
+  - monthly_cost_avg = Formatter::Currency.to_default @avg_cost_on_month.first["avg"]
+  - monthly_cost_avg_all = Formatter::Currency.to_default Order::MONTH_AVG_LIMIT
+  - monthly_cost_sum = Formatter::Currency.to_default @avg_cost_on_month.first["avg"]
+  - monthly_cost_sum_all = Formatter::Currency.to_default @total_allow_budget_for_month
+  - monthly_cost_remain_all = Formatter::Currency.to_default(@total_allow_budget_for_month - @avg_cost_on_month.first["sum"].to_i)
+  - df_cr_unit = Order::DF_CR_UNIT
+
+  %h2
+    = "Avg: #{monthly_cost_avg} / #{monthly_cost_avg_all}   #{df_cr_unit}"
+  %h2
+    = "Sum: #{monthly_cost_sum} / #{monthly_cost_sum_all}   #{df_cr_unit}"
+  %h2
+    = "Remain: #{ monthly_cost_remain_all}   #{df_cr_unit}"

@@ -51,10 +51,15 @@
         - else
           %h3 No permission
 
+    -# Notify budget regulation
     #budget-info
       %h4
         %span.label.label-primary
           = I18n.t('order.month_limit_cost', limit: "80,000 VND")
+
+    -# Notify current budget progress
+    = render 'current_budget'
+
     #today-personal.col-md-4
       = render partial: 'lock_info_table', locals: {menu: @menu}
       #today-my-order

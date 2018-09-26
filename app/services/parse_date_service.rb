@@ -21,4 +21,9 @@ class ParseDateService
     number = number < 10 ? "0#{number}" : number.to_s
     "#{sign}#{number}:00"
   end
+
+  def self.weekdays_in_month_given_a_date(date)
+    range = (date.beginning_of_month..date.end_of_month)
+    range.select { |d| (1..5).cover?(d.wday) }.size
+  end
 end
