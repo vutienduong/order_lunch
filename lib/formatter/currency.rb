@@ -4,7 +4,7 @@ module Formatter
       if price == AverageCostService::ERROR_MSG
         "[ #{price} ]"
       else
-        price = price.floor.to_s.reverse.split('')
+        price = price.to_f.floor.to_s.reverse.split('')
         length = price.length
         rev_price = price.each_with_index.map do |x, i|
           ((i % 3 == 2) && i != (length - 1)) ? "#{x}," : x
