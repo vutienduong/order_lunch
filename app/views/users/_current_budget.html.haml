@@ -7,10 +7,9 @@
   - monthly_cost_sum_all = Formatter::Currency.to_default @total_allow_budget_for_month
   - monthly_cost_remain_all = Formatter::Currency.get_subtract_catch_exception(@total_allow_budget_for_month, @avg_cost_on_month.first["sum"].to_i)
   - df_cr_unit = Order::DF_CR_UNIT
+  - df_nah_value = '...'
 
   %h2
     = "Avg: #{monthly_cost_avg} / #{monthly_cost_avg_all}   #{df_cr_unit}"
   %h2
-    = "Sum: #{monthly_cost_sum} / #{monthly_cost_sum_all}   #{df_cr_unit}"
-  %h2
-    = "Remain: #{ monthly_cost_remain_all}   #{df_cr_unit}"
+    = "Sum: #{monthly_cost_sum} / #{df_nah_value}   #{df_cr_unit}"
