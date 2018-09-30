@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       post 'check_custom_salad_name'
       post 'add_dish_to_order'
       post 'create_custom_salad_with_name'
+      get 'custom_order'
     end
   end
 

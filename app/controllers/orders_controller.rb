@@ -64,7 +64,7 @@ class OrdersController < ApplicationController
         d.description = build_note_for_custom_salad components
         d.name = generate_custom_salad_name d.name
         d.save
-      rescue => e
+      rescue StandardError => e
         # raise MyError::CreateFailError.new e.message
         msg = { status: STATUS_FAIL, message: e.message }
         response_to_json msg
@@ -102,7 +102,7 @@ class OrdersController < ApplicationController
       new_dish.dished_component_ids = dish.dished_component_ids
       new_dish.save
       msg = { status: STATUS_OK, message: MSG_SUCCESS }
-    rescue => e
+    rescue StandardError => e
       msg = { status: STATUS_FAIL, message: e.message }
     end
     response_to_json msg
@@ -124,5 +124,9 @@ class OrdersController < ApplicationController
 
   def page_param
     params.permit(:page)
+  end
+
+  def custom_order
+    # TODO: do here
   end
 end
