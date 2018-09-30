@@ -85,7 +85,7 @@ class Admin::RestaurantsController < Admin::AdminsController
                 description: dish['dish_desc'],
                 restaurant: @restaurant, tags: [tag_obj]
               )
-              #adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+              adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
               adish.save
             end
             adish
