@@ -26,5 +26,14 @@ en:
     copy:
       success: 'Copy successfully'
     month_limit_cost: "Limit average cost for a month: %{limit}"
+    custom_salad:
+      create:
+        successful_with_info: "Create custom salad %{name} successful, with components %{description}."
+      errors:
+        component:
+          duplicated: "Components of this salad is same as [%{existed_name}]. Do you still want to create new salad custom dish with new name [OK], or use existed salad custom combo? [Cancel]"
+          empty: 'List of components empty, please choose at least one'
+        dish:
+          duplicated: 'Name of dish has been existed, please choose another name'
 
   not_found: 'Not found'

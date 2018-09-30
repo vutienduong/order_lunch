@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
     if Dish.find_by(name: new_name).present?
       msg = { status: STATUS_FAIL,
               fail_type: 'EXISTED_NAME',
-              message: 'Name of dish has been existed, please choose another name' }
+              message: I18n.t('order.custom_salad.errors.dish.duplicated') }
       response_to_json msg
       return
     end
@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
     if component_ids.blank?
       msg = { status: STATUS_FAIL,
               fail_type: 'EMPTY_COMBO',
-              message: 'List of components empty, please choose at least one' }
+              message: I18n.t('order.custom_salad.errors.component.empty') }
       response_to_json msg
       return
     end
@@ -82,7 +82,9 @@ class OrdersController < ApplicationController
       end
 
       msg = { status: STATUS_OK,
-              message: "Create custom salad #{d.name} successful, with components #{d.description}.",
+              message: I18n.t('order.custom_salad.create.successful_with_info',
+                            name: d.name,
+                            description: d.description),
               data: d }
       response_to_json msg
       return
@@ -96,7 +98,9 @@ class OrdersController < ApplicationController
       existed_salad = existed_combo.first.first.first
       msg = { status: STATUS_FAIL,
               fail_type: 'SAME_COMBO',
-              message: "Components of this salad is same as [#{existed_salad.name}]. Do you still want to create new salad custom dish with new name [OK], or use existed salad custom combo? [Cancel]", data: { dish: existed_salad, new_name: new_name } }
+              message: I18n.t('order.custom_salad.errors.component.duplicated',
+                              existed_name: existed_salad.name),
+              data: { dish: existed_salad, new_name: new_name } }
 
       response_to_json msg
       # @dish = existed_combo
