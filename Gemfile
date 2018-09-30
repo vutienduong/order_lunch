@@ -9,6 +9,7 @@ gem 'rails_12factor'
 
 # Use sqlite3 as the database for Active Record
 group :development, :test do
+  gem 'rubocop', '0.53.0', require: false
   gem 'sqlite3'
 end
 
