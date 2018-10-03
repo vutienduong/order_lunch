@@ -81,6 +81,7 @@ Rails.application.routes.draw do
       post 'add_dish_to_order'
       post 'create_custom_salad_with_name'
       get 'custom_order'
+      post 'create_custom_order'
     end
   end
 

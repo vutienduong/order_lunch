@@ -461,3 +461,8 @@ input:focus {
 .display-none {
   display: none;
 }
+
+#custom_order_today, #current_custom_order {
+  max-width: 400px;
+  margin: auto;
+}

@@ -1,0 +1,17 @@
+%h2
+  = "Custom Order for"
+  = Date.today.to_s
+
+#custom_order_today
+  %h4 Create new custom order
+  = simple_form_for :order, url: create_custom_order_orders_path, method: :post do |f|
+    = f.input :id, as: :hidden
+    = f.input :user_id, as: :hidden, input_html: { value: current_user.id }
+    = f.input :user_name, disabled: true, input_html: { value: current_user.username }
+    = f.input :date, input_html: { value: Date.today }
+    = f.input :note, as: :text
+    = f.input :total_price
+
+    = f.submit 'Save', class: 'btn btn-primary'
+
+

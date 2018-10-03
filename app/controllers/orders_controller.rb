@@ -131,6 +131,31 @@ class OrdersController < ApplicationController
     response_to_json msg
   end
 
+  def custom_order
+    @order = Order.find_by("DATE(date) = ? AND user_id = ?", Time.zone.today, current_user.id)
+  end
+
+  def create_custom_order
+    total_price = params[:order][:total_price]&.to_i
+    note = params[:order][:note]
+    user_id = params[:order][:user_id]
+    date = params[:order][:date]
+    order_id = params[:order][:id]
+
+    if order_id
+      order = Order.find_by(id: order_id)
+      order&.update(note: note, total_price: total_price)
+    else
+      Order.create(customizable: true,
+                   user_id: user_id,
+                   date: date,
+                   total_price:
+                   total_price, note: note)
+    end
+
+    redirect_to custom_order_orders_path
+  end
+
   private
 
   def custom_salad_params
@@ -147,9 +172,5 @@ class OrdersController < ApplicationController
 
   def page_param
     params.permit(:page)
-  end
-
-  def custom_order
-    # TODO: do here
   end
 end
