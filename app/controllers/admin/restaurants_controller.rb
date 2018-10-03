@@ -32,7 +32,9 @@ class Admin::RestaurantsController < Admin::AdminsController
 
   def update
     @restaurant = Restaurant.find(params[:id])
-    raise MyError::CreateFailError, @restaurant.errors.messages unless @restaurant.update restaurant_params
+    unless @restaurant.update restaurant_params
+      raise MyError::CreateFailError, @restaurant.errors.messages
+    end
     # uploaded_io = params[:restaurant][:image_logo]
     # upload_image_after_create_restaurant(uploaded_io, @restaurant)
     redirect_to restaurant_path(@restaurant)
@@ -71,13 +73,11 @@ class Admin::RestaurantsController < Admin::AdminsController
 
           @dishes = tag['dishes']
           @dishes = @dishes.map do |dish|
-            if adish = Dish.where(name: dish['dish_name']).where(restaurant_id: @restaurant.id).first
+            adish = Dish.where(name: dish['dish_name']).where(restaurant_id: @restaurant.id).first
+            if adish
               old_tags = adish.tags
-              unless old_tags.include? tag_obj
-                old_tags << tag_obj
-              end
-              #adish.update tags: new_tags
-              adish.save
+              old_tags << tag_obj unless old_tags.include? tag_obj
+              # adish.update tags: new_tags
             else
               adish = Dish.create(
                 name: dish['dish_name'],
@@ -85,14 +85,16 @@ class Admin::RestaurantsController < Admin::AdminsController
                 description: dish['dish_desc'],
                 restaurant: @restaurant, tags: [tag_obj]
               )
-              adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
-              adish.save
+              unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+                adish.image_logo_remote_url = dish['img_src']
+              end
             end
+            adish.save
             adish
           end
         end
         @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
-      rescue => e
+      rescue StandardException => e
         @log[:exception] = e.message
       end
 
@@ -100,8 +102,8 @@ class Admin::RestaurantsController < Admin::AdminsController
       pre_url = File.join(res_url, '?page=')
       full_urls = %w[1 2].map { |n| pre_url + n }
       @dishes = []
-      full_urls.each do |full_url|
-        a = Scraper::Thuan_Kieu_Scraper.new.crawl full_url
+      full_urls.each do |f_url|
+        a = Scraper::Thuan_Kieu_Scraper.new.crawl f_url
         @dishes += a['dishes']
       end
 
@@ -114,12 +116,16 @@ class Admin::RestaurantsController < Admin::AdminsController
             price: dish['price'].to_d,
             restaurant: @restaurant
           )
-          adish.image_logo_remote_url = dish['img_src'] unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+
+          unless dish['img_src'].include? NO_DISH_IMG_PATTERN
+            adish.image_logo_remote_url = dish['img_src']
+          end
+
           adish.save
           adish
         end
         @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
-      rescue => e
+      rescue StandardException => e
         @log[:exception] = e.message
       end
     else
@@ -133,7 +139,8 @@ class Admin::RestaurantsController < Admin::AdminsController
     # unless params[:restaurant][:image_logo].blank?
     #   params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     # end
-    params.require(:restaurant).permit(:name, :address, :phone, :image_logo, :ref_link, :description, :is_provider)
+    params.require(:restaurant).permit(:name, :address, :phone, :image_logo,
+                                       :ref_link, :description, :is_provider)
   end
 
   def scrap_params
@@ -141,9 +148,10 @@ class Admin::RestaurantsController < Admin::AdminsController
   end
 
   def upload_image_after_create_restaurant(uploaded_io, restaurant)
-    require Rails.root.join('app/services/upload_image')
+    require Rails.root.join('app', 'services', 'upload_image')
     if uploaded_io.present?
-      file_name = Pathname('').join('restaurants', "#{restaurant.id}_#{uploaded_io.original_filename}")
+      file_name = Pathname('').join('restaurants',
+                                    "#{restaurant.id}_#{uploaded_io.original_filename}")
       OLUploadImage.upload(file_name, uploaded_io)
       restaurant.update(image_logo: file_name)
     end

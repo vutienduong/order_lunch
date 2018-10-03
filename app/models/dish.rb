@@ -83,7 +83,7 @@ class Dish < ActiveRecord::Base
         else
           result[:fail].push(attrs['name'] => 'Can not add this')
         end
-      rescue => e
+      rescue StandardError => e
         result[:fail].push(attrs['name'] => e)
       end
     end

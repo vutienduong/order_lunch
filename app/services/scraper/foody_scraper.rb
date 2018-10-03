@@ -15,7 +15,7 @@ module Scraper
         dish_name 'css=h3'
         dish_desc 'css=.deli-desc'
         price 'css=.txt-blue.font16.bold'
-        #img_url 'css=.inline.cboxElement>img'
+        # img_url 'css=.inline.cboxElement>img'
         img_src xpath: './/img/@src'
       end
     end

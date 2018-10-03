@@ -2,7 +2,6 @@ module MyError
   module ErrorHandler
     def self.included(clazz)
       clazz.class_eval do
-
         # rescue_from ::StandardError do |e|
         #   custom_respond(:standard_error, 500, e.to_s)
         # end
