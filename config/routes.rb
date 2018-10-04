@@ -162,8 +162,10 @@ Rails.application.routes.draw do
       member do
         get 'show_image'
       end
+
       collection do
         get 'scrap_dish'
+        get 'complete_image'
       end
     end
 
