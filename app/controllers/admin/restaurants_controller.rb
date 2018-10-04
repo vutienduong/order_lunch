@@ -74,6 +74,9 @@ class Admin::RestaurantsController < Admin::AdminsController
           next
         end
 
+        # TODO: correct this condition `ol_dish.image_logo_remote_url.nil?`
+        # to not duplicated add image for dish which already has image
+        # ol_dish.image_logo_remote_url.nil? always TRUE
         if !dish['img_src'].include?(NO_DISH_IMG_PATTERN) && ol_dish.image_logo_remote_url.nil?
           ol_dish.image_logo_remote_url = dish['img_src']
           Rails.logger.info "Complete image success: '#{dish['dish_name']}'" if ol_dish.save
