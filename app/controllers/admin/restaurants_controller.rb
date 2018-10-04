@@ -6,6 +6,7 @@ class Admin::RestaurantsController < Admin::AdminsController
   MISSING_LINK_MSG = 'Can\' scrap because missing Foody link'.freeze
   NOT_REGISTERED_MGS = 'Reference link of resraurant is not belonged to registered provider'
   NO_DISH_IMG_PATTERN = 'deli-dish-no-image.png'
+  ORDER_DISH_POSTFIX = 'goi-mon'
 
   def new
     @restaurant = Restaurant.new
@@ -52,14 +53,44 @@ class Admin::RestaurantsController < Admin::AdminsController
     send_data @restaurant.image, type: 'image/png', disposition: 'inline'
   end
 
+  def complete_image
+    @restaurant = Restaurant.find params[:id]
+    full_url = if @restaurant.ref_link.to_s.include? ORDER_DISH_POSTFIX
+                 @restaurant.ref_link
+               else
+                 File.join(@restaurant.ref_link, ORDER_DISH_POSTFIX)
+               end
+    scrap_data = Scraper::FoodyScraper.new.crawl(full_url)
+    categories = scrap_data['tags']
+    categories.each do |category|
+      dishes = category['dishes']
+      dishes.each do |dish|
+        price = dish['price'].to_d * 1000
+        ol_dish = Dish.find_by(name: dish['dish_name'],
+                               restaurant_id: @restaurant.id,
+                               price: price)
+        unless ol_dish
+          Rails.logger.info "Ignore '#{dish['dish_name']}'"
+          next
+        end
+
+        if !dish['img_src'].include?(NO_DISH_IMG_PATTERN) && ol_dish.image_logo_remote_url.nil?
+          ol_dish.image_logo_remote_url = dish['img_src']
+          Rails.logger.info "Complete image success: '#{dish['dish_name']}'" if ol_dish.save
+        end
+      end
+    end
+
+    redirect_to restaurant_path(id: @restaurant.id)
+  end
+
   def scrap_dish
     scrap_params
     @restaurant = Restaurant.find_by id: params[:id]
     raise MyError::NonExistRecordError, 'Restaurant ID is not existed' unless @restaurant
     raise MyError::CreateFailError, MISSING_LINK_MSG if @restaurant.ref_link.blank?
     res_url = @restaurant.ref_link
-    after = 'goi-mon'
-    full_url = File.join res_url, after
+    full_url = File.join res_url, ORDER_DISH_POSTFIX
     @log = {}
 
     if URI(res_url).host.eql? FOODY_HOST
@@ -68,12 +99,12 @@ class Admin::RestaurantsController < Admin::AdminsController
         tags = a['tags']
         tags.each do |tag|
           tag_name = tag['tag_name']
-          tag_obj = Tag.find_by name: tag_name
-          tag_obj ||= Tag.create(name: tag_name)
+          tag_obj = Tag.find_by name: tag_name || Tag.create(name: tag_name)
 
           @dishes = tag['dishes']
           @dishes = @dishes.map do |dish|
-            adish = Dish.where(name: dish['dish_name']).where(restaurant_id: @restaurant.id).first
+            adish = Dish.find_by(name: dish['dish_name'], restaurant_id: @restaurant.id)
+
             if adish
               old_tags = adish.tags
               old_tags << tag_obj unless old_tags.include? tag_obj
@@ -94,7 +125,7 @@ class Admin::RestaurantsController < Admin::AdminsController
           end
         end
         @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
-      rescue StandardException => e
+      rescue StandardError => e
         @log[:exception] = e.message
       end
 
@@ -125,7 +156,7 @@ class Admin::RestaurantsController < Admin::AdminsController
           adish
         end
         @log[:success] = "Create dishes for restaurant #{@restaurant.name} successful!"
-      rescue StandardException => e
+      rescue StandardError => e
         @log[:exception] = e.message
       end
     else
