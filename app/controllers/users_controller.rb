@@ -107,42 +107,20 @@ class UsersController < ApplicationController
   def add_dish_to_order
     user_id = session[:user_id]
     date = params[:select_date]
+    dish_id = params[:dish][:dish_id]
+    checked_time = Time.current
 
-    @order = Orders::RetrieveService.find_order_by_user_id_and_date(user_id, date)
-    menu = Menu.where('DATE(date)=?', date).first
-    dish = Dish.find_by(id: params[:dish][:dish_id])
+    service = OrderServices::AddDish.new(user_id, dish_id, date, checked_time)
+    service.call
 
-    msg = begin
-            if dish.blank?
-              {
-                status: STATUS_FAIL,
-                message: I18n.t('order.errors.dish_not_exist')
-              }
-            elsif Orders::ValidationService.validate_add_dish?(Time.current, dish, menu)
-              @order = Order.create!(user_id: user_id, date: date) if @order.blank?
-              @order_dish = DishOrder.new(order_id: @order.id, dish_id: dish.id)
-              if @order_dish.save?
-                {
-                  status: STATUS_OK,
-                  message: MSG_SUCCESS
-                }
-              else
-                {
-                  status: STATUS_FAIL,
-                  message: I18n.t('order.errors.save_to_order_failed')
-                }
-              end
-
-            else
-              {
-                status: STATUS_FAIL,
-                message: I18n.t('order.errors.restaurant_has_locked',
-                                restaurant: dish.restaurant.name)
-              }
-            end
+    msg = if service.success?
+            { status: STATUS_OK, message: MSG_SUCCESS }
+          else
+            { status: STATUS_FAIL, message: service.errors }
           end
 
-    msg[:today] = session[:today_order] if msg[:status].equal? STATUS_OK
+    msg[:today] = session[:today_order] if msg[:status] == STATUS_OK
+    @order = service.order
 
     # guarantee that always response json
     response_to_json msg
