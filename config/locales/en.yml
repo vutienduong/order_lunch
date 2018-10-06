@@ -35,5 +35,9 @@ en:
           empty: 'List of components empty, please choose at least one'
         dish:
           duplicated: 'Name of dish has been existed, please choose another name'
+    errros:
+      dish_not_exist: "Dish is not existed. Please refresh page and try again."
+      restaurant_has_locked: "%{restaurant} has locked. Please refresh page and try again."
+      save_to_order_failed: "Add dish to order failed!"
 
   not_found: 'Not found'

@@ -105,32 +105,42 @@ class UsersController < ApplicationController
   end
 
   def add_dish_to_order
-    @log = {} # Note: relate to @log[] = ... later, can cause error without this initialize
     user_id = session[:user_id]
     date = params[:select_date]
 
-    success_msg = { status: STATUS_OK, message: MSG_SUCCESS }
-    fail_msg = { status: STATUS_FAIL }
-
-    @order = Orders::RetrieveService.find_order_by_user_id_and_date user_id, date
+    @order = Orders::RetrieveService.find_order_by_user_id_and_date(user_id, date)
     menu = Menu.where('DATE(date)=?', date).first
     dish = Dish.find_by(id: params[:dish][:dish_id])
-    # restaurant_id = dish.restaurant&.id
 
-    if dish.blank?
-      msg = fail_msg
-      msg[:message] = "Dish is not existed. Please refresh page and try again."
-    elsif Orders::ValidationService.validate_add_dish?(Time.current, dish, menu)
-      @order = Order.create!(user_id: user_id, date: date) if @order.blank?
-      @order_dish = DishOrder.new(order_id: @order.id, dish_id: dish.id)
-      msg = @order_dish.save ? success_msg : fail_msg
-    else
-      msg = fail_msg
-      msg[:message] = "#{dish.restaurant.name} has locked. Please refresh page and try again."
-    end
+    msg = begin
+            if dish.blank?
+              {
+                status: STATUS_FAIL,
+                message: I18n.t('order.errors.dish_not_exist')
+              }
+            elsif Orders::ValidationService.validate_add_dish?(Time.current, dish, menu)
+              @order = Order.create!(user_id: user_id, date: date) if @order.blank?
+              @order_dish = DishOrder.new(order_id: @order.id, dish_id: dish.id)
+              if @order_dish.save?
+                {
+                  status: STATUS_OK,
+                  message: MSG_SUCCESS
+                }
+              else
+                {
+                  status: STATUS_FAIL,
+                  message: I18n.t('order.errors.save_to_order_failed')
+                }
+              end
 
-    # session[:today_order] = @order
-    # session[:today_order_id] = @order.id
+            else
+              {
+                status: STATUS_FAIL,
+                message: I18n.t('order.errors.restaurant_has_locked',
+                                restaurant: dish.restaurant.name)
+              }
+            end
+          end
 
     msg[:today] = session[:today_order] if msg[:status].equal? STATUS_OK
 
@@ -148,8 +158,6 @@ class UsersController < ApplicationController
       @order_dishes.last.destroy if @order_dishes.length >= 1
       if order.dishes.blank?
         order.destroy
-        # session[:today_order_id] = nil
-        # session[:today_order] = nil
         order = nil
       end
     end
