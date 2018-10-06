@@ -119,6 +119,8 @@ Rails.application.routes.draw do
     post 'confirm_add_dish_for_provider_daily' =>
         'providers#confirm_add_dish_for_provider_daily'
 
+    get 'index' => 'admins#index'
+
     resources :menus do
       member do
         get 'lock'

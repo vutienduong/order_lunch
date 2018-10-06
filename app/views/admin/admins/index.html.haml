@@ -1,0 +1,64 @@
+= link_to 'Go to SAP functions', sap_page_admin_users_path, class: "btn btn-black"
+
+%h3 SAP Statistics
+%h4 General
+%table.table.table-striped.table-bordered
+  %tbody
+    %tr
+      %th No. Orders
+      %td= Order.count
+
+    %tr
+      %th No. Users
+      %td= User.count
+
+    %tr
+      %th No. Restaurants
+      %td= Restaurant.count
+
+    %tr
+      %th No. Dishes
+      %td= Dish.count
+
+    %tr
+      %th Total Cost
+      - sum = Order.sum(:total_price)
+      %td= Formatter::Currency.to_default sum
+
+    %tr
+      %th Avg cost / order
+      - avg = Order.average(:total_price).round(2)
+      %td= Formatter::Currency.to_default avg
+
+    %tr
+      %th First order at
+      %td= Order.order(:created_at).first.created_at
+
+
+%h4 Operation
+%table.table.table-striped.table-bordered
+  %tbody
+    %tr
+      %th Missing image (dishes)
+      %td= Dish.where(image_logo_file_name: nil).count
+
+    %tr
+      %th Missing image (restaurants)
+      %td= Restaurant.where(image_logo_file_name: nil).count
+
+%h4 Insights
+%table.table.table-striped.table-bordered
+  %tbody
+    - all_dish_freq = DishOrder.group(:dish_id).order("count_all desc").count
+    %tr
+      %th Dish ordered most
+      - most_dish_id, most_count = all_dish_freq.first
+      %td= Dish.find_by(id: most_dish_id)&.name
+      %td= "#{most_count} #{'time'.pluralize(most_count)}"
+
+    %tr
+      %th Dish ordered lowest
+      - lowest_dish_id = all_dish_freq.keys.last
+      - lowest_count = all_dish_freq[lowest_dish_id]
+      %td= Dish.find_by(id: lowest_dish_id)&.name
+      %td= "#{lowest_count} #{'time'.pluralize(lowest_count)}"
