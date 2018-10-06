@@ -10,10 +10,10 @@ class Order < ActiveRecord::Base
   has_many :dish_orders
   has_many :dishes, through: :dish_orders
 
-  MONTH_AVG_LIMIT = 80000
+  MONTH_AVG_LIMIT = 80_000
   DF_CR_UNIT = 'VND'
 
   def cal_total_price
-    dishes.inject(0) { |s, d| s += d.price }
+    dishes.inject(0) { |s, d| s + d.price }
   end
 end
