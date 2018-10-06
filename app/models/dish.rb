@@ -90,4 +90,8 @@ class Dish < ActiveRecord::Base
 
     result
   end
+
+  def no_logo?
+    image_logo_file_name.nil?
+  end
 end
