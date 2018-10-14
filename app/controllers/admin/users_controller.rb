@@ -51,26 +51,30 @@ class Admin::UsersController < Admin::AdminsController
   end
 
   def get_manage
-    @date = Date.civil(params[:start_date][:year].to_i, params[:start_date][:month].to_i, params[:start_date][:day].to_i)
+    @date = Date.civil(params[:start_date][:year].to_i,
+                       params[:start_date][:month].to_i,
+                       params[:start_date][:day].to_i)
     manage_company(@date)
     render plain: 'manage_company'
   end
 
   def manage_all_days
-    @date = Date.today
+    @date = Time.zone.today
     @order = Order.new
-    manage_company(Date.today)
+    manage_company(@date)
   end
 
   def manage_all
     @order = Order.new
-    # @date = Date.civil(params[:order]["date(1i)"].to_i, params[:order]["date(2i)"].to_i, params[:order]["date(3i)"].to_i)
+    # @date = Date.civil(params[:order]["date(1i)"].to_i,
+    # params[:order]["date(2i)"].to_i,
+    # params[:order]["date(3i)"].to_i)
     @date = params[:order][:date]
     manage_company(@date)
     render 'manage_all_days'
   end
 
-  def manage_company(fetch_date = Date.today)
+  def manage_company(fetch_date = Time.zone.today)
     @menu = Menu.find_by(date: fetch_date)
     return if @menu.blank?
 
@@ -86,14 +90,18 @@ class Admin::UsersController < Admin::AdminsController
       if extra_tag
         extra_tag_id = extra_tag.id
         today_all_ordered_dishes = @today_orders.map do |t|
-          parts = t.dishes.partition { |d| d.restaurant.id == thuankieu_id && d.tag_ids.exclude?(extra_tag_id) }
+          parts = t.dishes.partition do |d|
+            d.restaurant.id == thuankieu_id && d.tag_ids.exclude?(extra_tag_id)
+          end
 
           thuankieu_combo = parts[0]
           normal_dishes = parts[1]
 
           combo_ids = thuankieu_combo.map(&:id)
 
-          temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '), restaurant: thuankieu_res, price: thuankieu_combo.inject(0) { |s, e| s += e.price })
+          temp_dish = Dish.new(name: thuankieu_combo.map(&:name).join(' , '),
+                               restaurant: thuankieu_res,
+                               price: thuankieu_combo.inject(0) { |s, e| s + e.price })
           if thuankieu_comboes.include? combo_ids
             temp_dish.id = -1 * thuankieu_comboes.index(combo_ids) - 1
           else
@@ -160,7 +168,7 @@ class Admin::UsersController < Admin::AdminsController
     # res_url = 'ut-huong'
     # res_url = 'tylum-hu-tieu-nam-vang'
     # res_url = 'hai-tu-quy-bun-ca-ro-dong-nem-cua-be'
-    res_url = 'quan-yen-bun-ca-sua-nha-trang-le-hong-phong'
+    # res_url = 'quan-yen-bun-ca-sua-nha-trang-le-hong-phong'
     res_url = ''
     full_url = File.join before, res_url, after
     a = Scraper::TestScraper.new.crawl full_url
@@ -195,7 +203,8 @@ class Admin::UsersController < Admin::AdminsController
     # }
     # notifier.post text: "with an attachment", attachments: [a_ok_note]
 
-    # notifier.post text: "please order lunch", at: [:here, :waldo, :Vu_Tien_Duong, "Vu Tien Duong".to_sym]
+    # notifier.post text: "please order lunch",
+    # at: [:here, :waldo, :Vu_Tien_Duong, "Vu Tien Duong".to_sym]
 
     # notifier.post text: "hello channel", channel: ["test-order-lunch", "@duong.vu"]
 
@@ -221,7 +230,7 @@ class Admin::UsersController < Admin::AdminsController
   end
 
   def retrieve_unordered_user
-    ordered_users = Order.where('DATE(date)=?', Date.today).map(&:user)
+    ordered_users = Order.where('DATE(date)=?', Time.zone.today).map(&:user)
     @unordered_users = User.all - ordered_users
   end
 
@@ -251,7 +260,7 @@ class Admin::UsersController < Admin::AdminsController
       begin
         Dish.create(quick_add_dish_params(vv))
         @log[:success].push("#{v['name']} [#{v['size']}]")
-      rescue => e
+      rescue StandardError => _e
         @log[:fail].push("#{v['name']} [#{v['size']}]")
       end
     end
@@ -278,7 +287,7 @@ class Admin::UsersController < Admin::AdminsController
     session[:is_admin] && deleted_id == session[:user_id]
   end
 
-  def quick_add_dish_params(vv)
-    vv.permit(:name, :price, :size, :restaurant_id, :sizeable, :parent)
+  def quick_add_dish_params(a_params)
+    a_params.permit(:name, :price, :size, :restaurant_id, :sizeable, :parent)
   end
 end
