@@ -1,0 +1,8 @@
+= form_for @general_setting, url: admin_general_settings_path do |f|
+  .form-group
+    %label Key
+    = f.text_field :key
+  .form-group
+    %label Value
+    = f.text_field :value
+  = f.submit 'Save'

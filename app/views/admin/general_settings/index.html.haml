@@ -1,0 +1,14 @@
+- if @settings.present?
+  = form_for 'general_settings', url: update_all_settings_admin_general_settings_path, method: :post do |f|
+    %table.table.table-stripped
+      %tr
+        %th Name
+        %th Value
+      %tbody
+        - @settings.each do |setting|
+          %tr
+            %td=setting.key
+            %td
+              = f.text_field setting.key, value: setting.value
+    = f.submit 'Save'
+  = link_to 'Add new', new_admin_general_setting_path, class: 'btn btn-primary'

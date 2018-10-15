@@ -248,6 +248,8 @@ class Admin::UsersController < Admin::AdminsController
     @restaurant_id = sukiya.blank? ? '' : sukiya.id
   end
 
+  def sap_page_v2; end
+
   def post_sap_page
     res_id = params[:dishes][:restaurant]
     @log = { success: [], fail: [] }

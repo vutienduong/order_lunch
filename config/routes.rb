@@ -134,6 +134,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :general_settings do
+      collection do
+        post 'update_all_settings'
+      end
+    end
+
     resources :users do
       collection do
         get 'manage'
@@ -149,6 +155,7 @@ Rails.application.routes.draw do
         get 'export_orders_to_csv'
         get 'sap_page'
         post 'sap_page', to: 'users#post_sap_page'
+        get 'sap_page_v2'
       end
     end
 
