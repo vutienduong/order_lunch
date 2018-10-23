@@ -1,0 +1,10 @@
+%h1 Feedbacks
+
+%ul.media-list
+  - @comments.each do |comment|
+    = render partial: 'comment', locals: {comment: comment}
+
+= paginate @comments
+
+%br
+= link_to 'New feedback', new_comment_path, class: 'btn btn-default'

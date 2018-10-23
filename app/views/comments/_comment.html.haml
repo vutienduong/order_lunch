@@ -1,0 +1,11 @@
+%li.media.grant-border
+  .media-body.comment-header
+    %h4.media-heading
+      = comment.title
+    = comment.content
+
+  .pull-right{href: '#'}
+    = "in #{comment.date || 'N/A'}, by"
+    %strong
+      = comment.author.username
+

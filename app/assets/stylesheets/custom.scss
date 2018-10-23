@@ -146,7 +146,7 @@ tr#highlight-current-user-order {
   background-color: lavender;
 }
 
-.dish-show-wrap, .dish-media-wrap, .salad-left-banner, .build-salad-body, .grant-border {
+.dish-show-wrap, .dish-media-wrap, .salad-left-banner, .build-salad-body, .grant-border, .comment-wrapper {
   border: 1px solid gainsboro;
   border-radius: 5px;
 }
@@ -465,4 +465,9 @@ input:focus {
 #custom_order_today, #current_custom_order {
   max-width: 400px;
   margin: auto;
+}
+
+.comment-header {
+  border-bottom: 1px solid gainsboro;
+  background: aliceblue;
 }

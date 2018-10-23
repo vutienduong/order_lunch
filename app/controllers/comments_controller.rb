@@ -1,8 +1,14 @@
 class CommentsController < ApplicationController
   include MyError
   before_action :require_login
+
+  PER_PAGE = 5
+  DEFAULT_PAGE = 1
+
   def index
-    @comments = Comment.all
+    per_page = params[:per] || PER_PAGE
+    page = params[:page] || DEFAULT_PAGE
+    @comments = Comment.all.includes(:author).page(page).per(per_page)
     @comment = Comment.new
   end
 
@@ -12,7 +18,7 @@ class CommentsController < ApplicationController
 
   def create
     params[:comment][:author_id] = session[:user_id]
-    params[:comment][:date] = Date.today
+    params[:comment][:date] = Time.zone.today
     @comment = Comment.new comment_params
     raise MyError::CreateFailError unless @comment.save
     redirect_to comments_path
