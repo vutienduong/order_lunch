@@ -3,7 +3,7 @@
   <div class="col-md-8">
     <h1>Restaurant details</h1>
     <% if is_admin? %>
-        <%= link_to 'Scrap dishes (from Foody)', {controller: "admin/restaurants", action: "scrap_dish", id: @restaurant.id, ref_link: @restaurant.ref_link}, class: 'btn btn-warning' %>
+        <%= link_to 'Scrap dishes (from Foody)', {controller: "admin/restaurants", action: "scrap_dish_2_with_api", id: @restaurant.id, request_id: @restaurant.external_id, ref_link: @restaurant.ref_link}, class: 'btn btn-warning' %>
 
         <%= link_to 'Add missing images', complete_image_admin_restaurants_path(id: @restaurant.id), class: 'btn btn-primary' %>
     <% end %>
@@ -14,6 +14,7 @@
           <p>Name: <strong><%= @restaurant.name.upcase %></strong></p>
           <p>Address: <%= @restaurant.address %></p>
           <p>Phone: <%= @restaurant.phone %> </p>
+          <p class="red">External id: <%= @restaurant.external_id %> </p>
           <p>Description: <%= @restaurant.description.html_safe if @restaurant.description %></p>
           <p>Link: <%= link_to('Here', @restaurant.ref_link, data: {confirm: "Are you sure?"}) if @restaurant.ref_link %></p>
           <div>
