@@ -170,6 +170,7 @@ Rails.application.routes.draw do
     resources :restaurants do
       member do
         get 'show_image'
+        post 'delete_all_dishes'
       end
 
       collection do

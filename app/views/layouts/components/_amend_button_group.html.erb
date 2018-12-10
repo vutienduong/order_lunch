@@ -14,6 +14,10 @@
                 data: {confirm: 'Are you sure?'} %>
   </li>
 
+  <% if defined? _delete_all_dishes_link %>
+      <li><%= link_to 'Delete all dishes', _delete_all_dishes_link, method: :post, data: { confirm: 'Are you sure?', class: 'red' } %></li>
+  <% end %>
+
   <% if defined? _new_link %>
       <li role="separator" class="divider"></li>
       <li><%= link_to _new_link[:name], _new_link[:url] %></li>

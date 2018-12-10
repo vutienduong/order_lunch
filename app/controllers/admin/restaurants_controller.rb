@@ -48,6 +48,12 @@ class Admin::RestaurantsController < Admin::AdminsController
     redirect_to restaurants_path
   end
 
+  def delete_all_dishes
+    @restaurant = Restaurant.find(params[:id])
+    @restaurant.dishes.destroy_all
+    redirect_to restaurant_path(params[:id])
+  end
+
   def show_image
     @restaurant = Restaurant.find(params[:id])
     send_data @restaurant.image, type: 'image/png', disposition: 'inline'

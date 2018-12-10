@@ -25,7 +25,17 @@
           </div>
         </div>
         <% if is_admin? %>
-            <%= render partial: 'layouts/components/amend_button_group', locals: {_edit_link: edit_admin_restaurant_path(@restaurant), _delete_link: admin_restaurant_path(@restaurant), _new_link: {name: 'New dish', url: {controller: "admin/dishes", action: "new", id: @restaurant.id}}} %>
+          <%= render partial: 'layouts/components/amend_button_group',
+            locals: {_edit_link: edit_admin_restaurant_path(@restaurant),
+                     _delete_all_dishes_link: delete_all_dishes_admin_restaurant_path(@restaurant),
+                     _delete_link: admin_restaurant_path(@restaurant),
+                     _new_link: {
+                       name: 'New dish',
+                       url: {
+                         controller: "admin/dishes",
+                         action: "new",
+                         id: @restaurant.id
+                       }}} %>
         <% end %>
       </div>
       <div class="panel panel-body">
