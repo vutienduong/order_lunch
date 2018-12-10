@@ -174,6 +174,7 @@ Rails.application.routes.draw do
 
       collection do
         get 'scrap_dish'
+        get 'scrap_dish_2_with_api'
         get 'complete_image'
       end
     end

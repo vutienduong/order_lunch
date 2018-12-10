@@ -87,6 +87,21 @@ class Admin::RestaurantsController < Admin::AdminsController
     redirect_to restaurant_path(id: @restaurant.id)
   end
 
+  def scrap_dish_2_with_api
+    service = ScrapServices::FoodyApi.new(
+      payload: {
+        request_id: params[:request_id],
+        id_type: '1'
+      },
+      restaurant_id: params[:id]
+    )
+
+    service.call
+    @log = service.log
+    @dishes = service.dishes
+    render 'scrap_dish'
+  end
+
   def scrap_dish
     scrap_params
     @restaurant = Restaurant.find_by id: params[:id]
@@ -117,7 +132,8 @@ class Admin::RestaurantsController < Admin::AdminsController
                 name: dish['dish_name'],
                 price: dish['price'].to_d * 1000,
                 description: dish['dish_desc'],
-                restaurant: @restaurant, tags: [tag_obj]
+                restaurant: @restaurant,
+                tags: [tag_obj]
               )
               unless dish['img_src'].include? NO_DISH_IMG_PATTERN
                 adish.image_logo_remote_url = dish['img_src']
@@ -174,7 +190,7 @@ class Admin::RestaurantsController < Admin::AdminsController
     #   params[:restaurant][:image] = params[:restaurant][:image_logo].tempfile.read
     # end
     params.require(:restaurant).permit(:name, :address, :phone, :image_logo,
-                                       :ref_link, :description, :is_provider)
+                                       :ref_link, :description, :is_provider, :external_id)
   end
 
   def scrap_params
