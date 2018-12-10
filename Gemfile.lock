@@ -999,6 +999,7 @@ DEPENDENCIES
   rack_session_access
   rails (= 4.2.9)
   rails_12factor
+  rest-client
   rspec-rails (~> 3.6)
   rubocop (= 0.53.0)
   sass-rails (~> 5.0)
