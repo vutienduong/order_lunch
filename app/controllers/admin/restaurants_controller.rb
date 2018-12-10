@@ -90,7 +90,7 @@ class Admin::RestaurantsController < Admin::AdminsController
   def scrap_dish_2_with_api
     service = ScrapServices::FoodyApi.new(
       payload: {
-        request_id: params[:request_id],
+        request_id: params[:external_id],
         id_type: '1'
       },
       restaurant_id: params[:id]
@@ -98,7 +98,7 @@ class Admin::RestaurantsController < Admin::AdminsController
 
     service.call
     @log = service.log
-    @dishes = service.dishes
+    @dishes = Restaurant.find(params[:id]).dishes
     render 'scrap_dish'
   end
 
