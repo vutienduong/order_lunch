@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180930160128) do
+ActiveRecord::Schema.define(version: 20181210225758) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "title"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20180930160128) do
     t.integer  "parent_id"
     t.text     "group_name"
     t.integer  "once"
+    t.string   "external_id"
   end
 
   add_index "dishes", ["parent_id"], name: "index_dishes_on_parent_id"
@@ -200,6 +201,7 @@ ActiveRecord::Schema.define(version: 20180930160128) do
     t.string   "ref_link"
     t.text     "description"
     t.boolean  "is_provider"
+    t.string   "external_id"
   end
 
   create_table "salad_components", force: :cascade do |t|
@@ -225,6 +227,7 @@ ActiveRecord::Schema.define(version: 20180930160128) do
   create_table "tags", force: :cascade do |t|
     t.string  "name"
     t.integer "dishes_id"
+    t.string  "external_id"
   end
 
   add_index "tags", ["dishes_id"], name: "index_tags_on_dishes_id"
