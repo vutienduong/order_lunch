@@ -50,7 +50,10 @@ module ScrapServices
                   tags: [tag_obj]
                 )
                 dish_img = dish['photos'][2]['value']
-                adish.image_logo_remote_url = dish_img unless dish_img.include? NO_DISH_IMG_PATTERN
+                unless dish_img.include? NO_DISH_IMG_PATTERN
+                  adish.image_logo_remote_url = dish_img
+                  adish.save
+                end
               end
             end
           end
