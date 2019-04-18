@@ -1,4 +1,4 @@
-class AddAttachmentImageLogoToDishes < ActiveRecord::Migration
+class AddAttachmentImageLogoToDishes < ActiveRecord::Migration[4.2]
   def self.up
     change_table :dishes do |t|
       t.attachment :image_logo

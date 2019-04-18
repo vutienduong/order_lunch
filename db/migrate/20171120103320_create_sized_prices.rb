@@ -1,4 +1,4 @@
-class CreateSizedPrices < ActiveRecord::Migration
+class CreateSizedPrices < ActiveRecord::Migration[4.2]
   def change
     create_table :sized_prices do |t|
       t.string :size

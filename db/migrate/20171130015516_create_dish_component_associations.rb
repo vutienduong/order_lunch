@@ -1,4 +1,4 @@
-class CreateDishComponentAssociations < ActiveRecord::Migration
+class CreateDishComponentAssociations < ActiveRecord::Migration[4.2]
   def change
     create_table :dish_component_associations do |t|
 

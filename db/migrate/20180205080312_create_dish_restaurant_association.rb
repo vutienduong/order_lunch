@@ -1,4 +1,4 @@
-class CreateDishRestaurantAssociation < ActiveRecord::Migration
+class CreateDishRestaurantAssociation < ActiveRecord::Migration[4.2]
   def change
     create_table :dish_restaurant_associations do |t|
       t.integer :dish_id

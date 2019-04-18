@@ -1,4 +1,4 @@
-class AddOrdersDishesTable < ActiveRecord::Migration
+class AddOrdersDishesTable < ActiveRecord::Migration[4.2]
   def change
     create_table :orders_dishes do |t|
       t.belongs_to :orders, index: true

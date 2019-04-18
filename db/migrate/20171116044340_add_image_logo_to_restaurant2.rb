@@ -1,4 +1,4 @@
-class AddImageLogoToRestaurant2 < ActiveRecord::Migration
+class AddImageLogoToRestaurant2 < ActiveRecord::Migration[4.2]
   def change
     def self.up
       add_attachment :restaurants, :image_logo

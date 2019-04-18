@@ -1,4 +1,4 @@
-class RemoveImageLogoFromRestaurant2 < ActiveRecord::Migration
+class RemoveImageLogoFromRestaurant2 < ActiveRecord::Migration[4.2]
   def change
     remove_column :restaurants, :image_logo, :string
   end

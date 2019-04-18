@@ -1,4 +1,4 @@
-class CreateProviderDishMappingTable < ActiveRecord::Migration
+class CreateProviderDishMappingTable < ActiveRecord::Migration[4.2]
   def change
     create_table :provider_dish_mappings do |t|
       t.integer :restaurant_daily_id

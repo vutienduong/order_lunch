@@ -1,4 +1,4 @@
-class AddNoteToOrder < ActiveRecord::Migration
+class AddNoteToOrder < ActiveRecord::Migration[4.2]
   def change
     add_column :orders, :note, :text
   end

@@ -1,4 +1,4 @@
-class CreateDailyRestaurant < ActiveRecord::Migration
+class CreateDailyRestaurant < ActiveRecord::Migration[4.2]
   def up
     unless ActiveRecord::Base.connection.table_exists? 'daily_restaurants'
       create_table :daily_restaurants do |t|
