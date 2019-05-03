@@ -14,7 +14,7 @@ group :development, :test do
   gem 'dotenv-rails'
 end
 
-gem 'haml'
+gem 'hamlit'
 gem 'kaminari'
 gem 'simple_form', '~> 4.1.0'
 
@@ -93,3 +93,7 @@ gem 'grape'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'slack-notifier'
 gem 'wombat', '~> 2.8.0'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-semantic'
+end

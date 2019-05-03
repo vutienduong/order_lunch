@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   mount OrderLunchAPI => '/api'
 
-  get 'sessions/new'
+  root 'sessions#new'
 
-  root 'welcomes#index'
+  # root 'welcomes#index'
   resources :foods do
     collection do
       get 'export_pdf'

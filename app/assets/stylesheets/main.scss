@@ -1,0 +1,68 @@
+body {
+  font-family: 'Maven Pro', sans-serif;
+}
+
+.full-view-height {
+  height: 100vh;
+}
+
+.ui.button {
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+
+#login {
+  .form {
+    max-width: 360px;
+    margin-top: 50px;
+
+    input {
+      color: #525f7f;
+      font-weight: 100;
+      border-radius: 0.5em;
+      border-color: #dfe5ea;
+      font-family: 'Maven Pro', sans-serif;
+    }
+
+    .ui.button {
+      width: 40%;
+      display: flex;
+      color: #27ae60;
+      margin-top: 2em;
+      padding: 0.75em 1em;
+      align-items: center;
+      border-radius: 0.5em;
+      justify-content: space-between;
+      background: rgba(68, 217, 149, 0.15);
+    }
+
+    .ui.button .feather {
+      height: 20px;
+    }
+  }
+  .ui.header {
+    color: #2c3e50;
+    margin: 20px 0;
+    font-size: 32px;
+    font-weight: normal;
+    font-family: 'Maven Pro', sans-serif;
+  }
+}
+
+.input-icon {
+  display: flex;
+  margin: 0em;
+  height: 100%;
+  width: 2.67142857em;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  opacity: 0.5;
+
+  svg {
+    height: 18px;
+  }
+}
+
