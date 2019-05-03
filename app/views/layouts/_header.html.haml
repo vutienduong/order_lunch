@@ -1,0 +1,25 @@
+%header.navbar.navbar-fixed-top.navbar-inverse
+  .container
+    = link_to "EH Order Lunch", root_path, id: "logo"
+    %nav
+      %ul.nav.navbar-nav.navbar-right
+        - if logged_in?
+          %li= link_to "NEWs", new_update_path
+          %li= link_to "Home", order_user_path(current_user)
+          %li= link_to "How to use", help_path
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Account
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to "Hello!  #{current_user.email}", current_user
+              %li= link_to "Settings", '#'
+              - if is_admin?
+                %li= link_to "Manager Page", manage_admin_users_path
+                %li.divider
+                %li= link_to "PING SLACK", ping_slack_admin_users_path, data: {confirm: 'This ping can cause noise for users. Do you want to continue?'}
+              %li.divider
+              %li
+                = link_to "Log out", logout_path, method: :delete
+        - else
+          %li= link_to "Log in", login_path
