@@ -8,14 +8,14 @@
         .ui.left.icon.input
           .input-icon
             %i{"data-feather": "user"}
-          = f.email_field :email, placeholder: 'Account'
+          = f.email_field :email, placeholder: 'Account', autofocus: true
       .field
         .ui.left.icon.input
           .input-icon
             %i{"data-feather": "key"}
           = f.password_field :password, placeholder: 'Password'
       .field
-        .ui.icon.button
+        %button.ui.icon.button{type: "submit"}
           %span Sign in
           %i{"data-feather": "arrow-right"}
   .nine.wide.column

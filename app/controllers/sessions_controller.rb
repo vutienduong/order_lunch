@@ -3,11 +3,7 @@ class SessionsController < ApplicationController
   layout 'sessions'
 
   def new
-    if logged_in?
-      render 'welcomes/index'
-    else
-      render 'new'
-    end
+    redirect_to user_path(current_user) if logged_in?
   end
 
   def create
