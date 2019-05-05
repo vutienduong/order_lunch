@@ -1,0 +1,91 @@
+body {
+  font-family: 'Maven Pro', sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  box-shadow: 0 2px 20px 0 rgba(0,0,0,0.075);
+}
+
+.pusher {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  background: #fafbfd;
+  padding: 2em 2em 2em 300px;
+}
+
+#sidebar_content {
+  .heading {
+    padding: 1.5em;
+    margin-top: 1em;
+    text-align: center;
+
+    h3 {
+      color: #2c3e50;
+      margin-top: 0.5em;
+      font-weight: normal;
+    }
+  }
+
+  .quick_actions,
+  .admin_actions {
+    display: grid;
+    grid-gap: 1em;
+    padding: 1.5em;
+    margin-top: 1em;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+
+    .item {
+      display: flex;
+      padding: 10px;
+      color: #525f7f;
+      font-size: 12px;
+      border-radius: 5px;
+      align-items: center;
+      flex-direction: column;
+      border: 1px solid #dfe5ea;
+    }
+
+    .item svg {
+      // color: #bdc3c7;
+      color: #74b9ff;
+    }
+
+    .item span {
+      margin-top: 0.2em;
+    }
+
+    .item:hover {
+      border-color: transparent;
+      background: rgba(223, 229, 234, 0.25);
+    }
+
+    &:before {
+      content: "Quick Actions";
+      position: absolute;
+      font-size: 0.75em;
+      color: #b7c3cb;
+      left: 20px;
+      top: -10px;
+    }
+  }
+
+  .admin_actions {
+    grid-template-columns: repeat(1, 1fr);
+
+    .item {
+      flex-direction: row;
+    }
+
+    .item span {
+      margin-top: 0;
+      margin-left: 1em;
+    }
+
+    &:before {
+      content: "Admin Actions";
+    }
+  }
+}
