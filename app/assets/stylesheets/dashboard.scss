@@ -4,6 +4,7 @@ body {
 
 .sidebar {
   width: 260px;
+  background: #ffffff;
   box-shadow: 0 2px 20px 0 rgba(0,0,0,0.075);
 }
 
@@ -12,7 +13,7 @@ body {
   display: flex;
   flex-direction: row;
   background: #f6f9fc;
-  padding: 2em 2em 2em 300px;
+  padding: 3em 3em 3em 314px;
 }
 
 #sidebar_content {
@@ -69,7 +70,7 @@ body {
 
     .item:hover {
       border-color: #74b9ff;
-      background: rgba(223, 229, 234, 0.1);
+      background: rgba(223, 229, 234, 0.15);
     }
 
     .item.active:hover {
@@ -104,10 +105,15 @@ body {
   }
 }
 
+#navbar {
+  border: none;
+  margin-bottom: 50px;
+}
+
 #dishes_container {
   .dishes {
     display: grid;
-    grid-gap: 1em;
+    grid-gap: 1.5em;
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -134,7 +140,7 @@ body {
 
     .header .name {
       flex: 1;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: 500;
     }
 
@@ -166,11 +172,11 @@ body {
 #filter_container {
   display: flex;
   margin-bottom: 3em;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 
-#filter_container .menu {
+#filter_container .restaurant_selector {
   border: none;
   margin-top: 0;
   box-shadow: none;
@@ -178,11 +184,13 @@ body {
 
   .item {
     padding: 0;
+    border: none;
     margin-left: 1em;
   }
 
   .item.active {
-    padding: 0.5em 2em;
+    padding: 0.75em 2em;
+    background: #f2f2f2;
     border-radius: 0.5em;
   }
 
@@ -194,6 +202,52 @@ body {
 #filter_container .ui.header {
   font-size: 22px;
   margin-bottom: 0;
-  font-weight: 500;
+  position: relative;
+  font-weight: normal;
   font-family: 'Maven Pro', sans-serif;
+
+  &:after {
+    content: '';
+    width: 40px;
+    height: 3px;
+    position: absolute;
+    background: #54a0ff;
+    bottom: -8px;
+    left: 0;
+  }
+}
+
+#groups_container {
+  margin-bottom: 50px;
+
+  .ui.card {
+    box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+  }
+}
+
+#order_cart,
+#summary_panel {
+  border: none;
+  padding: 1.5em;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+
+  .ui.header {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 2em;
+    text-transform: uppercase;
+    font-family: 'Maven Pro', sans-serif;
+  }
+
+  .average {
+    font-size: 16px;
+    margin-top: 1em;
+    text-align: center;
+  }
+}
+
+#indicatorContainer {
+  text-align: center;
 }

@@ -1,0 +1,11 @@
+#navbar.ui.borderless.menu
+  .item{style:"border-right: 1px solid #f2f2f2"}
+    %i{"data-feather": "chevron-left"}
+  .item{style:"border-right: 1px solid #f2f2f2"}
+    %i{"data-feather": "chevron-right"}
+  .item= @select_date.strftime("%A, %B %e, %Y")
+  .right.menu
+    .item
+      %span= current_user.username
+      .avatar
+

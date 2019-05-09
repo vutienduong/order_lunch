@@ -1,0 +1,29 @@
+#filter_container
+  %h3.ui.header Self Ordering
+  .restaurant_selector
+    %button.ui.basic.active.button All Dishes
+    - @available_restaurants.each do |res|
+      .ui.basic.icon.button
+        = res.name
+        %i.dropdown.icon
+        / .menu
+        /   - @r_tags[res.id.to_s].keys.each do |tag|
+        /     %a.item= tag.name
+#dishes_container
+  .dishes
+    - @available_restaurants.each do |restaurant|
+      - restaurant.by_date(@select_date).dish_decorators.each do |dish|
+        .dish
+          = render partial: 'layouts/components/image_tag_inline',
+                   locals: {image: dish.image,
+                            restaurant: dish,
+                            size: [120, 120],
+                            object: 'dish',
+                            options: {class_name: "ui rounded image", img_size: 'thumb'}}
+          .content
+            .header
+              %a.name{href: dish_path(dish)}= dish.name
+              %span.price= show_price dish.price
+              %button.ui.icon.button.add_button
+                %i{"data-feather": "plus"}
+            %p.description= dish.description

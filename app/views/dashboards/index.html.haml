@@ -1,40 +1,33 @@
 .ui.fluid.container
-  / .ui.borderless.menu
-  /   .item{style:"border-right: 1px solid #f2f2f2"}
-  /     %i{"data-feather": "chevron-left"}
-  /   .item{style:"border-right: 1px solid #f2f2f2"}
-  /     %i{"data-feather": "chevron-right"}
-  /   .item= @select_date.strftime("%A, %B %e, %Y")
-  /   .right.menu
-
+  = render "dashboards/shared/navbar"
 
   .ui.grid
     .eleven.wide.column
-      #filter_container
-        %h3.ui.header Pantry Ordering
-        .ui.borderless.menu
-          %a.item.active All Dishes
-          - @available_restaurants.each do |res|
-            .ui.dropdown.item
-              %a= res.name
-              .menu
-                - @r_tags[res.id.to_s].keys.each do |tag|
-                  %a.item= tag.name
-      #dishes_container
-        .dishes
-          - @available_restaurants.each do |restaurant|
-            - restaurant.by_date(@select_date).dish_decorators.each do |dish|
-              .dish
-                = render partial: 'layouts/components/image_tag_inline',
-                         locals: {image: dish.image,
-                                  restaurant: dish,
-                                  size: [120, 120],
-                                  object: 'dish',
-                                  options: {class_name: "ui rounded image", img_size: 'thumb'}}
-                .content
-                  .header
-                    %a.name{href: dish_path(dish)}= dish.name
-                    %span.price= show_price dish.price
-                    %button.ui.icon.button.add_button
-                      %i{"data-feather": "plus"}
-                  %p.description= dish.description
+      = render "dashboards/aggregate"
+      = render "dashboards/self_order"
+    .five.wide.column
+      #summary_panel.ui.segment
+        .content
+          %h3.ui.header Monthly budget:
+          #indicatorContainer
+          %p.average Avg 78.000 / 80.000 đ
+      #order_cart.ui.segment
+        .content
+
+:javascript
+  $(function(){
+    $radialIndicator = $('#indicatorContainer').radialIndicator({
+        minValue: 10000,
+        maxValue: 2000000,
+        format: '##,###,### đ',
+        barWidth: 8,
+        initValue: 100000,
+        roundCorner : true,
+        barColor: {
+          0: '#FF0000',
+          160000: '#FFFF00',
+          560000: '#0066FF',
+          2000000: '#33CC33',
+        }
+    });
+  })

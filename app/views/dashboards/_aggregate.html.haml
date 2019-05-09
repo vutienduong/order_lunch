@@ -1,0 +1,20 @@
+#filter_container
+  %h3.ui.header Aggregate
+  .restaurant_selector
+    %button.ui.silver.mini.icon.button
+      %i{"data-feather": "arrow-left", height: 14}
+    %button.ui.silver.mini.icon.button
+      %i{"data-feather": "arrow-right", height: 14}
+#groups_container
+  .ui.three.cards
+    - 3.times do
+      .ui.card
+        .content
+          .ui.placeholder
+            .image.header
+              .line
+              .line
+            .paragraph
+              .medium.line
+              .short.line
+
