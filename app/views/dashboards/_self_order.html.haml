@@ -24,6 +24,6 @@
             .header
               %a.name{href: dish_path(dish)}= dish.name
               %span.price= show_price dish.price
-              %button.ui.icon.button.add_button
+              %button.ui.icon.button.add_button{"data-dish-id": dish.id}
                 %i{"data-feather": "plus"}
             %p.description= dish.description
