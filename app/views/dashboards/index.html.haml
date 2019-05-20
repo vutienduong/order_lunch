@@ -11,8 +11,10 @@
           %h3.ui.header Monthly budget:
           #indicatorContainer
           %p.average Avg 78.000 / 80.000 đ
-      #order_cart.ui.segment
-        .content
+      #order_cart.ui.segment.p-none--all
+        .empty-order
+          %h3.ui.header You haven't made any order yet!
+          = image_tag 'empty-order.svg', width: 250
 
 :javascript
   $(function(){

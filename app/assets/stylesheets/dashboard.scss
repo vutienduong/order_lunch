@@ -108,6 +108,10 @@ body {
 #navbar {
   border: none;
   margin-bottom: 50px;
+
+  .item:not(:last-child) {
+    border-right: 1px solid #f2f2f2;
+  }
 }
 
 #dishes_container {
@@ -250,4 +254,16 @@ body {
 
 #indicatorContainer {
   text-align: center;
+}
+
+#order_cart {
+  .empty-order {
+    text-align: center;
+
+    h3.ui.header {
+      color: #626465;
+      padding-top: 2em;
+      text-transform: none;
+    }
+  }
 }

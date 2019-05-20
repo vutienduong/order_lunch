@@ -2,7 +2,7 @@
   %h3.ui.header Self Ordering
   .restaurant_selector
     %button.ui.basic.active.button All Dishes
-    - @available_restaurants.each do |res|
+    - @available_restaurants&.each do |res|
       .ui.basic.icon.button
         = res.name
         %i.dropdown.icon
@@ -11,7 +11,7 @@
         /     %a.item= tag.name
 #dishes_container
   .dishes
-    - @available_restaurants.each do |restaurant|
+    - @available_restaurants&.each do |restaurant|
       - restaurant.by_date(@select_date).dish_decorators.each do |dish|
         .dish
           = render partial: 'layouts/components/image_tag_inline',

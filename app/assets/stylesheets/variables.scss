@@ -1,0 +1,20 @@
+//---------------------
+// Sizes
+//---------------------
+
+$spaceTypes: ('m': "margin", 'p': "padding");
+
+$spaceSizes: (
+  'none':   0,
+	'tiny':   0.25em,
+	'mini':   0.5em,
+	'small':  1em,
+	'medium': 2em,
+	'big':    3em
+);
+
+//---------------------
+// Properties
+//---------------------
+
+$ip: !important;
