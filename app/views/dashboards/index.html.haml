@@ -32,4 +32,15 @@
           2000000: '#33CC33',
         }
     });
+
+    $(".add_button").click(function(){
+      dish_params = {
+          dish_id: $(this).data("dish-id"),
+          select_date: "#{@select_date}"
+      }
+
+      console.log("Params:", dish_params)
+
+      $.post("#{create_order_dashboards_path}", dish_params)
+    });
   })

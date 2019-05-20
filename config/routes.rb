@@ -203,4 +203,11 @@ Rails.application.routes.draw do
     resources :ol_settings do
     end
   end
+
+  ### New Router
+  resources :dashboards do
+    collection do
+      post 'create_order'
+    end
+  end
 end
