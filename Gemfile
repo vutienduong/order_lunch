@@ -58,7 +58,7 @@ end
 group :test do
   gem 'capybara', '2.7.1'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit', '1.15.1'
+  # gem 'capybara-webkit', '1.15.1'
   gem 'database_cleaner'
 
   gem 'faker', '1.9.3'
