@@ -2,7 +2,7 @@ module SessionsHelper
   def require_login
     unless logged_in?
       flash[:danger] = 'Need to login to see this page'
-      render 'sessions/new'
+      redirect_to login_path
     end
   end
 

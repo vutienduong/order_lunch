@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module OrderLunch
   class Application < Rails::Application
+    config.load_defaults 5.0
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -21,7 +22,7 @@ module OrderLunch
     # config.i18n.default_locale = :de
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
-    config.active_record.raise_in_transactional_callbacks = true
+    # config.active_record.raise_in_transactional_callbacks = true
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
     config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
@@ -29,5 +30,7 @@ module OrderLunch
     config.generators do |g|
       g.assets false
     end
+
+    config.generators.javascript_engine = :js
   end
 end

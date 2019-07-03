@@ -1,4 +1,4 @@
-class CreateDishComponents < ActiveRecord::Migration
+class CreateDishComponents < ActiveRecord::Migration[4.2]
   def change
     create_table :dish_components do |t|
       t.string :name

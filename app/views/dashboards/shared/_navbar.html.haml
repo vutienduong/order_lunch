@@ -1,0 +1,12 @@
+#navbar.ui.borderless.menu
+  %a.item(href="?select_date=#{@select_date - 1.day}")
+    %i{"data-feather": "chevron-left"}
+  %a.item(href="?select_date=#{@select_date + 1.day}")
+    %i{"data-feather": "chevron-right"}
+  .item= @select_date.strftime("%A, %B %e, %Y")
+  .right.menu
+    .item
+      %span= current_user.username
+      = link_to logout_path, method: :delete do
+        .avatar
+

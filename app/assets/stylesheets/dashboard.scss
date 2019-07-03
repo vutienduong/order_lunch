@@ -1,0 +1,269 @@
+body {
+  font-family: 'Maven Pro', sans-serif;
+}
+
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  box-shadow: 0 2px 20px 0 rgba(0,0,0,0.075);
+}
+
+.pusher {
+  min-height: 100%;
+  display: flex;
+  flex-direction: row;
+  background: #f6f9fc;
+  padding: 3em 3em 3em 314px;
+}
+
+#sidebar_content {
+  .heading {
+    padding: 1.5em;
+    margin-top: 1em;
+    text-align: center;
+
+    h3 {
+      color: #2c3e50;
+      margin-top: 0.5em;
+      font-weight: normal;
+    }
+  }
+
+  .quick_actions,
+  .admin_actions {
+    display: grid;
+    grid-gap: 1em;
+    padding: 1.5em;
+    margin-top: 1em;
+    position: relative;
+    grid-template-columns: repeat(2, 1fr);
+
+    .item {
+      display: flex;
+      padding: 10px;
+      color: #525f7f;
+      font-size: 12px;
+      border-radius: 5px;
+      align-items: center;
+      flex-direction: column;
+      border: 1px solid #dfe5ea;
+    }
+
+    .item.active,
+    .item.active:hover {
+      color: #54a0ff;
+      border-color: transparent;
+      background: rgba(116, 185, 255, 0.15);
+    }
+
+    .item.active svg {
+      color: #54a0ff;
+    }
+
+    .item svg {
+      color: #74b9ff;
+    }
+
+    .item span {
+      margin-top: 0.2em;
+    }
+
+    .item:hover {
+      border-color: #74b9ff;
+      background: rgba(223, 229, 234, 0.15);
+    }
+
+    .item.active:hover {
+      cursor: default;
+    }
+
+    &:before {
+      content: "Quick Actions";
+      position: absolute;
+      font-size: 0.75em;
+      color: #b7c3cb;
+      left: 20px;
+      top: -10px;
+    }
+  }
+
+  .admin_actions {
+    grid-template-columns: repeat(1, 1fr);
+
+    .item {
+      flex-direction: row;
+    }
+
+    .item span {
+      margin-top: 0;
+      margin-left: 1em;
+    }
+
+    &:before {
+      content: "Admin Actions";
+    }
+  }
+}
+
+#navbar {
+  border: none;
+  margin-bottom: 50px;
+
+  .item:not(:last-child) {
+    border-right: 1px solid #f2f2f2;
+  }
+}
+
+#dishes_container {
+  .dishes {
+    display: grid;
+    grid-gap: 1.5em;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dish {
+    display: flex;
+    padding: 0.75em;
+    border-radius: 5px;
+    background: #fff;
+    align-items: flex-start;
+    box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+
+    .ui.image {
+      margin-right: 1em;
+      max-width: 60px;
+    }
+
+    .content {
+      flex: 1;
+    }
+
+    .header {
+      display: flex;
+    }
+
+    .header .name {
+      flex: 1;
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+
+    .header .price {
+      width: 100px;
+      color: #27ae60;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    .header .add_button {
+      width: 30px;
+      height: 30px;
+      padding: 5px;
+      color: #ffffff;
+      margin-left: 1em;
+      background: #54a0ff;
+      border-radius: 0.5em;
+    }
+
+    .header .add_button svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+#filter_container {
+  display: flex;
+  margin-bottom: 3em;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#filter_container .restaurant_selector {
+  border: none;
+  margin-top: 0;
+  box-shadow: none;
+  background: transparent;
+
+  .item {
+    padding: 0;
+    border: none;
+    margin-left: 1em;
+  }
+
+  .item.active {
+    padding: 0.75em 2em;
+    background: #f2f2f2;
+    border-radius: 0.5em;
+  }
+
+  .item:hover {
+    background: transparent;
+  }
+}
+
+#filter_container .ui.header {
+  font-size: 22px;
+  margin-bottom: 0;
+  position: relative;
+  font-weight: normal;
+  font-family: 'Maven Pro', sans-serif;
+
+  &:after {
+    content: '';
+    width: 40px;
+    height: 3px;
+    position: absolute;
+    background: #54a0ff;
+    bottom: -8px;
+    left: 0;
+  }
+}
+
+#groups_container {
+  margin-bottom: 50px;
+
+  .ui.card {
+    box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+  }
+}
+
+#order_cart,
+#summary_panel {
+  border: none;
+  padding: 1.5em;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+
+  .ui.header {
+    color: #2c3e50;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 2em;
+    text-transform: uppercase;
+    font-family: 'Maven Pro', sans-serif;
+  }
+
+  .average {
+    font-size: 16px;
+    margin-top: 1em;
+    text-align: center;
+  }
+}
+
+#indicatorContainer {
+  text-align: center;
+}
+
+#order_cart {
+  .empty-order {
+    text-align: center;
+
+    h3.ui.header {
+      color: #626465;
+      padding-top: 2em;
+      text-transform: none;
+    }
+  }
+}

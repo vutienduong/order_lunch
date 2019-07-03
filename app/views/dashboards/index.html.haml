@@ -1,0 +1,46 @@
+.ui.fluid.container
+  = render "dashboards/shared/navbar"
+
+  .ui.grid
+    .eleven.wide.column
+      = render "dashboards/aggregate"
+      = render "dashboards/self_order"
+    .five.wide.column
+      #summary_panel.ui.segment
+        .content
+          %h3.ui.header Monthly budget:
+          #indicatorContainer
+          %p.average Avg 78.000 / 80.000 đ
+      #order_cart.ui.segment.p-none--all
+        .empty-order
+          %h3.ui.header You haven't made any order yet!
+          = image_tag 'empty-order.svg', width: 250
+
+:javascript
+  $(function(){
+    $radialIndicator = $('#indicatorContainer').radialIndicator({
+        minValue: 10000,
+        maxValue: 2000000,
+        format: '##,###,### đ',
+        barWidth: 8,
+        initValue: 100000,
+        roundCorner : true,
+        barColor: {
+          0: '#FF0000',
+          160000: '#FFFF00',
+          560000: '#0066FF',
+          2000000: '#33CC33',
+        }
+    });
+
+    $(".add_button").click(function(){
+      dish_params = {
+          dish_id: $(this).data("dish-id"),
+          select_date: "#{@select_date}"
+      }
+
+      console.log("Params:", dish_params)
+
+      $.post("#{create_order_dashboards_path}", dish_params)
+    });
+  })

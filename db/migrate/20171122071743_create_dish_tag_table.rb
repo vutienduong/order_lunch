@@ -1,4 +1,4 @@
-class CreateDishTagTable < ActiveRecord::Migration
+class CreateDishTagTable < ActiveRecord::Migration[4.2]
   def change
     create_table :dishes_tags do |t|
       t.integer :dish_id

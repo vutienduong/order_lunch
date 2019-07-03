@@ -1,0 +1,22 @@
+- provide(:title, "Log in")
+.ui.grid.middle.aligned.full-view-height
+  .seven.wide.column#login
+    = image_tag "eh-canteen-logo.svg", height: 60
+    %h1.ui.header EH's Lunch Ordering Services
+    = form_for(:session, url: login_path, html: {class: "ui large form"}) do |f|
+      .field
+        .ui.left.icon.input
+          .input-icon
+            %i{"data-feather": "user"}
+          = f.email_field :email, placeholder: 'Account', autofocus: true
+      .field
+        .ui.left.icon.input
+          .input-icon
+            %i{"data-feather": "key"}
+          = f.password_field :password, placeholder: 'Password'
+      .field
+        %button.ui.icon.button{type: "submit"}
+          %span Sign in
+          %i{"data-feather": "arrow-right"}
+.isometric
+  = image_tag "lunch-isometric.svg", class: "ui image"

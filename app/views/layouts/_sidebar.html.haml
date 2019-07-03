@@ -1,0 +1,27 @@
+#sidebar_content
+  .heading
+    = image_tag "eh-canteen-logo.svg", width: 80
+    %h3 EH's Lunch Ordering
+  .quick_actions
+    = link_to order_user_path(current_user), class: "item #{active_state_for(:order_lunch)}" do
+      %i{"data-feather": "shopping-bag"}
+      %span Get A Meal
+    = link_to get_all_orders_today_users_path, class: 'item' do
+      %i{"data-feather": "clipboard"}
+      %span All orders
+    = link_to orders_show_personal_orders_path, class: 'item' do
+      %i{"data-feather": "rotate-ccw"}
+      %span Histories
+    .item
+      %i{"data-feather": "settings"}
+      %span Preferences
+  .admin_actions
+    = link_to manage_company_admin_users_path, class: 'item' do
+      %i{"data-feather": "shopping-cart"}
+      %span Manage Today Order
+    = link_to manage_all_days_admin_users_path, class: 'item' do
+      %i{"data-feather": "pie-chart"}
+      %span Overview
+    = link_to admin_index_path, class: 'item' do
+      %i{"data-feather": "zap"}
+      %span Administration

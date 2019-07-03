@@ -1,4 +1,4 @@
-class ChangeTypeOfDateOfMenus < ActiveRecord::Migration
+class ChangeTypeOfDateOfMenus < ActiveRecord::Migration[4.2]
   def change
     reversible do |dir|
       change_table :menus do |t|

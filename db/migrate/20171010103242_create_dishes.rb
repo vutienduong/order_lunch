@@ -1,4 +1,4 @@
-class CreateDishes < ActiveRecord::Migration
+class CreateDishes < ActiveRecord::Migration[4.2]
   def change
     create_table :dishes do |t|
       t.references :restaurant, index: true, foreign_key: true

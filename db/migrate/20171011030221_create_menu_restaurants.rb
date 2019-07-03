@@ -1,4 +1,4 @@
-class CreateMenuRestaurants < ActiveRecord::Migration
+class CreateMenuRestaurants < ActiveRecord::Migration[4.2]
   def change
     create_table :menu_restaurants do |t|
       t.integer :menu_id
