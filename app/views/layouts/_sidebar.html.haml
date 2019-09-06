@@ -25,3 +25,7 @@
     = link_to admin_index_path, class: 'item' do
       %i{"data-feather": "zap"}
       %span Administration
+  .item
+    = link_to logout_path, method: :delete do
+      %span= current_user.username
+      .avatar

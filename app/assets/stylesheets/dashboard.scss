@@ -106,8 +106,8 @@ body {
 }
 
 #navbar {
+  margin: 0;
   border: none;
-  margin-bottom: 50px;
 
   .item:not(:last-child) {
     border-right: 1px solid #f2f2f2;
@@ -118,7 +118,7 @@ body {
   .dishes {
     display: grid;
     grid-gap: 1.5em;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .dish {
@@ -176,7 +176,7 @@ body {
 #filter_container {
   display: flex;
   margin-bottom: 3em;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 }
 
