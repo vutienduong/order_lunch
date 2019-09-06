@@ -9,30 +9,27 @@ gem 'rails_12factor'
 
 # Use sqlite3 as the database for Active Record
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'rubocop', '0.53.0', require: false
   gem 'sqlite3'
-  gem 'dotenv-rails'
 end
 
 gem 'hamlit'
 gem 'kaminari'
 gem 'simple_form', '~> 4.1.0'
 
-
+gem 'bootsnap', '>= 1.1.0', require: false
+gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails', '4.3.3'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
 gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
-gem 'bootsnap', '>= 1.1.0', require: false
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'uglifier', '>= 1.3.0'
 
 gem 'rest-client'
 gem 'sdoc', '~> 0.4.0', group: :doc
-
 
 # Use Unicorn as the app server
 # gem 'unicorn'
@@ -41,7 +38,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'factory_bot_rails'
   gem 'fuubar'
@@ -49,10 +45,10 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
@@ -87,7 +83,9 @@ gem 'aws-sdk-ec2', '~> 1'
 gem 'aws-sdk-s3', '~> 1'
 
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.47'
+gem 'draper'
 gem 'grape'
+gem 'handlebars_assets'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'slack-notifier'
 gem 'wombat', '~> 2.8.0'

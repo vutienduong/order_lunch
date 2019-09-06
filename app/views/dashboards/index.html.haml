@@ -3,7 +3,7 @@
 
   .ui.grid
     .eleven.wide.column
-      = render "dashboards/aggregate"
+      -# = render "dashboards/aggregate"
       = render "dashboards/self_order"
     .five.wide.column
       #summary_panel.ui.segment
@@ -11,36 +11,63 @@
           %h3.ui.header Monthly budget:
           #indicatorContainer
           %p.average Avg 78.000 / 80.000 đ
-      #order_cart.ui.segment.p-none--all
-        .empty-order
-          %h3.ui.header You haven't made any order yet!
-          = image_tag 'empty-order.svg', width: 250
+      #order_cart.ui.segment
+        %table#dishes.ui.very.basic.celled.table
+          %tbody
+            - if @current_order && @current_order.dishes.present?
+              - @current_order.dishes.each do |dish|
+                %tr.selected-order-item
+                  %td.dish-detail
+                    %h4.ui.image.header
+                      = render partial: 'layouts/components/image_tag_inline',
+                                locals: {image: dish.image,
+                                          restaurant: dish,
+                                          size: [120, 120],
+                                          object: 'dish',
+                                          options: {class_name: "ui rounded image", img_size: 'thumb'}}
+                      .content
+                        = dish.name
+                        .sub.header x1
+                  %td.dish-price= dish.price
+            - else
+              .empty-order
+                = image_tag 'empty-cart.png', width: 150, class: "p-big--top"
+                %p.p-big--bottom You haven't order anything yet!
 
 :javascript
   $(function(){
     $radialIndicator = $('#indicatorContainer').radialIndicator({
-        minValue: 10000,
-        maxValue: 2000000,
-        format: '##,###,### đ',
-        barWidth: 8,
-        initValue: 100000,
-        roundCorner : true,
-        barColor: {
-          0: '#FF0000',
-          160000: '#FFFF00',
-          560000: '#0066FF',
-          2000000: '#33CC33',
-        }
+      minValue: 10000,
+      maxValue: 2000000,
+      format: '##,###,### đ',
+      barWidth: 8,
+      initValue: 100000,
+      roundCorner : true,
+      barColor: {
+        0: '#FF0000',
+        160000: '#FFFF00',
+        560000: '#0066FF',
+        2000000: '#33CC33',
+      }
     });
 
     $(".add_button").click(function(){
+      dish_detail = $(this).data('dish-detail')
       dish_params = {
-          dish_id: $(this).data("dish-id"),
-          select_date: "#{@select_date}"
+        dish_id: dish_detail['id'],
+        select_date: "#{@select_date}"
       }
 
-      console.log("Params:", dish_params)
-
-      $.post("#{create_order_dashboards_path}", dish_params)
+      $.post("#{create_order_dashboards_path}", dish_params, function(response_data) {
+        $("#order_cart .empty-order").hide();
+        selectedOrderItemHtml = HandlebarsTemplates['selected_order_item'](dish_detail);
+        $("#dishes").append(selectedOrderItemHtml);
+      })
+        .done(function(response_data){
+          console.log("Success:", response_data);
+        })
+        .fail(function(response_data){
+          console.log("Error! Should remove renedered block");
+        })
     });
   })

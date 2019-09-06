@@ -14,6 +14,6 @@ class Order < ActiveRecord::Base
   DF_CR_UNIT = 'VND'
 
   def cal_total_price
-    dishes.inject(0) { |s, d| s + d.price }
+    dishes.sum(:price)
   end
 end

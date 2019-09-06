@@ -5,7 +5,7 @@ body {
 .sidebar {
   width: 260px;
   background: #ffffff;
-  box-shadow: 0 2px 20px 0 rgba(0,0,0,0.075);
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.075);
 }
 
 .pusher {
@@ -127,7 +127,7 @@ body {
     border-radius: 5px;
     background: #fff;
     align-items: flex-start;
-    box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+    box-shadow: 0 2px 4px 0 rgba(50, 50, 93, .1);
 
     .ui.image {
       margin-right: 1em;
@@ -225,7 +225,7 @@ body {
   margin-bottom: 50px;
 
   .ui.card {
-    box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+    box-shadow: 0 2px 4px 0 rgba(50, 50, 93, .1);
   }
 }
 
@@ -234,7 +234,7 @@ body {
   border: none;
   padding: 1.5em;
   border-radius: 5px;
-  box-shadow: 0 2px 4px 0 rgba(50,50,93,.1);
+  box-shadow: 0 2px 4px 0 rgba(50, 50, 93, .1);
 
   .ui.header {
     color: #2c3e50;
@@ -257,13 +257,16 @@ body {
 }
 
 #order_cart {
-  .empty-order {
-    text-align: center;
+  padding: 1em;
 
-    h3.ui.header {
-      color: #626465;
-      padding-top: 2em;
-      text-transform: none;
-    }
+  .empty-order {
+    color: #626465;
+    text-align: center;
+    text-transform: none;
+  }
+
+  .selected-order-item .dish-detail h4 {
+    margin-bottom: 0;
+    text-transform: none;
   }
 }
