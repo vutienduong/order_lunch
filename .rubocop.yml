@@ -1,15 +1,11 @@
 AllCops:
-  TargetRubyVersion: 2.3
-  TargetRailsVersion: 4.0
+  TargetRubyVersion: 2.6.1
   Exclude:
     - db/*.rb
     - "vendor/**/*"
     - "bin/*"
     - "node_modules/**/*"
   DisplayCopNames: true
-
-Rails:
-  Enabled: true
 
 Style/Alias:
   Enabled: false
@@ -29,7 +25,7 @@ Layout/BlockEndNewline:
 Style/GuardClause:
   Enabled: false
 
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Enabled: false
 
 Layout/SpaceBeforeFirstArg:
@@ -48,10 +44,7 @@ Style/ParallelAssignment:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 100
-
-Metrics/ClassLength:
-  Enabled: false
+  Max: 80
 
 Metrics/ModuleLength:
   Enabled: true
@@ -93,7 +86,7 @@ Naming/AccessorMethodName:
 Layout/AlignArray:
   Enabled: false
 
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   Enabled: false
 
 Style/AndOr:
@@ -113,9 +106,6 @@ Layout/MultilineMethodCallIndentation:
 
 Style/RegexpLiteral:
   Enabled: false
-
-Rails/HasAndBelongsToMany:
-  Enabled: false # At the moment MultiEditble is the problem, for has_many through we'd need to interpolate the join table for Configs and Docs
 
 # Disable some New Rules from Rubocop 0.39
 Style/FrozenStringLiteralComment:
@@ -138,15 +128,3 @@ Lint/AmbiguousRegexpLiteral:
 
 Lint/AmbiguousBlockAssociation:
   Enabled: false
-
-# We are using Rails 4, this check is for Rails 5. So, let's remove it
-# http://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Rails/HttpPositionalArguments
-Rails/HttpPositionalArguments:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Enabled: true
-  Exclude:
-      - "app/models/member.rb"
-      - "app/models/organisation.rb"
-      - "**/*_spec.rb"
