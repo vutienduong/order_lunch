@@ -674,7 +674,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.5)
     connection_pool (2.2.2)
     crass (1.0.2)
     database_cleaner (1.6.2)
@@ -700,7 +700,7 @@ GEM
       ruby-progressbar (~> 1.4)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
-    grape (1.0.3)
+    grape (1.1.0)
       activesupport
       builder
       mustermann-grape (~> 1.0.0)
@@ -762,7 +762,7 @@ GEM
     mime-types-data (3.2016.0521)
     mimemagic (0.3.2)
     mini_portile2 (2.3.0)
-    minitest (5.10.3)
+    minitest (5.12.2)
     momentjs-rails (2.17.1)
       railties (>= 3.1)
     monban (1.1.0)
@@ -772,7 +772,7 @@ GEM
     monban-generators (1.0.1)
       monban (>= 0.0.12)
     multi_json (1.12.2)
-    mustermann (1.0.2)
+    mustermann (1.0.3)
     mustermann-grape (1.0.0)
       mustermann (~> 1.0.0)
     net-http-digest_auth (1.4.1)
@@ -808,7 +808,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     public_suffix (3.0.0)
-    rack (1.6.8)
+    rack (1.6.11)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-test (0.6.3)
