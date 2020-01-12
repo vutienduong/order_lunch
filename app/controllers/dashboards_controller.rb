@@ -12,7 +12,7 @@ class DashboardsController < ApplicationController
     @r_tags = Menus::RetrieveService.new(@menu).collect_follow_tags_for_each_restaurant
     @available_restaurants = @menu.available_restaurants(Time.current)
 
-    @current_order = current_user.orders.where(date: Date.today).take
+    @current_order = current_user.orders.where(date: @select_date).take
   end
 
   ### Temporary place these actions here for refactor orders_controller later
