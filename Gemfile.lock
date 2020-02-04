@@ -1166,7 +1166,7 @@ DEPENDENCIES
   wombat (~> 2.8.0)
 
 RUBY VERSION
-   ruby 2.6.1p33
+   ruby 2.6.5p114
 
 BUNDLED WITH
    2.1.4
