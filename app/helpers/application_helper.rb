@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   NUMBER_OF_DISH_PER_PAGE = 30
   STATUS_OK = 'ok'.freeze
   STATUS_FAIL = 'fail'.freeze

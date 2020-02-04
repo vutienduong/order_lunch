@@ -1,0 +1,38 @@
+#advanced_table_bundle
+  %h3.text-xl.font-medium Restaurant List
+
+  .ui.top.attached.segment
+    .flex.items-center.justify-between
+      .ui.category.search.item
+        .flex.items-center
+          %i.w-8.mr-5.text-gray-500{'data-feather': 'search'}
+          %input{type:"text",
+                placeholder:"Search restaurant...",
+                class: "appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none text-lg"}
+      = link_to "Add New Restaurant", new_manages_restaurant_path, class: "ui primary button"
+  .ui.attached.segment.p-none--all
+    %table.ui.very.basic.celled.table.data-table
+      %thead
+        %tr
+          %th.center.aligned.p-mini--sides ID
+          %th Restaurant
+          %th Supplier
+          %th Created at
+          %th
+      %tbody
+        - @restaurants.each do |restaurant|
+          %tr
+            %td.center.aligned.p-mini--sides
+              = restaurant.id
+            %td
+              %h4.ui.header
+                = restaurant.name
+                .sub.header= restaurant.address
+            %td Now Delivery
+            %td= restaurant.created_at
+            %td.center.aligned
+              .ui.very.basic.mini.icon.button
+                %i.setting.icon
+
+  .ui.bottom.attached.segment
+    != pagy_semantic_nav(@pagy)

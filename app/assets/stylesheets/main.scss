@@ -6,11 +6,6 @@ body {
   height: 100vh;
 }
 
-.ui.button {
-  font-weight: normal;
-  text-transform: uppercase;
-}
-
 
 #login {
   .form {
@@ -40,7 +35,13 @@ body {
     .ui.button .feather {
       height: 20px;
     }
+
+    .ui.button {
+      font-weight: normal;
+      text-transform: uppercase;
+    }
   }
+
   .ui.header {
     color: #2c3e50;
     margin: 20px 0;
@@ -70,6 +71,7 @@ body {
   .item {
     padding: 0.75em;
   }
+
   .avatar {
     width: 30px;
     height: 30px;

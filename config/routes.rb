@@ -210,4 +210,9 @@ Rails.application.routes.draw do
       post 'create_order'
     end
   end
+
+  namespace :manages do
+    root 'overviews#index'
+    resources :restaurants
+  end
 end

@@ -15,7 +15,6 @@ group :development, :test do
 end
 
 gem 'hamlit'
-gem 'kaminari'
 gem 'simple_form', '~> 4.1.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
@@ -89,6 +88,7 @@ gem 'handlebars_assets'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'slack-notifier'
 gem 'wombat', '~> 2.8.0'
+gem 'pagy'
 
 source 'https://rails-assets.org' do
   gem 'rails-assets-semantic'

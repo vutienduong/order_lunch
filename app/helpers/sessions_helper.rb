@@ -6,6 +6,13 @@ module SessionsHelper
     end
   end
 
+  def authorize_administration
+    return if current_user.admin?
+
+    flash[:danger] = 'Need to login to see this page'
+    redirect_to dashboards_path
+  end
+
   def log_in(user)
     session[:user_id] = user.id
     session[:is_admin] = User.find(user.id).admin?

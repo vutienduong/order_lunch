@@ -870,18 +870,6 @@ GEM
       railties (>= 3.1.0)
     json (1.8.6)
     jsonapi-renderer (0.2.0)
-    kaminari (1.1.1)
-      activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.1.1)
-      kaminari-activerecord (= 1.1.1)
-      kaminari-core (= 1.1.1)
-    kaminari-actionview (1.1.1)
-      actionview
-      kaminari-core (= 1.1.1)
-    kaminari-activerecord (1.1.1)
-      activerecord
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (3.1.5)
@@ -927,6 +915,7 @@ GEM
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
+    pagy (3.7.2)
     paperclip (6.1.0)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
@@ -1143,9 +1132,9 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails (= 4.3.3)
   jquery-ui-rails (= 4.0.4)
-  kaminari
   listen (>= 3.0.5, < 3.2)
   momentjs-rails (>= 2.9.0)
+  pagy
   paperclip (= 6.1.0)
   pg (>= 0.18, < 2.0)
   poltergeist

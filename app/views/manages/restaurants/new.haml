@@ -1,0 +1,19 @@
+%h3.text-xl.font-medium New Restaurant
+.ui.two.column.grid.m-small--top
+  .column
+    .bg-white.rounded.border-gray-400.p-5
+      %h5.text-lg.font-medium
+        Crawl from
+        %img.inline.h-8(src="https://www.now.vn/app/assets/img/nowvn.png" alt="Now logo")/
+        .ui.divider
+      .mt-5
+        .label.mb-2 Input Now's URL:
+        .ui.input.fluid
+          %input(type="text" placeholder="https://www.now.vn/ho-chi-minh/chilli-thai-mac-thi-buoi")/
+        %button.flex.items-center.p-2.bg-gray-300.rounded.w-auto.mt-3
+          %i.text-gray-600.h-5.mr-2{'data-feather': 'download-cloud'}
+          %span.text-gray-600.mr-1 Pull restaurant info
+  .column
+    .bg-white.rounded.border-gray-400.p-5
+      %h5.text-lg.font-medium Manually input as Vendor
+
