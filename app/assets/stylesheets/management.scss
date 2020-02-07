@@ -56,7 +56,11 @@ body {
 #management_board {
   .statistic .ui.segment {
     border-radius: 4px;
-    box-shadow: 0 22px 22px 0 rgba(11, 37, 75, 0.01), 0 14px 14px 0 rgba(11, 37, 75, 0.02), 0 4px 4px 0 rgba(11, 37, 75, 0.02), 0 2px 2px 0 rgba(11, 37, 75, 0.02), 0 0 0 1px rgba(11, 37, 75, 0.04);
+    box-shadow: 0 22px 22px 0 rgba(11, 37, 75, 0.01),
+      0 14px 14px 0 rgba(11, 37, 75, 0.02),
+      0 4px 4px 0 rgba(11, 37, 75, 0.02),
+      0 2px 2px 0 rgba(11, 37, 75, 0.02),
+      0 0 0 1px rgba(11, 37, 75, 0.04);
   }
 
   .data-table {

@@ -5,15 +5,15 @@
     = stylesheet_link_tag 'new_template', media: 'all', 'data-turbolinks-track': true
     = javascript_include_tag 'new_template', 'data-turbolinks-track': true
     = csrf_meta_tags
-    %script{src: "https://unpkg.com/feather-icons"}
     %link{href: "https://employmenthero.com/favicon-96x96.png", rel: "icon", sizes: "96x96", type: "image/png"}/
     %link{href: "https://fonts.googleapis.com/css?family=Maven+Pro:400,500,700&subset=vietnamese", rel: "stylesheet"}/
+    %link{href: "https://unpkg.com/simplebar@latest/dist/simplebar.css", rel: "stylesheet"}/
     %link{href: "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css", rel: "stylesheet"}/
-  %body
+  %body{"data-simplebar": true}
     #navigation
       .ui.borderless.top.attached.menu
         .ui.container
-          .item.p-none--left.p-small--right
+          .item.p-small--right
             = image_tag "lunchery-logo.svg", width: 35, class: 'ui image'
           .item.horizontally.fitted
             %h3 Lunchery
@@ -22,11 +22,11 @@
               %a.middle-aligned(href="/")
                 %i{"data-feather": "arrow-left"}
                 Switch to dashboard
-            .item.p-none--right
+            .item
               .ui.basic.button Sign Out
       .ui.borderless.bottom.attached.menu
         .ui.container
-          = link_to manages_root_path, class: "item p-none--left #{'active' if current_page?(manages_root_path)}" do
+          = link_to manages_root_path, class: "item #{'active' if current_page?(manages_root_path)}" do
             %i{"data-feather": "home"}
             Overview
           %a.item(href="https://google.com")
@@ -40,9 +40,12 @@
             Users
 
     #management_board.ui.container
-      .p-medium--ends= yield
+      .p-medium--ends.p-small--sides= yield
+
+  %script{src: "https://unpkg.com/feather-icons"}
+  %script{src: "https://unpkg.com/simplebar@latest/dist/simplebar.min.js"}
 
   :javascript
-    $(function(){
+    document.addEventListener("turbolinks:load", function() {
       feather.replace();
-    });
+    })
