@@ -1,8 +1,10 @@
 - provide(:title, "Log in")
 .ui.grid.middle.aligned.full-view-height
   .seven.wide.column#login
-    = image_tag "eh-canteen-logo.svg", height: 60
-    %h1.ui.header EH's Lunch Ordering Services
+    = image_tag "lunchery-logo.svg", height: 70
+    %h1.ui.header
+      Lunchery
+      .sub.header Welcome to EH's lunch ordering service.
     = form_for(:session, url: login_path, html: {class: "ui large form"}) do |f|
       .field
         .ui.left.icon.input

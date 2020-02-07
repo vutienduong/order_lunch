@@ -6,64 +6,76 @@ body {
   height: 100vh;
 }
 
+.sessions {
+  background: #ffffff;
 
-#login {
-  .form {
-    max-width: 360px;
-    margin-top: 50px;
+  #login {
+    .form {
+      max-width: 360px;
+      margin-top: 3rem;
 
-    input {
-      color: #525f7f;
-      font-weight: 100;
-      border-radius: 0.5em;
-      border-color: #dfe5ea;
+      input {
+        color: #525f7f;
+        font-weight: 100;
+        border-radius: 0.5em;
+        border-color: #dfe5ea;
+        font-family: 'Maven Pro', sans-serif;
+      }
+
+      .ui.button {
+        width: 40%;
+        display: flex;
+        color: #4093c6;
+        margin-top: 2em;
+        padding: 0.75em 1em;
+        align-items: center;
+        border-radius: 0.5em;
+        justify-content: space-between;
+        background: rgb(224, 245, 253);
+      }
+
+      .ui.button .feather {
+        height: 20px;
+      }
+
+      .ui.button {
+        font-weight: normal;
+        text-transform: uppercase;
+      }
+    }
+
+    .ui.header {
+      color: #2c3e50;
+      margin: 14px 0;
+      font-size: 32px;
+      font-weight: normal;
       font-family: 'Maven Pro', sans-serif;
     }
+  }
 
-    .ui.button {
-      width: 40%;
-      display: flex;
-      color: #27ae60;
-      margin-top: 2em;
-      padding: 0.75em 1em;
-      align-items: center;
-      border-radius: 0.5em;
-      justify-content: space-between;
-      background: rgba(68, 217, 149, 0.15);
-    }
+  .input-icon {
+    display: flex;
+    margin: 0em;
+    height: 100%;
+    width: 2.67142857em;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    text-align: center;
+    opacity: 0.5;
 
-    .ui.button .feather {
-      height: 20px;
-    }
-
-    .ui.button {
-      font-weight: normal;
-      text-transform: uppercase;
+    svg {
+      height: 18px;
     }
   }
 
-  .ui.header {
-    color: #2c3e50;
-    margin: 20px 0;
-    font-size: 32px;
-    font-weight: normal;
-    font-family: 'Maven Pro', sans-serif;
-  }
-}
-
-.input-icon {
-  display: flex;
-  margin: 0em;
-  height: 100%;
-  width: 2.67142857em;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  text-align: center;
-  opacity: 0.5;
-
-  svg {
-    height: 18px;
+  .isometric {
+    top: 50%;
+    right: 0px;
+    width: 40%;
+    z-index: -1;
+    position: absolute;
+    transform: translateY(-50%);
   }
 }
 
@@ -79,13 +91,4 @@ body {
     border-radius: 5px;
     background: #f2f2f2;
   }
-}
-
-.isometric {
-  top: 50%;
-  right: 0px;
-  width: 40%;
-  z-index: -1;
-  position: absolute;
-  transform: translateY(-50%);
 }
